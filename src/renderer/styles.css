@@ -1,0 +1,253 @@
+body {
+    font-family: "Microsoft YaHei", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+/* Custom Title Bar */
+.title-bar {
+    height: 32px;
+    background: transparent; /* Transparent to blend with body */
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Align controls to right */
+    padding: 0;
+    -webkit-app-region: drag; /* Drag area */
+    position: absolute; /* Float over content */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+/* Create a dedicated drag area that doesn't cover buttons */
+.title-drag-area {
+    flex-grow: 1;
+    height: 100%;
+}
+
+.window-controls {
+    display: flex;
+    -webkit-app-region: no-drag;
+}
+
+.control-btn {
+    width: 46px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.1s;
+    border: none;
+    background: transparent;
+    color: #666;
+}
+
+.control-btn:hover {
+    background-color: #eee;
+}
+
+.control-btn.close:hover {
+    background-color: #e81123;
+    color: white;
+}
+
+/* Main Content */
+.container {
+    max-width: 100%;
+    height: 100vh;
+    padding: 40px 30px 20px 30px; /* Top padding for title bar space */
+    box-sizing: border-box;
+    overflow-y: auto;
+    background: #fff;
+}
+
+/* Scrollbar */
+.container::-webkit-scrollbar { width: 6px; }
+.container::-webkit-scrollbar-thumb { background: #ddd; border-radius: 3px; }
+.container::-webkit-scrollbar-thumb:hover { background: #bbb; }
+
+/* Sections - Card Style */
+.section {
+    margin-bottom: 25px;
+    padding: 20px;
+    border: 1px solid #eaeaea;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.section:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    border-color: #e0e0e0;
+}
+
+/* Section Header Layout */
+.section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #f5f5f5;
+    padding-bottom: 15px;
+}
+
+.icon-box {
+    width: 40px;
+    height: 40px;
+    background: #f0fdf4;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-right: 15px;
+}
+
+.patch-icon { background: #e8f5e9; color: #2e7d32; }
+.notify-icon { background: #fff3e0; color: #ef6c00; }
+
+.header-text h2 {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+}
+
+.header-text .subtitle {
+    margin: 4px 0 0 0;
+    font-size: 12px;
+    color: #999;
+}
+
+/* Action Rows */
+.action-row {
+    display: flex;
+    gap: 10px;
+}
+
+.toggle-row {
+    display: flex;
+    align-items: center;
+    background: #f9f9f9;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+/* Buttons */
+button {
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.primary-btn {
+    background: #07c160;
+    color: white;
+    font-weight: 500;
+}
+.primary-btn:hover { background: #06ad56; }
+
+.secondary-btn {
+    background: #f2f2f2;
+    color: #333;
+}
+.secondary-btn:hover { background: #e6e6e6; }
+
+.full-width-btn {
+    width: 100%;
+    background: #07c160;
+    color: white;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 15px;
+}
+.full-width-btn:hover { background: #06ad56; }
+.full-width-btn:disabled { background: #f0f0f0; color: #ccc; cursor: not-allowed; }
+
+.small-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+/* File Display */
+.file-path-display {
+    background: #f9f9f9;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #666;
+    margin: 15px 0;
+    border: 1px dashed #ddd;
+    text-align: center;
+    font-family: Consolas, monospace;
+}
+
+/* Status Message */
+.status-msg {
+    margin-top: 12px;
+    font-size: 12px;
+    text-align: center;
+    min-height: 18px;
+}
+.success { color: #07c160; }
+.error { color: #d32f2f; }
+
+/* Toggle Switch */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 36px;
+    height: 20px;
+    margin-right: 12px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 20px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #07c160;
+}
+
+input:checked + .slider:before {
+    transform: translateX(16px);
+}
+
+.toggle-label {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+}

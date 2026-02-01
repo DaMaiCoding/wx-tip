@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>微信工具箱</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Custom Title Bar -->
+    <div class="title-bar">
+        <div class="title-drag-area"></div>
+        <div class="window-controls">
+            <button class="control-btn" id="btn-minimize">
+                <svg width="10" height="1" viewBox="0 0 10 1"><path d="M0 0h10v1H0z" fill="currentColor"/></svg>
+            </button>
+            <button class="control-btn close" id="btn-close">
+                <svg width="10" height="10" viewBox="0 0 10 10"><path d="M0 0l10 10M10 0L0 10" stroke="currentColor" stroke-width="1"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Anti-Revoke Section -->
+        <div class="section">
+            <div class="section-header">
+                <div class="icon-box patch-icon">🛡️</div>
+                <div class="header-text">
+                    <h2>防撤回补丁</h2>
+                    <p class="subtitle">支持 WeChat 3.9.x - 4.1.x</p>
+                </div>
+            </div>
+            
+            <div class="card-content">
+                <div class="action-row">
+                    <button id="btn-auto" class="primary-btn">自动查找</button>
+                    <button id="btn-select" class="secondary-btn">手动选择</button>
+                </div>
+                
+                <div id="file-path" class="file-path-display">等待选择 WeChatWin.dll...</div>
+                
+                <button id="btn-patch" class="full-width-btn" disabled>应用防撤回补丁</button>
+                <div id="patch-status" class="status-msg"></div>
+            </div>
+        </div>
+
+        <!-- Notification Section -->
+        <div class="section">
+            <div class="section-header">
+                <div class="icon-box notify-icon">🔔</div>
+                <div class="header-text">
+                    <h2>消息通知增强</h2>
+                    <p class="subtitle">系统级原生弹窗提醒</p>
+                </div>
+            </div>
+            
+            <div class="card-content">
+                <div class="toggle-row">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="chk-monitor">
+                        <span class="slider"></span>
+                    </label>
+                    <span class="toggle-label">开启实时消息监听</span>
+                </div>
+                
+                <div class="action-row" style="margin-top: 15px;">
+                    <button id="btn-test-notify" class="secondary-btn small-btn">测试弹窗</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Settings Section -->
+        <div class="section">
+            <div class="section-header">
+                <div class="icon-box settings-icon" style="background: #e3f2fd; color: #1976d2;">⚙️</div>
+                <div class="header-text">
+                    <h2>系统设置</h2>
+                    <p class="subtitle">自启动与更新</p>
+                </div>
+            </div>
+            
+            <div class="card-content">
+                <div class="toggle-row">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="chk-autolaunch">
+                        <span class="slider"></span>
+                    </label>
+                    <span class="toggle-label">开机自动启动</span>
+                </div>
+
+                <div class="action-row" style="margin-top: 15px;">
+                    <button id="btn-check-update" class="secondary-btn small-btn" style="width: 100%;">检查更新</button>
+                </div>
+                <div id="update-status" class="status-msg"></div>
+            </div>
+        </div>
+    </div>
+    <script src="index.js"></script>
+</body>
+</html>
