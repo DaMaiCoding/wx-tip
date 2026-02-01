@@ -6,6 +6,8 @@ function createWindow() {
     const mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
+        frame: false, // Remove the native window frame
+        titleBarStyle: 'hidden', // Hide the title bar content
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: false,
@@ -14,6 +16,15 @@ function createWindow() {
     });
 
     mainWindow.loadFile('index.html');
+
+    // Window control handlers
+    ipcMain.on('window:minimize', () => {
+        mainWindow.minimize();
+    });
+
+    ipcMain.on('window:close', () => {
+        mainWindow.close();
+    });
 }
 
 app.whenReady().then(() => {
