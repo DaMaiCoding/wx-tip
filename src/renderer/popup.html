@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="notification-container" id="notification">
+        <div class="icon-area">
+            <img src="../../assets/icon.png" alt="WeChat" class="app-icon">
+        </div>
+        <div class="content-area">
+            <div class="header">
+                <span class="app-name">微信</span>
+                <span class="time" id="msg-time">刚刚</span>
+            </div>
+            <div class="message-body" id="msg-content">
+                收到一条新消息
+            </div>
+        </div>
+        <div class="close-btn" id="close-btn">
+            <svg viewBox="0 0 24 24" width="14" height="14">
+                <path d="M18 6L6 18M6 6l12 12" stroke="#666" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </div>
+    </div>
+    <script src="popup.js"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog, Notification } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, Notification, screen } = require('electron');
 const path = require('path');
 const { spawn } = require('child_process');
 const patcher = require('./services/patcher');
@@ -6,6 +6,19 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
+const fs = require('fs');
+
+// Enable live reload for development
+if (!app.isPackaged) {
+    try {
+        require('electron-reload')(path.join(__dirname, '../'), {
+            electron: require(path.join(__dirname, '../../node_modules/electron')),
+            awaitWriteFinish: true,
+        });
+    } catch (e) {
+        console.log('Error loading electron-reload:', e);
+    }
+}
 
 // 1. Set AppUserModelId for Windows Notifications
 // This removes "electron.app.Electron" from the notification title
@@ -18,7 +31,166 @@ autoUpdater.logger = log;
 
 let monitorProcess = null;
 let mainWindow = null;
+let popupWindow = null;
+let popupCloseTimer = null;
 const iconPath = path.join(__dirname, '../../assets/icon.png');
+const configPath = path.join(__dirname, 'services/config.json');
+
+// --- Configuration Management ---
+let appConfig = {
+    enableNativeNotification: true,
+    enableCustomPopup: false
+};
+
+function loadConfig() {
+    try {
+        if (fs.existsSync(configPath)) {
+            const data = fs.readFileSync(configPath, 'utf-8');
+            appConfig = { ...appConfig, ...JSON.parse(data) };
+        }
+    } catch (e) {
+        console.error('Failed to load config:', e);
+    }
+}
+
+function saveConfig() {
+    try {
+        fs.writeFileSync(configPath, JSON.stringify(appConfig, null, 4), 'utf-8');
+    } catch (e) {
+        console.error('Failed to save config:', e);
+    }
+}
+
+loadConfig();
+
+// --- Popup Window Logic ---
+function createPopupWindow() {
+    if (popupWindow && !popupWindow.isDestroyed()) {
+        popupWindow.close();
+    }
+
+    const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+    
+    popupWindow = new BrowserWindow({
+        width: 360,
+        height: 100, // Slightly larger than content to accommodate shadow
+        x: width - 380,
+        y: 20, // Top right
+        frame: false,
+        transparent: true,
+        alwaysOnTop: true,
+        resizable: false,
+        skipTaskbar: true,
+        focusable: false, // Don't steal focus
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false // Simplification for popup
+        }
+    });
+
+    popupWindow.loadFile(path.join(__dirname, '../renderer/popup.html'));
+    // popupWindow.webContents.openDevTools({ mode: 'detach' });
+
+    popupWindow.on('closed', () => {
+        popupWindow = null;
+    });
+}
+
+function showCustomPopup(data) {
+    if (!popupWindow || popupWindow.isDestroyed()) {
+        createPopupWindow();
+        // Wait for load
+        popupWindow.webContents.once('did-finish-load', () => {
+            popupWindow.webContents.send('popup:update', data);
+        });
+    } else {
+        popupWindow.webContents.send('popup:update', data);
+    }
+
+    // Reset Auto Close Timer
+    if (popupCloseTimer) clearTimeout(popupCloseTimer);
+    
+    // Auto fade out after 5s
+    popupCloseTimer = setTimeout(() => {
+        if (popupWindow && !popupWindow.isDestroyed()) {
+            popupWindow.webContents.send('popup:fadeout');
+            // Close after animation
+            setTimeout(() => {
+                if (popupWindow && !popupWindow.isDestroyed()) {
+                    popupWindow.close();
+                }
+            }, 300); // 0.2s animation + buffer
+        }
+    }, 5000);
+}
+
+ipcMain.on('popup:close', () => {
+    if (popupWindow && !popupWindow.isDestroyed()) {
+        popupWindow.close();
+    }
+});
+
+// --- Message Filtering Logic ---
+let messageBuffer = [];
+let processTimer = null;
+const DEBOUNCE_TIME = 300; // ms
+const processedSignatures = new Set();
+
+function handleIncomingMessage(msg) {
+    // Basic Filtering
+    if (msg.isSelf) {
+        console.log(`[Filter] Ignored self message: ${msg.content}`);
+        return; 
+    }
+    if (!msg.isUnread) {
+        console.log(`[Filter] Ignored read/active message: ${msg.content}`);
+        return; 
+    }
+
+    // Deduplication
+    // Assuming msg has content and timestamp, or at least content
+    // We create a signature to identify the message
+    const signature = `${msg.id || ''}|${msg.content}|${msg.timestamp || ''}`;
+    
+    if (processedSignatures.has(signature)) {
+        return; // Ignore duplicate
+    }
+    
+    processedSignatures.add(signature);
+    // Keep set size manageable
+    if (processedSignatures.size > 1000) {
+        const firstValue = processedSignatures.values().next().value;
+        processedSignatures.delete(firstValue);
+    }
+
+    // Add to buffer
+    messageBuffer.push(msg);
+
+    // Debounce processing
+    if (processTimer) clearTimeout(processTimer);
+    processTimer = setTimeout(() => {
+        processMessageQueue();
+    }, DEBOUNCE_TIME);
+}
+
+function processMessageQueue() {
+    if (messageBuffer.length === 0) return;
+
+    // Requirement: "In all unread messages, only popup the latest one"
+    // So we just take the last one in the buffer (assuming buffer is chronological, which it is from monitor)
+    const latestMsg = messageBuffer[messageBuffer.length - 1];
+    messageBuffer = []; // Clear buffer
+
+    // Dispatch
+    if (appConfig.enableCustomPopup) {
+        showCustomPopup(latestMsg);
+    } else if (appConfig.enableNativeNotification) {
+         new Notification({ 
+            title: ' ', 
+            body: latestMsg.content,
+        }).show();
+    }
+}
 
 // --- Express Notify Server (Internal) ---
 const notifyApp = express();
@@ -29,19 +201,15 @@ notifyApp.use(bodyParser.json());
 notifyApp.post('/notify', (req, res) => {
     const data = req.body;
     if (data && data.type === 'message') {
-        console.log(`[NotifyServer] Received: ${JSON.stringify(data)}`);
+        // console.log(`[NotifyServer] Received: ${JSON.stringify(data)}`);
         
-        // Forward to Renderer
+        // Forward to Renderer (Log View)
         if (mainWindow) {
             mainWindow.webContents.send('monitor:message', data);
         }
         
-        // Show System Notification
-        new Notification({ 
-            title: ' ', // Empty space to remove the title text
-            body: data.content,
-            // icon: iconPath // Removed
-        }).show();
+        // Handle Logic
+        handleIncomingMessage(data);
         
         res.status(200).json({ status: 'success' });
     } else {
@@ -208,13 +376,28 @@ ipcMain.handle('patch:apply', async (event, filePath) => {
     return await patcher.applyPatch(filePath);
 });
 
-ipcMain.handle('notification:show', (event, { title, body }) => {
-    // Also update this one for manual test button
-    new Notification({ 
-        title: ' ', // Empty space to remove the title text
-        body, 
-        // icon: iconPath // Removed
-    }).show();
+ipcMain.handle('notification:show', (event, { title, body, type }) => {
+    // type: 'native' | 'custom' | undefined (default logic)
+    
+    if (type === 'custom') {
+        showCustomPopup({ content: body, timestamp: '测试' });
+    } else if (type === 'native') {
+        new Notification({ 
+            title: ' ', 
+            body, 
+        }).show();
+    } else {
+        // Fallback or "Both" logic if previously intended, but here we separate them clearly.
+        // If no type provided (legacy calls), we follow config
+        if (appConfig.enableCustomPopup) {
+            showCustomPopup({ content: body, timestamp: '测试' });
+        } else {
+            new Notification({ 
+                title: ' ', 
+                body, 
+            }).show();
+        }
+    }
     return 'Notification sent';
 });
 
@@ -240,3 +423,16 @@ ipcMain.handle('app:get-auto-launch', () => {
 ipcMain.on('app:install-update', () => {
     autoUpdater.quitAndInstall();
 });
+
+// Config IPC
+ipcMain.handle('config:get-custom-popup', () => {
+    return appConfig.enableCustomPopup;
+});
+
+ipcMain.handle('config:set-custom-popup', (event, enable) => {
+    appConfig.enableCustomPopup = enable;
+    saveConfig();
+    return appConfig.enableCustomPopup;
+});
+
+ipcMain.handle('config:get-monitor', () => appConfig.enableMonitor);

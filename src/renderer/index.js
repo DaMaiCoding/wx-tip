@@ -4,6 +4,8 @@ const btnPatch = document.getElementById('btn-patch');
 const filePathDisplay = document.getElementById('file-path');
 const patchStatus = document.getElementById('patch-status');
 const btnTestNotify = document.getElementById('btn-test-notify');
+const btnTestNative = document.getElementById('btn-test-native');
+const btnTestCustom = document.getElementById('btn-test-custom');
 const chkMonitor = document.getElementById('chk-monitor');
 const btnMinimize = document.getElementById('btn-minimize');
 const btnClose = document.getElementById('btn-close');
@@ -64,8 +66,14 @@ btnPatch.addEventListener('click', async () => {
 });
 
 // Notification Test
-btnTestNotify.addEventListener('click', () => {
-    window.electronAPI.showNotification('微信', '这是一条测试通知消息。');
+btnTestNative.addEventListener('click', () => {
+    console.log('点击了测试原生弹窗');
+    window.electronAPI.showNotification('微信', '这是原生通知测试。', 'native');
+});
+
+btnTestCustom.addEventListener('click', () => {
+    console.log('点击了测试自定义弹窗');
+    window.electronAPI.showNotification('微信', '这是自定义弹窗测试。', 'custom');
 });
 
 // Real Monitor Control
@@ -93,6 +101,12 @@ chkAutoLaunch.addEventListener('change', async (e) => {
 (async () => {
     const isAutoLaunch = await window.electronAPI.getAutoLaunch();
     chkAutoLaunch.checked = isAutoLaunch;
+
+    const isCustomPopup = await window.electronAPI.getCustomPopupConfig();
+    chkCustomPopup.checked = isCustomPopup;
+
+    const isMonitor = await window.electronAPI.getMonitorConfig();
+    chkMonitor.checked = isMonitor;
 })();
 
 // Auto Update
