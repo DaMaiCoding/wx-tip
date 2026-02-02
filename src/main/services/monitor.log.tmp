@@ -1,0 +1,120 @@
+﻿2026-02-03 01:27:57 - DEBUG: No brackets found in text (skipping regex)
+2026-02-03 01:27:57 - DEBUG: No badge found for '公众号
+肇庆头条: 划重点了！一图速览2026肇庆市政府工作报告
+00:01
+'
+2026-02-03 01:27:57 - DEBUG: Processing ListItem - Name: '飞牛fnOS粉丝群684
+很厉害了: 淦
+昨天 23:02
+消息免打扰
+', Rect: [276,1068,654,102]
+2026-02-03 01:27:57 - DEBUG: Checking badge '(8)' [1323,295] vs ListItem [276,1068] - verticalOverlap=False, offset=393
+2026-02-03 01:27:57 - DEBUG: Checking text-based badge pattern
+2026-02-03 01:27:57 - DEBUG: Text preview: '飞牛fnOS粉丝群684
+很厉害了: 淦
+昨天 23:02
+消息免打扰
+'
+2026-02-03 01:27:57 - DEBUG: Text length: 36
+2026-02-03 01:27:57 - DEBUG: Has brackets - open: False, close: False
+2026-02-03 01:27:57 - DEBUG: No brackets found in text (skipping regex)
+2026-02-03 01:27:57 - DEBUG: No badge found for '飞牛fnOS粉丝群684
+很厉害了: 淦
+昨天 23:02
+消息免打扰
+'
+2026-02-03 01:27:57 - DEBUG: Processing ListItem - Name: '微信支付
+已支付¥57.10
+昨天 22:32
+', Rect: [276,1170,654,102]
+2026-02-03 01:27:57 - DEBUG: Checking badge '(8)' [1323,295] vs ListItem [276,1170] - verticalOverlap=False, offset=393
+2026-02-03 01:27:57 - DEBUG: Checking text-based badge pattern
+2026-02-03 01:27:57 - DEBUG: Text preview: '微信支付
+已支付¥57.10
+昨天 22:32
+'
+2026-02-03 01:27:57 - DEBUG: Text length: 24
+2026-02-03 01:27:57 - DEBUG: Has brackets - open: False, close: False
+2026-02-03 01:27:57 - DEBUG: No brackets found in text (skipping regex)
+2026-02-03 01:27:57 - DEBUG: No badge found for '微信支付
+已支付¥57.10
+昨天 22:32
+'
+2026-02-03 01:27:57 - DEBUG: Processing ListItem - Name: 'ContiNew-Admin 交流群②
+Charles(先提issue再@，勿私): [图片] 
+昨天 21:56
+消息免打扰
+', Rect: [276,1272,654,102]
+2026-02-03 01:27:57 - DEBUG: Checking badge '(8)' [1323,295] vs ListItem [276,1272] - verticalOverlap=False, offset=393
+2026-02-03 01:27:57 - DEBUG: Checking text-based badge pattern
+2026-02-03 01:27:57 - DEBUG: Text preview: 'ContiNew-Admin 交流群②
+Charles(先提issue再@，勿私): [图片] 
+昨天 21:56
+消息免打扰
+'
+2026-02-03 01:27:57 - DEBUG: Text length: 64
+2026-02-03 01:27:57 - DEBUG: Has brackets - open: True, close: True
+2026-02-03 01:27:57 - DEBUG: Bracket content: '图片'
+2026-02-03 01:27:57 - DEBUG: No text-based badge pattern found (regex failed)
+2026-02-03 01:27:57 - DEBUG: No badge found for 'ContiNew-Admin 交流群②
+Charles(先提issue再@，勿私): [图片] 
+昨天 21:56
+消息免打扰
+'
+2026-02-03 01:27:57 - DEBUG: Processing ListItem - Name: '服务通知
+服务评价提醒
+昨天 21:23
+', Rect: [276,1374,654,102]
+2026-02-03 01:27:57 - DEBUG: Checking badge '(8)' [1323,295] vs ListItem [276,1374] - verticalOverlap=False, offset=393
+2026-02-03 01:27:57 - DEBUG: Checking text-based badge pattern
+2026-02-03 01:27:57 - DEBUG: Text preview: '服务通知
+服务评价提醒
+昨天 21:23
+'
+2026-02-03 01:27:57 - DEBUG: Text length: 21
+2026-02-03 01:27:57 - DEBUG: Has brackets - open: False, close: False
+2026-02-03 01:27:57 - DEBUG: No brackets found in text (skipping regex)
+2026-02-03 01:27:57 - DEBUG: No badge found for '服务通知
+服务评价提醒
+昨天 21:23
+'
+2026-02-03 01:27:57 - DEBUG: Processing ListItem - Name: '服务号
+多多买菜代收点: 货物到达中转地通知
+昨天 21:19
+', Rect: [276,1476,654,102]
+2026-02-03 01:27:57 - DEBUG: Checking badge '(8)' [1323,295] vs ListItem [276,1476] - verticalOverlap=False, offset=393
+2026-02-03 01:27:57 - DEBUG: Checking text-based badge pattern
+2026-02-03 01:27:57 - DEBUG: Text preview: '服务号
+多多买菜代收点: 货物到达中转地通知
+昨天 21:19
+'
+2026-02-03 01:27:57 - DEBUG: Text length: 32
+2026-02-03 01:27:57 - DEBUG: Has brackets - open: False, close: False
+2026-02-03 01:27:57 - DEBUG: No brackets found in text (skipping regex)
+2026-02-03 01:27:58 - DEBUG: No badge found for '服务号
+多多买菜代收点: 货物到达中转地通知
+昨天 21:19
+'
+2026-02-03 01:27:58 - DEBUG: Processing ListItem - Name: '小程序运营沟通交流六
+李龙: 。。。
+昨天 20:52
+消息免打扰
+', Rect: [276,1578,654,102]
+2026-02-03 01:27:58 - DEBUG: Checking badge '(8)' [1323,295] vs ListItem [276,1578] - verticalOverlap=False, offset=393
+2026-02-03 01:27:58 - DEBUG: Checking text-based badge pattern
+2026-02-03 01:27:58 - DEBUG: Text preview: '小程序运营沟通交流六
+李龙: 。。。
+昨天 20:52
+消息免打扰
+'
+2026-02-03 01:27:58 - DEBUG: Text length: 34
+2026-02-03 01:27:58 - DEBUG: Has brackets - open: False, close: False
+2026-02-03 01:27:58 - DEBUG: No brackets found in text (skipping regex)
+2026-02-03 01:27:58 - DEBUG: No badge found for '小程序运营沟通交流六
+李龙: 。。。
+昨天 20:52
+消息免打扰
+'
+2026-02-03 01:27:58 - DEBUG: Processing ListItem - Name: '老妈
+[语音] 3"
+昨天 20:44
