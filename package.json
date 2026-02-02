@@ -8,6 +8,9 @@
     "dev": "electron src/main/index.js",
     "license:check": "license-checker --production --summary --failOn \"GPL;LGPL;AGPL\""
   },
+  "pnpm": {
+    "onlyBuiltDependencies": ["electron"]
+  },
   "build": {
     "appId": "wxTip",
     "productName": "wxTip",

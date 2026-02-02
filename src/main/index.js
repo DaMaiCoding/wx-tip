@@ -73,19 +73,25 @@ function createPopupWindow() {
     
     popupWindow = new BrowserWindow({
         width: 360,
-        height: 100, // Slightly larger than content to accommodate shadow
+        height: 100,
         x: width - 380,
-        y: 20, // Top right
+        y: 20,
         frame: false,
         transparent: true,
         alwaysOnTop: true,
         resizable: false,
         skipTaskbar: true,
-        focusable: false, // Don't steal focus
+        focusable: false,
+        show: false,
         webPreferences: {
             nodeIntegration: true,
-            contextIsolation: false // Simplification for popup
+            contextIsolation: false,
+            webSecurity: false
         }
+    });
+
+    popupWindow.once('ready-to-show', () => {
+        popupWindow.show();
     });
 
     popupWindow.loadFile(path.join(__dirname, '../renderer/popup.html'));

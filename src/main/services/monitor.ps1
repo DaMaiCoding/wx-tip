@@ -2,12 +2,20 @@
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $logFile = Join-Path $PSScriptRoot "monitor.log"
 $configFile = Join-Path $PSScriptRoot "config.json"
+$maxLogLines = 200
 
 function Log-Message($msg) {
     $timestamp = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
     $logEntry = "$timestamp - $msg"
     try {
         $logEntry | Out-File -FilePath $logFile -Append -Encoding utf8 -ErrorAction SilentlyContinue
+        
+        $lines = Get-Content $logFile -ErrorAction SilentlyContinue
+        if ($lines -and $lines.Count -gt $maxLogLines) {
+            $tempFile = $logFile + ".tmp"
+            $lines | Select-Object -Last $maxLogLines | Out-File -FilePath $tempFile -Encoding utf8
+            Move-Item -Path $tempFile -Destination $logFile -Force
+        }
     } catch {}
 }
 
@@ -77,6 +85,11 @@ function Get-BadgeTextFromPosition($itemRect, $potentialBadges) {
 }
 
 $lastMessageList = @()
+$emittedSignatures = @{} # Hashtable to track emitted messages
+
+function Get-MessageSignature($msg) {
+    return "$($msg.title)|$($msg.count)"
+}
 
 while ($true) {
     try {
@@ -269,19 +282,57 @@ while ($true) {
             }
         }
 
-        # Diff Logic
-        if ($currentMsgs.Count -gt $lastMessageList.Count) {
-            $newCount = $currentMsgs.Count - $lastMessageList.Count
-            $newMessages = $currentMsgs | Select-Object -Last $newCount
+        # Diff Logic with Improved Deduplication
+        foreach ($msg in $currentMsgs) {
+            $sig = Get-MessageSignature $msg
+            $now = Get-Date
+            $lastEmitTime = $null
+            $shouldEmit = $false
             
-            foreach ($msg in $newMessages) {
+            if ($emittedSignatures.ContainsKey($sig)) {
+                $lastEmitTime = $emittedSignatures[$sig]
+                $timeDiff = ($now - $lastEmitTime).TotalSeconds
+                
+                if ($timeDiff -gt 3) {
+                    $shouldEmit = $true
+                    $emittedSignatures[$sig] = $now
+                    Log-Message "Emit: $($msg.title) - Count: $($msg.count) (Unread: $isUnread) - Re-emitted after ${timeDiff}s"
+                } else {
+                    Log-Message "Skip: $($msg.title) - Count: $($msg.count) - Last emitted ${timeDiff}s ago"
+                }
+            } else {
+                $shouldEmit = $true
+                $emittedSignatures[$sig] = $now
+                Log-Message "Emit: $($msg.title) - Count: $($msg.count) (Unread: $isUnread) - First time"
+            }
+            
+            if ($shouldEmit) {
                 $json = $msg | ConvertTo-Json -Compress
                 Write-Output $json
-                Log-Message "Emit: $($msg.content) (Unread: $isUnread)"
             }
         }
 
         $lastMessageList = $currentMsgs
+        
+        # Cleanup old signatures (every 10 loops)
+        if ($global:cleanupCounter -eq $null) { $global:cleanupCounter = 0 }
+        $global:cleanupCounter++
+        if ($global:cleanupCounter -ge 10) {
+            $global:cleanupCounter = 0
+            $now = Get-Date
+            $keysToRemove = @()
+            foreach ($key in $emittedSignatures.Keys) {
+                $age = ($now - $emittedSignatures[$key]).TotalSeconds
+                if ($age -gt 60) {
+                    $keysToRemove += $key
+                }
+            }
+            foreach ($key in $keysToRemove) {
+                $emittedSignatures.Remove($key)
+                Log-Message "Cleanup: Removed old signature for $key"
+            }
+        }
+
         Start-Sleep -Milliseconds 500
 
     } catch {

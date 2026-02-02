@@ -7,6 +7,7 @@ const btnTestNotify = document.getElementById('btn-test-notify');
 const btnTestNative = document.getElementById('btn-test-native');
 const btnTestCustom = document.getElementById('btn-test-custom');
 const chkMonitor = document.getElementById('chk-monitor');
+const chkCustomPopup = document.getElementById('chk-custom-popup');
 const btnMinimize = document.getElementById('btn-minimize');
 const btnClose = document.getElementById('btn-close');
 
@@ -81,6 +82,13 @@ chkMonitor.addEventListener('change', (e) => {
     const enabled = e.target.checked;
     console.log(`监听状态切换: ${enabled}`);
     window.electronAPI.toggleMonitor(enabled);
+});
+
+// Custom Popup Control
+chkCustomPopup.addEventListener('change', async (e) => {
+    const enabled = e.target.checked;
+    console.log(`自定义弹窗切换: ${enabled}`);
+    await window.electronAPI.setCustomPopupConfig(enabled);
 });
 
 // Listen for messages
