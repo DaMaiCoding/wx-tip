@@ -228,9 +228,26 @@ notifyApp.post('/notify', (req, res) => {
     }
 });
 
+let notifyServerReady = false;
+
 function startNotifyServer() {
-    notifyApp.listen(notifyPort, '127.0.0.1', () => {
-        console.log(`[NotifyServer] Internal server running on port ${notifyPort}`);
+    return new Promise((resolve, reject) => {
+        try {
+            const server = notifyApp.listen(notifyPort, '127.0.0.1', () => {
+                console.log(`[NotifyServer] Internal server running on port ${notifyPort}`);
+                notifyServerReady = true;
+                resolve();
+            });
+
+            server.on('error', (error) => {
+                console.error(`[NotifyServer] Failed to start: ${error.message}`);
+                notifyServerReady = false;
+                reject(error);
+            });
+        } catch (error) {
+            console.error(`[NotifyServer] Exception: ${error.message}`);
+            reject(error);
+        }
     });
 }
 // ----------------------------------------
@@ -257,21 +274,52 @@ function createWindow() {
 
 // Start PowerShell Monitor (sends to Internal Express Server)
 function startMonitor() {
-    if (monitorProcess) return;
+    if (monitorProcess) {
+        console.log('[Monitor] Already running, skipping start');
+        return;
+    }
 
-    const scriptPath = path.join(__dirname, 'services', 'monitor.ps1');
-    console.log(`Starting monitor: ${scriptPath}`);
+    // Determine correct script path for both development and packaged environments
+    const scriptPath = app.isPackaged 
+        ? path.join(process.resourcesPath, 'services', 'monitor.ps1')
+        : path.join(__dirname, 'services', 'monitor.ps1');
 
-    monitorProcess = spawn('powershell.exe', [
-        '-NoProfile', 
-        '-ExecutionPolicy', 'Bypass', 
+    console.log(`[Monitor] Starting monitor from: ${scriptPath}`);
+    console.log(`[Monitor] Packaged: ${app.isPackaged}, ResourcesPath: ${app.isPackaged ? process.resourcesPath : 'N/A'}`);
+
+    // Verify script exists before spawning
+    if (!fs.existsSync(scriptPath)) {
+        console.error(`[Monitor] FATAL: Script not found at ${scriptPath}`);
+        if (mainWindow) {
+            mainWindow.webContents.send('monitor:error', `Script not found: ${scriptPath}`);
+        }
+        return;
+    }
+
+    const monitorArgs = [
+        '-NoProfile',
+        '-ExecutionPolicy', 'Bypass',
         '-File', scriptPath
-    ]);
+    ];
+
+    console.log(`[Monitor] Spawning: powershell.exe ${monitorArgs.join(' ')}`);
+
+    try {
+        monitorProcess = spawn('powershell.exe', monitorArgs, {
+            windowsHide: true
+        });
+    } catch (error) {
+        console.error(`[Monitor] Failed to spawn process: ${error.message}`);
+        return;
+    }
 
     monitorProcess.stdout.on('data', (data) => {
         const str = data.toString().trim();
         if (str === 'MONITOR_STARTED') {
             console.log('[Monitor] Service started successfully');
+            if (mainWindow) {
+                mainWindow.webContents.send('monitor:status', true);
+            }
             return;
         }
 
@@ -281,39 +329,74 @@ function startMonitor() {
                 if (line.trim().startsWith('{')) {
                     const msg = JSON.parse(line);
                     if (msg.type === 'message') {
-                        // Simulate a POST request to our own internal server
                         forwardToInternalServer(msg);
                     }
                 } else if (line.trim().length > 0) {
-                     console.log(`[Monitor STDOUT] ${line}`);
+                    console.log(`[Monitor STDOUT] ${line}`);
                 }
             }
-        } catch (e) {}
+        } catch (e) {
+            // Ignore JSON parse errors for non-JSON lines
+        }
     });
 
     monitorProcess.stderr.on('data', (data) => {
-        console.error(`[Monitor STDERR] ${data}`);
+        const errorMsg = data.toString().trim();
+        console.error(`[Monitor STDERR] ${errorMsg}`);
+        if (mainWindow) {
+            mainWindow.webContents.send('monitor:stderr', errorMsg);
+        }
+    });
+
+    monitorProcess.on('error', (error) => {
+        console.error(`[Monitor] Process error: ${error.message}`);
+        if (mainWindow) {
+            mainWindow.webContents.send('monitor:error', error.message);
+        }
     });
 
     monitorProcess.on('close', (code) => {
-        console.log(`[Monitor] Process exited with code ${code}`);
+        const exitMsg = `[Monitor] Process exited with code ${code}`;
+        console.log(exitMsg);
         monitorProcess = null;
-        if (mainWindow) mainWindow.webContents.send('monitor:status', false);
+        if (mainWindow) {
+            mainWindow.webContents.send('monitor:status', false);
+            mainWindow.webContents.send('monitor:closed', { code });
+        }
     });
 }
 
 function forwardToInternalServer(msg) {
+    if (!notifyServerReady) {
+        console.warn('[Monitor] Notify server not ready, dropping message');
+        return;
+    }
+
     const http = require('http');
+    const postData = JSON.stringify(msg);
+
     const req = http.request({
         hostname: '127.0.0.1',
         port: notifyPort,
         path: '/notify',
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
-        }
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postData)
+        },
+        timeout: 1000
     });
-    req.write(JSON.stringify(msg));
+
+    req.on('error', (error) => {
+        console.error(`[Monitor] Forward error: ${error.message}`);
+    });
+
+    req.on('timeout', () => {
+        req.destroy();
+        console.error('[Monitor] Forward timeout');
+    });
+
+    req.write(postData);
     req.end();
 }
 
@@ -348,10 +431,15 @@ function setAutoLaunch(enable) {
     });
 }
 
-app.whenReady().then(() => {
-    startNotifyServer(); // Start internal Express server
+app.whenReady().then(async () => {
+    try {
+        await startNotifyServer();
+    } catch (error) {
+        console.error('[App] Failed to start notify server, monitor may not work:', error.message);
+    }
+
     createWindow();
-    checkForUpdates(); // Check for updates on startup
+    checkForUpdates();
 
     app.on('activate', function () {
         if (BrowserWindow.getAllWindows().length === 0) createWindow();
