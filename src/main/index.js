@@ -34,7 +34,9 @@ let mainWindow = null;
 let popupWindow = null;
 let popupCloseTimer = null;
 const iconPath = path.join(__dirname, '../../assets/icon.png');
-const configPath = path.join(__dirname, 'services/config.json');
+const configPath = app.isPackaged 
+    ? path.join(process.resourcesPath, 'services', 'config.json')
+    : path.join(__dirname, 'services/config.json');
 
 // --- Configuration Management ---
 let appConfig = {
@@ -392,6 +394,7 @@ ipcMain.handle('notification:show', (event, { title, body, type }) => {
         showCustomPopup({ content: body, timestamp: '测试' });
     } else if (type === 'native') {
         new Notification({ 
+            icon: iconPath,
             title: title, 
             body, 
         }).show();

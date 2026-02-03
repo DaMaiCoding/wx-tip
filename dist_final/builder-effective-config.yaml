@@ -1,0 +1,54 @@
+directories:
+  output: dist_final
+  buildResources: assets
+appId: com.wxtip.app
+productName: wxTip
+files:
+  - filter:
+      - src/**/*
+      - assets/icon.png
+      - package.json
+extraResources:
+  - from: src/main/services
+    to: services
+    filter:
+      - '**/*'
+      - '!**/*.log'
+      - '!**/*.tmp'
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+    - target: portable
+      arch:
+        - x64
+  compression: maximum
+  signAndEditExecutable: false
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: wxTip
+  deleteAppDataOnUninstall: false
+  license: LICENSE
+  artifactName: ${productName}-${version}-setup.${ext}
+portable:
+  artifactName: ${productName}-${version}-portable.${ext}
+mac:
+  icon: assets/icon.icns
+  target:
+    - dmg
+linux:
+  icon: assets/icon.png
+  target:
+    - AppImage
+electronDownload:
+  mirror: https://npmmirror.com/mirrors/electron/
+publish:
+  provider: github
+  owner: your-username
+  repo: wx-tip
+compression: maximum
+electronVersion: 40.1.0

@@ -6,14 +6,16 @@
   "scripts": {
     "start": "electron src/main/index.js",
     "dev": "electron src/main/index.js",
-    "prebuild": "npm run clean",
     "build": "electron-builder --win --config.compression=maximum",
+    "postbuild": "node scripts/clean-dist.js",
     "build:portable": "electron-builder --win --publish never",
     "clean": "rimraf dist",
     "license:check": "license-checker --production --summary --failOn \"GPL;LGPL;AGPL\""
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["electron"]
+    "onlyBuiltDependencies": [
+      "electron"
+    ]
   },
   "build": {
     "appId": "com.wxtip.app",
@@ -29,22 +31,30 @@
     ],
     "extraResources": [
       {
-        "from": "src/main/services/monitor.ps1",
-        "to": "monitor.ps1"
+        "from": "src/main/services",
+        "to": "services",
+        "filter": [
+          "**/*",
+          "!**/*.log",
+          "!**/*.tmp"
+        ]
       }
     ],
     "win": {
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         },
         {
           "target": "portable",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ],
-      "artifactName": "${productName}-${version}-${arch}.${ext}",
       "compression": "maximum",
       "signAndEditExecutable": false
     },
@@ -55,7 +65,23 @@
       "createStartMenuShortcut": true,
       "shortcutName": "wxTip",
       "deleteAppDataOnUninstall": false,
-      "license": "LICENSE"
+      "license": "LICENSE",
+      "artifactName": "${productName}-${version}-setup.${ext}"
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-portable.${ext}"
+    },
+    "mac": {
+      "icon": "assets/icon.icns",
+      "target": [
+        "dmg"
+      ]
+    },
+    "linux": {
+      "icon": "assets/icon.png",
+      "target": [
+        "AppImage"
+      ]
     },
     "electronDownload": {
       "mirror": "https://npmmirror.com/mirrors/electron/"
