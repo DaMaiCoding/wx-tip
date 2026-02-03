@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog, Notification, screen, Tray, Menu } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, Notification, screen, Tray, Menu, shell } = require('electron');
 const path = require('path');
 const { spawn } = require('child_process');
 const patcher = require('./services/patcher');
@@ -22,7 +22,7 @@ if (!app.isPackaged) {
 
 // 1. Set AppUserModelId for Windows Notifications
 // This removes "electron.app.Electron" from the notification title
-const APP_ID = 'wxTip';
+const APP_ID = 'com.wxtip.app';
 app.setAppUserModelId(APP_ID);
 
 // Configure Auto Updater Logging
@@ -35,13 +35,54 @@ let popupWindow = null;
 let popupCloseTimer = null;
 let tray = null;
 let isQuitting = false;
-const iconPath = path.join(__dirname, '../../assets/icon.png');
-const trayIconPath = app.isPackaged 
+const iconPath = app.isPackaged 
     ? path.join(process.resourcesPath, 'assets/icon.png')
     : path.join(__dirname, '../../assets/icon.png');
+const iconIcoPath = app.isPackaged 
+    ? path.join(process.resourcesPath, 'assets/icon.ico')
+    : path.join(__dirname, '../../assets/icon.ico');
+const trayIconPath = iconPath;
 const configPath = app.isPackaged 
     ? path.join(process.resourcesPath, 'services', 'config.json')
     : path.join(__dirname, 'services/config.json');
+
+// --- Shortcut Management (Fix for Notification Icon) ---
+function ensureShortcut() {
+    if (process.platform !== 'win32') return;
+
+    const shortcutName = app.isPackaged ? 'wxTip.lnk' : 'wxTip (Dev).lnk';
+    const shortcutPath = path.join(app.getPath('appData'), 'Microsoft', 'Windows', 'Start Menu', 'Programs', shortcutName);
+    
+    // In dev, process.execPath is electron.exe
+    // In prod, it is the app executable
+    const targetPath = process.execPath;
+    
+    // Check if we need to update or create
+    // For simplicity, we overwrite it to ensure latest AUMID and Icon
+    // Use .ico for shortcut if available
+    const shortcutIcon = fs.existsSync(iconIcoPath) ? iconIcoPath : iconPath;
+
+    try {
+        const res = shell.writeShortcutLink(shortcutPath, 'create', {
+            target: targetPath,
+            cwd: app.isPackaged ? path.dirname(targetPath) : process.cwd(),
+            appUserModelId: APP_ID,
+            icon: shortcutIcon,
+            description: 'wxTip - WeChat Notification Enhancer',
+            args: app.isPackaged ? '' : 'src/main/index.js' // In dev, pass the entry script
+        });
+        
+        if (res) {
+            console.log(`[Shortcut] Successfully updated shortcut at: ${shortcutPath}`);
+            console.log(`[Shortcut] AUMID: ${APP_ID}`);
+            console.log(`[Shortcut] Icon: ${shortcutIcon}`);
+        } else {
+            console.error('[Shortcut] Failed to write shortcut link');
+        }
+    } catch (e) {
+        console.error(`[Shortcut] Exception creating shortcut: ${e.message}`);
+    }
+}
 
 // --- Configuration Management ---
 let appConfig = {
@@ -138,6 +179,7 @@ function createPopupWindow() {
         skipTaskbar: true,
         focusable: false,
         show: false,
+        icon: iconPath,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
@@ -248,11 +290,17 @@ function processMessageQueue() {
         showCustomPopup(latestMsg);
     } else if (appConfig.enableNativeNotification) {
         const notificationTitle = `${latestMsg.title} (${latestMsg.count})`;
-        new Notification({
-            icon: iconPath,
+        const notifyOpts = {
             title: notificationTitle, 
             body: latestMsg.content,
-        }).show();
+        };
+        // Prefer .ico for Windows Notifications if available, as requested
+        if (process.platform === 'win32' && fs.existsSync(iconIcoPath)) {
+            notifyOpts.icon = iconIcoPath;
+        } else if (fs.existsSync(iconPath)) {
+            notifyOpts.icon = iconPath;
+        }
+        new Notification(notifyOpts).show();
     }
 }
 
@@ -494,6 +542,9 @@ function setAutoLaunch(enable) {
 }
 
 app.whenReady().then(async () => {
+    // Ensure shortcut exists for correct Notification Icon
+    ensureShortcut();
+
     try {
         await startNotifyServer();
     } catch (error) {
@@ -551,21 +602,34 @@ ipcMain.handle('notification:show', (event, { title, body, type }) => {
     if (type === 'custom') {
         showCustomPopup({ content: body, timestamp: '测试' });
     } else if (type === 'native') {
-        new Notification({ 
-            icon: iconPath,
+        const notifyOpts = {
             title: title, 
             body, 
-        }).show();
+        };
+        // Prefer .ico for Windows Notifications if available, as requested
+        if (process.platform === 'win32' && fs.existsSync(iconIcoPath)) {
+            notifyOpts.icon = iconIcoPath;
+        } else if (fs.existsSync(iconPath)) {
+            notifyOpts.icon = iconPath;
+        }
+        new Notification(notifyOpts).show();
     } else {
         // Fallback or "Both" logic if previously intended, but here we separate them clearly.
         // If no type provided (legacy calls), we follow config
         if (appConfig.enableCustomPopup) {
             showCustomPopup({ content: body, timestamp: '测试' });
         } else {
-            new Notification({ 
+            const notifyOpts = {
                 title: title, 
                 body, 
-            }).show();
+            };
+            // Prefer .ico for Windows Notifications if available, as requested
+            if (process.platform === 'win32' && fs.existsSync(iconIcoPath)) {
+                notifyOpts.icon = iconIcoPath;
+            } else if (fs.existsSync(iconPath)) {
+                notifyOpts.icon = iconPath;
+            }
+            new Notification(notifyOpts).show();
         }
     }
     return 'Notification sent';

@@ -1,4 +1,4 @@
 {
     "enableNativeNotification": true,
-    "enableCustomPopup": true
+    "enableCustomPopup": false
 }
