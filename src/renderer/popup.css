@@ -8,7 +8,7 @@
 body {
     background: transparent;
     overflow: hidden;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Color Emoji", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 .notification-container {
@@ -85,12 +85,28 @@ body {
 .time {
     font-size: 11px;
     color: #888;
+    margin-left: auto;
 }
 
 .message-body {
     font-size: 13px;
     color: #444;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+}
+
+.message-icon {
+    flex-shrink: 0;
+    font-size: 14px;
+    margin-right: 4px;
+    line-height: 1;
+}
+
+.message-text {
+    flex: 1;
     overflow: hidden;
     text-overflow: ellipsis;
 }

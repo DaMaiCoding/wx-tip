@@ -19,6 +19,101 @@ function Log-Message($msg) {
     } catch {}
 }
 
+function Get-MessageType {
+    param([string]$fullTxt)
+    
+    $messageType = "text"
+    
+    if ($fullTxt -match "\[图片\]|\[Image\]") {
+        $messageType = "image"
+    } elseif ($fullTxt -match "\[动画表情\]|\[Emoji\]|\[表情\]") {
+        $messageType = "sticker"
+    } elseif ($fullTxt -match "\[视频\]|\[Video\]") {
+        $messageType = "video"
+    } elseif ($fullTxt -match "\[语音\]|\[Voice\]") {
+        $messageType = "voice"
+    } elseif ($fullTxt -match "\[文件\]|\[File\]") {
+        $messageType = "file"
+    } elseif ($fullTxt -match "\[链接\]|\[Link\]") {
+        $messageType = "link"
+    } elseif ($fullTxt -match "\[地理位置\]|\[Location\]") {
+        $messageType = "location"
+    }
+    
+    return $messageType
+}
+
+function Parse-WeChatMessage {
+    param([string]$fullTxt)
+    
+    if ([string]::IsNullOrEmpty($fullTxt)) {
+        Log-Message "Parse-WeChatMessage: Empty input"
+        return @{ chatName = ""; messageContent = ""; messageType = "text" }
+    }
+    
+    $lines = $fullTxt -split "`n" | Where-Object { $_.Trim() -ne "" }
+    
+    if ($lines.Count -eq 0) {
+        Log-Message "Parse-WeChatMessage: No lines after split"
+        return @{ chatName = ""; messageContent = ""; messageType = "text" }
+    }
+    
+    $chatName = $lines[0]
+    $messageContent = ""
+    $messageType = Get-MessageType -fullTxt $fullTxt
+    
+    $skipPatterns = @(
+        "^\[\d+条?\]$",
+        "^\d{1,2}:\d{2}$",
+        "^\d{1,2}:\d{2}:\d{2}$",
+        "^(昨天|今天|前天)\s+\d{1,2}:\d{2}$",
+        "^(周一|周二|周三|周四|周五|周六|周日)\s+\d{1,2}:\d{2}$",
+        "^\d{4}-\d{2}-\d{2}$",
+        "^[AM|PM]\s+\d{1,2}:\d{2}$",
+        "消息免打扰",
+        "^微信语音\s*$",
+        "^语音通话\s*\d{1,3}秒$",
+        "^视频通话\s*\d{1,3}秒$"
+    )
+    
+    $foundContent = $false
+    for ($i = 1; $i -lt $lines.Count; $i++) {
+        $line = $lines[$i].Trim()
+        
+        if ([string]::IsNullOrWhiteSpace($line)) {
+            continue
+        }
+        
+        $shouldSkip = $false
+        foreach ($pattern in $skipPatterns) {
+            if ($line -match $pattern) {
+                Log-Message "Parse-WeChatMessage: Skipped pattern '$pattern' - '$line'"
+                $shouldSkip = $true
+                break
+            }
+        }
+        
+        if (-not $shouldSkip) {
+            $messageContent = $line
+            $foundContent = $true
+            break
+        }
+    }
+    
+    if (-not $foundContent) {
+        Log-Message "Parse-WeChatMessage: No valid content found, using chatName as fallback"
+        $messageContent = $chatName
+    }
+    
+    Log-Message "Parse-WeChatMessage: chatName='$chatName', content='$messageContent', type='$messageType', lines=$($lines.Count)"
+    
+    return @{
+        chatName = $chatName
+        messageContent = $messageContent
+        messageType = $messageType
+    }
+}
+
 Log-Message "Starting Monitor Service V5 (Clean ASCII Quotes)..."
 
 try {
@@ -260,19 +355,32 @@ while ($true) {
                 }
                 
                 if ($hasBadge) {
-                    $chatName = $fullTxt
-                    $content = $fullTxt
+                    $result = Parse-WeChatMessage -fullTxt $fullTxt
+                    $chatName = $result.chatName
+                    $messageContent = $result.messageContent
+                    $messageType = $result.messageType
+                    
+                    if ($fullTxt -match "消息免打扰") {
+                        Log-Message "DEBUG: Skipped muted chat: $chatName (count: $badgeCount)"
+                        continue
+                    }
+                    
+                    if ($chatName -match "公众号" -or $chatName -match "QQ邮箱提醒" -or $chatName -match "文件传输助手" -or $chatName -match "微信团队" -or $chatName -match "提醒" -or $chatName -match "通知") {
+                        Log-Message "DEBUG: Skipped system/official account: $chatName (count: $badgeCount)"
+                        continue
+                    }
                     
                     $msgObj = @{
                         type = "message"
                         title = $chatName
-                        content = $content
+                        content = $messageContent
+                        messageType = $messageType
                         count = $badgeCount
                         isUnread = $true
                         timestamp = (Get-Date).ToString("HH:mm:ss")
                     }
                     $currentMsgs += $msgObj
-                    Log-Message "DEBUG: Added message to currentMsgs: $chatName (count: $badgeCount)"
+                    Log-Message "DEBUG: Added message to currentMsgs: $chatName - $messageContent [$messageType] (count: $badgeCount)"
                 } else {
                     $safeTxt = $fullTxt -replace "'", "''"
                     Log-Message "DEBUG: No badge found for '$safeTxt'"
@@ -285,25 +393,14 @@ while ($true) {
         # Diff Logic with Improved Deduplication
         foreach ($msg in $currentMsgs) {
             $sig = Get-MessageSignature $msg
-            $now = Get-Date
-            $lastEmitTime = $null
             $shouldEmit = $false
             
-            if ($emittedSignatures.ContainsKey($sig)) {
-                $lastEmitTime = $emittedSignatures[$sig]
-                $timeDiff = ($now - $lastEmitTime).TotalSeconds
-                
-                if ($timeDiff -gt 3) {
-                    $shouldEmit = $true
-                    $emittedSignatures[$sig] = $now
-                    Log-Message "Emit: $($msg.title) - Count: $($msg.count) (Unread: $isUnread) - Re-emitted after ${timeDiff}s"
-                } else {
-                    Log-Message "Skip: $($msg.title) - Count: $($msg.count) - Last emitted ${timeDiff}s ago"
-                }
-            } else {
+            if (-not $emittedSignatures.ContainsKey($sig)) {
                 $shouldEmit = $true
-                $emittedSignatures[$sig] = $now
+                $emittedSignatures[$sig] = Get-Date
                 Log-Message "Emit: $($msg.title) - Count: $($msg.count) (Unread: $isUnread) - First time"
+            } else {
+                Log-Message "Skip: $($msg.title) - Count: $($msg.count) - Already emitted"
             }
             
             if ($shouldEmit) {

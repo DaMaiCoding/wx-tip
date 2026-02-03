@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notification</title>
     <link rel="stylesheet" href="popup.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="notification-container" id="notification">
@@ -20,7 +23,8 @@
                 </div>
             </div>
             <div class="message-body" id="msg-content">
-                收到一条新消息
+                <span class="message-icon" id="msg-icon"></span>
+                <span class="message-text" id="msg-text">收到一条新消息</span>
             </div>
         </div>
         <div class="close-btn" id="close-btn">

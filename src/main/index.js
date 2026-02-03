@@ -103,6 +103,7 @@ function createPopupWindow() {
 }
 
 function showCustomPopup(data) {
+    console.log('[showCustomPopup] Sending data:', JSON.stringify(data));
     if (!popupWindow || popupWindow.isDestroyed()) {
         createPopupWindow();
         // Wait for load
@@ -191,8 +192,10 @@ function processMessageQueue() {
     if (appConfig.enableCustomPopup) {
         showCustomPopup(latestMsg);
     } else if (appConfig.enableNativeNotification) {
-         new Notification({ 
-            title: ' ', 
+        const notificationTitle = `${latestMsg.title} (${latestMsg.count})`;
+        new Notification({
+            icon: iconPath,
+            title: notificationTitle, 
             body: latestMsg.content,
         }).show();
     }
@@ -389,7 +392,7 @@ ipcMain.handle('notification:show', (event, { title, body, type }) => {
         showCustomPopup({ content: body, timestamp: '测试' });
     } else if (type === 'native') {
         new Notification({ 
-            title: ' ', 
+            title: title, 
             body, 
         }).show();
     } else {
@@ -399,7 +402,7 @@ ipcMain.handle('notification:show', (event, { title, body, type }) => {
             showCustomPopup({ content: body, timestamp: '测试' });
         } else {
             new Notification({ 
-                title: ' ', 
+                title: title, 
                 body, 
             }).show();
         }
