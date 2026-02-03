@@ -1,201 +1,201 @@
-﻿2026-02-03 14:56:19 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[712,730,24,24], InSidebar=True, HasNumber=False
-2026-02-03 14:56:19 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[712,730,24,24], InSidebar=True, HasNumber=False
-2026-02-03 14:56:19 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='隐藏窗口截图', Rect=[740,726,16,32], InSidebar=True, HasNumber=False
-2026-02-03 14:56:19 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[740,738,16,8], InSidebar=True, HasNumber=False
-2026-02-03 14:56:19 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[740,738,16,8], InSidebar=True, HasNumber=False
-2026-02-03 14:56:19 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='视频号直播伴侣', Rect=[764,726,32,32], InSidebar=True, HasNumber=False
-2026-02-03 14:56:19 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[768,730,24,24], InSidebar=True, HasNumber=False
-2026-02-03 14:56:19 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[768,730,24,24], InSidebar=True, HasNumber=False
-2026-02-03 14:56:19 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='展开', Rect=[1555,726,32,32], InSidebar=True, HasNumber=False
-2026-02-03 14:56:19 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[1555,726,32,32], InSidebar=True, HasNumber=False
-2026-02-03 14:56:19 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[1555,726,32,32], InSidebar=True, HasNumber=False
-2026-02-03 14:56:19 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='发送(S)', Rect=[1491,902,96,32], InSidebar=True, HasNumber=False
-2026-02-03 14:56:19 - DEBUG: Potential Badge Candidate: Type=ControlType.Text, Name='发送(S)', Rect=[1516,906,46,24], InSidebar=True, HasNumber=False
-2026-02-03 14:56:20 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[1486,222,16,16], InSidebar=True, HasNumber=False
-2026-02-03 14:56:20 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[1486,222,16,16], InSidebar=True, HasNumber=False
-2026-02-03 14:56:20 - DEBUG: Potential Badge Candidate: Type=ControlType.Text, Name='9条新消息', Rect=[1504,222,56,17], InSidebar=True, HasNumber=True
-2026-02-03 14:56:20 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='快捷操作', Rect=[535,164,28,28], InSidebar=True, HasNumber=False
-2026-02-03 14:56:20 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[541,170,16,16], InSidebar=True, HasNumber=False
-2026-02-03 14:56:20 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[541,170,16,16], InSidebar=True, HasNumber=False
-2026-02-03 14:56:20 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[260,170,16,16], InSidebar=True, HasNumber=False
-2026-02-03 14:56:20 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[260,170,16,16], InSidebar=True, HasNumber=False
-2026-02-03 14:56:20 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='置顶', Rect=[1421,137,44,32], InSidebar=True, HasNumber=False
-2026-02-03 14:56:20 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[1431,141,24,24], InSidebar=True, HasNumber=False
-2026-02-03 14:56:20 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[1431,141,24,24], InSidebar=True, HasNumber=False
-2026-02-03 14:56:20 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='最小化', Rect=[1465,137,44,32], InSidebar=True, HasNumber=False
-2026-02-03 14:56:20 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[1475,141,24,24], InSidebar=True, HasNumber=False
-2026-02-03 14:56:20 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[1475,141,24,24], InSidebar=True, HasNumber=False
-2026-02-03 14:56:20 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='最大化', Rect=[1509,137,44,32], InSidebar=True, HasNumber=False
-2026-02-03 14:56:20 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[1519,141,24,24], InSidebar=True, HasNumber=False
-2026-02-03 14:56:20 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[1519,141,24,24], InSidebar=True, HasNumber=False
-2026-02-03 14:56:20 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='关闭', Rect=[1553,137,44,32], InSidebar=True, HasNumber=False
-2026-02-03 14:56:20 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[1563,141,24,24], InSidebar=True, HasNumber=False
-2026-02-03 14:56:20 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[1563,141,24,24], InSidebar=True, HasNumber=False
-2026-02-03 14:56:20 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[1596,949,1,1], InSidebar=True, HasNumber=False
-2026-02-03 14:56:20 - DEBUG: Found 16 Sidebar ListItems and 82 Potential Badges
-2026-02-03 14:56:20 - DEBUG: Processing ListItem - Name: '老手段了，用孩子威胁老邓了引用 丁家辉 的消息 : 冯工说 她孩子也不管 中午睡公司 也不吃饭 还跑他那里问 有没有泡面吃
-', Rect: [576,125,1019,126]
-2026-02-03 14:56:20 - DEBUG: Checking badge '(6)' [729,166] vs ListItem [576,125] - verticalOverlap=True, offset=-866
-2026-02-03 14:56:20 - DEBUG: Checking text-based badge pattern
-2026-02-03 14:56:20 - DEBUG: Text preview: '老手段了，用孩子威胁老邓了引用 丁家辉 的消息 : 冯工说 她孩子也不管 中午睡公司 也不吃饭 还跑他那里问 有没有泡面吃
-'
-2026-02-03 14:56:20 - DEBUG: Text length: 62
-2026-02-03 14:56:20 - DEBUG: Has brackets - open: False, close: False
-2026-02-03 14:56:20 - DEBUG: No brackets found in text (skipping regex)
-2026-02-03 14:56:20 - DEBUG: No badge found for '老手段了，用孩子威胁老邓了引用 丁家辉 的消息 : 冯工说 她孩子也不管 中午睡公司 也不吃饭 还跑他那里问 有没有泡面吃
-'
-2026-02-03 14:56:20 - DEBUG: Processing ListItem - Name: '图片', Rect: [576,251,1019,166]
-2026-02-03 14:56:20 - DEBUG: Checking badge '(6)' [729,166] vs ListItem [576,251] - verticalOverlap=False, offset=-866
-2026-02-03 14:56:20 - DEBUG: Checking text-based badge pattern
-2026-02-03 14:56:20 - DEBUG: Text preview: '图片'
-2026-02-03 14:56:20 - DEBUG: Text length: 2
-2026-02-03 14:56:20 - DEBUG: Has brackets - open: False, close: False
-2026-02-03 14:56:20 - DEBUG: No brackets found in text (skipping regex)
-2026-02-03 14:56:20 - DEBUG: No badge found for '图片'
-2026-02-03 14:56:20 - DEBUG: Processing ListItem - Name: '14:38', Rect: [576,417,1019,41]
-2026-02-03 14:56:20 - DEBUG: Checking badge '(6)' [729,166] vs ListItem [576,417] - verticalOverlap=False, offset=-866
-2026-02-03 14:56:20 - DEBUG: Checking text-based badge pattern
-2026-02-03 14:56:20 - DEBUG: Text preview: '14:38'
-2026-02-03 14:56:20 - DEBUG: Text length: 5
-2026-02-03 14:56:20 - DEBUG: Has brackets - open: False, close: False
-2026-02-03 14:56:20 - DEBUG: No brackets found in text (skipping regex)
-2026-02-03 14:56:20 - DEBUG: No badge found for '14:38'
-2026-02-03 14:56:20 - DEBUG: Processing ListItem - Name: '[链接]最致命的教育断层：小事不让练，大事却突然放手
-随喜赞叹
-深圳卫健委', Rect: [576,458,1019,170]
-2026-02-03 14:56:20 - DEBUG: Checking badge '(6)' [729,166] vs ListItem [576,458] - verticalOverlap=False, offset=-866
-2026-02-03 14:56:21 - DEBUG: Checking text-based badge pattern
-2026-02-03 14:56:21 - DEBUG: Text preview: '[链接]最致命的教育断层：小事不让练，大事却突然放手
-随喜赞叹
-深圳卫健委'
-2026-02-03 14:56:21 - DEBUG: Text length: 37
-2026-02-03 14:56:21 - DEBUG: Has brackets - open: True, close: True
-2026-02-03 14:56:21 - DEBUG: Bracket content: '链接'
-2026-02-03 14:56:21 - DEBUG: No text-based badge pattern found (regex failed)
-2026-02-03 14:56:21 - DEBUG: No badge found for '[链接]最致命的教育断层：小事不让练，大事却突然放手
-随喜赞叹
-深圳卫健委'
-2026-02-03 14:56:21 - DEBUG: Processing ListItem - Name: '养娃宝典，好好看好好学', Rect: [576,628,1019,77]
-2026-02-03 14:56:21 - DEBUG: Checking badge '(6)' [729,166] vs ListItem [576,628] - verticalOverlap=False, offset=-866
-2026-02-03 14:56:21 - DEBUG: Checking text-based badge pattern
-2026-02-03 14:56:21 - DEBUG: Text preview: '养娃宝典，好好看好好学'
-2026-02-03 14:56:21 - DEBUG: Text length: 11
-2026-02-03 14:56:21 - DEBUG: Has brackets - open: False, close: False
-2026-02-03 14:56:21 - DEBUG: No brackets found in text (skipping regex)
-2026-02-03 14:56:21 - DEBUG: No badge found for '养娃宝典，好好看好好学'
-2026-02-03 14:56:21 - DEBUG: Processing ListItem - Name: '优质站外群组——除夕清仓折扣群
-已置顶
-灿铿: 2两是什么岗位
-11:24
-', Rect: [240,205,335,68]
-2026-02-03 14:56:21 - DEBUG: Checking badge '(6)' [729,166] vs ListItem [240,205] - verticalOverlap=False, offset=154
-2026-02-03 14:56:21 - DEBUG: Checking text-based badge pattern
-2026-02-03 14:56:21 - DEBUG: Text preview: '优质站外群组——除夕清仓折扣群
-已置顶
-灿铿: 2两是什么岗位
-11:24
-'
-2026-02-03 14:56:21 - DEBUG: Text length: 38
-2026-02-03 14:56:21 - DEBUG: Has brackets - open: False, close: False
-2026-02-03 14:56:21 - DEBUG: No brackets found in text (skipping regex)
-2026-02-03 14:56:21 - DEBUG: No badge found for '优质站外群组——除夕清仓折扣群
-已置顶
-灿铿: 2两是什么岗位
-11:24
-'
-2026-02-03 14:56:21 - DEBUG: Processing ListItem - Name: '文件传输助手
-已置顶
-bbc91b01ea3e49399c1d9738ffa30b3f.XhFxzgL6juk8GBF6
-昨天 21:35
-', Rect: [240,273,335,68]
-2026-02-03 14:56:21 - DEBUG: Checking badge '(6)' [729,166] vs ListItem [240,273] - verticalOverlap=False, offset=154
-2026-02-03 14:56:21 - DEBUG: Checking text-based badge pattern
-2026-02-03 14:56:21 - DEBUG: Text preview: '文件传输助手
-已置顶
-bbc91b01ea3e49399c1d9738ffa30b3f.XhFxzgL6juk8GBF6
-昨天 21:35
-'
-2026-02-03 14:56:21 - DEBUG: Text length: 70
-2026-02-03 14:56:21 - DEBUG: Has brackets - open: False, close: False
-2026-02-03 14:56:21 - DEBUG: No brackets found in text (skipping regex)
-2026-02-03 14:56:21 - DEBUG: No badge found for '文件传输助手
-已置顶
-bbc91b01ea3e49399c1d9738ffa30b3f.XhFxzgL6juk8GBF6
-昨天 21:35
-'
-2026-02-03 14:56:21 - DEBUG: Processing ListItem - Name: '🕊 流莺大院
-[122条] 西安-求内推-阿鱼的鱼啊 xoxo: 他说他不回去初三就过来
-14:56
-消息免打扰
-', Rect: [240,341,335,68]
-2026-02-03 14:56:21 - DEBUG: Checking badge '(6)' [729,166] vs ListItem [240,341] - verticalOverlap=False, offset=154
-2026-02-03 14:56:21 - DEBUG: Checking text-based badge pattern
-2026-02-03 14:56:21 - DEBUG: Text preview: '🕊 流莺大院
-[122条] 西安-求内推-阿鱼的鱼啊 xoxo: 他说他不回去初三就过来
-14:56
-消息免打扰
-'
-2026-02-03 14:56:21 - DEBUG: Text length: 58
-2026-02-03 14:56:21 - DEBUG: Has brackets - open: True, close: True
-2026-02-03 14:56:21 - DEBUG: Bracket content: '122条'
-2026-02-03 14:56:21 - DEBUG: Found number in brackets: 122
-2026-02-03 14:56:21 - DEBUG: Found badge count 122 (manual check)
-2026-02-03 14:56:21 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[122条] 西安-求内推-阿鱼的鱼啊 xoxo: 他说他不回去初三就过来', type='text', lines=4
-2026-02-03 14:56:21 - DEBUG: Skipped muted chat: 🕊 流莺大院 (count: 122)
-2026-02-03 14:56:21 - DEBUG: Processing ListItem - Name: 'unibest交流群⑤
-[8条] 鸽鸽: 是的
-14:56
-消息免打扰
+﻿消息免打扰
 ', Rect: [240,409,335,68]
-2026-02-03 14:56:21 - DEBUG: Checking badge '(6)' [729,166] vs ListItem [240,409] - verticalOverlap=False, offset=154
-2026-02-03 14:56:21 - DEBUG: Checking text-based badge pattern
-2026-02-03 14:56:21 - DEBUG: Text preview: 'unibest交流群⑤
-[8条] 鸽鸽: 是的
+2026-02-03 14:56:49 - DEBUG: Checking badge '(6)' [729,166] vs ListItem [240,409] - verticalOverlap=False, offset=154
+2026-02-03 14:56:49 - DEBUG: Checking text-based badge pattern
+2026-02-03 14:56:49 - DEBUG: Text preview: 'unibest交流群⑤
+[9条] 鸽鸽: 长沙做牛马[擦汗]，最近几乎是996
 14:56
 消息免打扰
 '
-2026-02-03 14:56:21 - DEBUG: Text length: 36
-2026-02-03 14:56:22 - DEBUG: Has brackets - open: True, close: True
-2026-02-03 14:56:22 - DEBUG: Bracket content: '8条'
-2026-02-03 14:56:22 - DEBUG: Found number in brackets: 8
-2026-02-03 14:56:22 - DEBUG: Found badge count 8 (manual check)
-2026-02-03 14:56:22 - Parse-WeChatMessage: chatName='unibest交流群⑤', content='[8条] 鸽鸽: 是的', type='text', lines=4
-2026-02-03 14:56:22 - DEBUG: Skipped muted chat: unibest交流群⑤ (count: 8)
-2026-02-03 14:56:22 - DEBUG: Processing ListItem - Name: '飞牛fnOS粉丝群684
+2026-02-03 14:56:49 - DEBUG: Text length: 52
+2026-02-03 14:56:49 - DEBUG: Has brackets - open: True, close: True
+2026-02-03 14:56:49 - DEBUG: Bracket content: '9条'
+2026-02-03 14:56:49 - DEBUG: Found number in brackets: 9
+2026-02-03 14:56:49 - DEBUG: Found badge count 9 (manual check)
+2026-02-03 14:56:49 - Parse-WeChatMessage: chatName='unibest交流群⑤', content='[9条] 鸽鸽: 长沙做牛马[擦汗]，最近几乎是996', type='text', lines=4
+2026-02-03 14:56:49 - DEBUG: Skipped muted chat: unibest交流群⑤ (count: 9)
+2026-02-03 14:56:49 - DEBUG: Processing ListItem - Name: '飞牛fnOS粉丝群684
 [2条] 小孟啊: 求问大佬，我不开fnid 不从外网访问nas  是不是就安全了
 14:55
 消息免打扰
 ', Rect: [240,477,335,68]
-2026-02-03 14:56:22 - DEBUG: Checking badge '(6)' [729,166] vs ListItem [240,477] - verticalOverlap=False, offset=154
-2026-02-03 14:56:22 - DEBUG: Checking text-based badge pattern
-2026-02-03 14:56:22 - DEBUG: Text preview: '飞牛fnOS粉丝群684
+2026-02-03 14:56:49 - DEBUG: Checking badge '(6)' [729,166] vs ListItem [240,477] - verticalOverlap=False, offset=154
+2026-02-03 14:56:49 - DEBUG: Checking text-based badge pattern
+2026-02-03 14:56:49 - DEBUG: Text preview: '飞牛fnOS粉丝群684
 [2条] 小孟啊: 求问大佬，我不开fnid 不从外网访问nas  是不是就安全了
 14:55
 消息免打扰
 '
-2026-02-03 14:56:22 - DEBUG: Text length: 67
-2026-02-03 14:56:22 - DEBUG: Has brackets - open: True, close: True
-2026-02-03 14:56:22 - DEBUG: Bracket content: '2条'
-2026-02-03 14:56:22 - DEBUG: Found number in brackets: 2
-2026-02-03 14:56:22 - DEBUG: Found badge count 2 (manual check)
-2026-02-03 14:56:22 - Parse-WeChatMessage: chatName='飞牛fnOS粉丝群684', content='[2条] 小孟啊: 求问大佬，我不开fnid 不从外网访问nas  是不是就安全了', type='text', lines=4
-2026-02-03 14:56:22 - DEBUG: Skipped muted chat: 飞牛fnOS粉丝群684 (count: 2)
-2026-02-03 14:56:22 - DEBUG: Processing ListItem - Name: '服务号
+2026-02-03 14:56:49 - DEBUG: Text length: 67
+2026-02-03 14:56:49 - DEBUG: Has brackets - open: True, close: True
+2026-02-03 14:56:49 - DEBUG: Bracket content: '2条'
+2026-02-03 14:56:49 - DEBUG: Found number in brackets: 2
+2026-02-03 14:56:49 - DEBUG: Found badge count 2 (manual check)
+2026-02-03 14:56:49 - Parse-WeChatMessage: chatName='飞牛fnOS粉丝群684', content='[2条] 小孟啊: 求问大佬，我不开fnid 不从外网访问nas  是不是就安全了', type='text', lines=4
+2026-02-03 14:56:49 - DEBUG: Skipped muted chat: 飞牛fnOS粉丝群684 (count: 2)
+2026-02-03 14:56:49 - DEBUG: Processing ListItem - Name: '服务号
 [16条] 
 公众平台安全助手: 小程序变更备案提醒
 14:48
 ', Rect: [240,545,335,68]
-2026-02-03 14:56:22 - DEBUG: Checking badge '(6)' [729,166] vs ListItem [240,545] - verticalOverlap=False, offset=154
-2026-02-03 14:56:22 - DEBUG: Checking text-based badge pattern
-2026-02-03 14:56:22 - DEBUG: Text preview: '服务号
+2026-02-03 14:56:50 - DEBUG: Checking badge '(6)' [729,166] vs ListItem [240,545] - verticalOverlap=False, offset=154
+2026-02-03 14:56:50 - DEBUG: Checking text-based badge pattern
+2026-02-03 14:56:50 - DEBUG: Text preview: '服务号
 [16条] 
 公众平台安全助手: 小程序变更备案提醒
 14:48
 '
-2026-02-03 14:56:22 - DEBUG: Text length: 37
-2026-02-03 14:56:22 - DEBUG: Has brackets - open: True, close: True
-2026-02-03 14:56:22 - DEBUG: Bracket content: '16条'
-2026-02-03 14:56:22 - DEBUG: Found number in brackets: 16
-2026-02-03 14:56:22 - DEBUG: Found badge count 16 (manual check)
-2026-02-03 14:56:22 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[16条]'
-2026-02-03 14:56:22 - Parse-WeChatMessage: chatName='服务号', content='公众平台安全助手: 小程序变更备案提醒', type='text', lines=4
+2026-02-03 14:56:50 - DEBUG: Text length: 37
+2026-02-03 14:56:50 - DEBUG: Has brackets - open: True, close: True
+2026-02-03 14:56:50 - DEBUG: Bracket content: '16条'
+2026-02-03 14:56:50 - DEBUG: Found number in brackets: 16
+2026-02-03 14:56:50 - DEBUG: Found badge count 16 (manual check)
+2026-02-03 14:56:50 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[16条]'
+2026-02-03 14:56:50 - Parse-WeChatMessage: chatName='服务号', content='公众平台安全助手: 小程序变更备案提醒', type='text', lines=4
+2026-02-03 14:56:50 - DEBUG: Added message to currentMsgs: 服务号 - 公众平台安全助手: 小程序变更备案提醒 [text] (count: 16)
+2026-02-03 14:56:50 - DEBUG: Processing ListItem - Name: '林枚钟
+哈哈哈哈哈哈哈
+14:45
+', Rect: [240,613,335,68]
+2026-02-03 14:56:50 - DEBUG: Checking badge '(6)' [729,166] vs ListItem [240,613] - verticalOverlap=False, offset=154
+2026-02-03 14:56:50 - DEBUG: Checking text-based badge pattern
+2026-02-03 14:56:50 - DEBUG: Text preview: '林枚钟
+哈哈哈哈哈哈哈
+14:45
+'
+2026-02-03 14:56:50 - DEBUG: Text length: 18
+2026-02-03 14:56:50 - DEBUG: Has brackets - open: False, close: False
+2026-02-03 14:56:50 - DEBUG: No brackets found in text (skipping regex)
+2026-02-03 14:56:50 - DEBUG: No badge found for '林枚钟
+哈哈哈哈哈哈哈
+14:45
+'
+2026-02-03 14:56:50 - DEBUG: Processing ListItem - Name: 'python技术交流群
+罗家良 - 腾飞: 养娃宝典，好好看好好学
+14:38
+', Rect: [240,681,335,68]
+2026-02-03 14:56:50 - DEBUG: Checking badge '(6)' [729,166] vs ListItem [240,681] - verticalOverlap=False, offset=154
+2026-02-03 14:56:50 - DEBUG: Checking text-based badge pattern
+2026-02-03 14:56:50 - DEBUG: Text preview: 'python技术交流群
+罗家良 - 腾飞: 养娃宝典，好好看好好学
+14:38
+'
+2026-02-03 14:56:50 - DEBUG: Text length: 40
+2026-02-03 14:56:50 - DEBUG: Has brackets - open: False, close: False
+2026-02-03 14:56:50 - DEBUG: No brackets found in text (skipping regex)
+2026-02-03 14:56:50 - DEBUG: No badge found for 'python技术交流群
+罗家良 - 腾飞: 养娃宝典，好好看好好学
+14:38
+'
+2026-02-03 14:56:50 - DEBUG: Processing ListItem - Name: '美团外卖多重福利群86902
+[2条] 天天神券福利君: [小程序] 💥每日幸运礼抽外卖免单
+14:35
+消息免打扰
+', Rect: [240,749,335,68]
+2026-02-03 14:56:50 - DEBUG: Checking badge '(6)' [729,166] vs ListItem [240,749] - verticalOverlap=False, offset=154
+2026-02-03 14:56:50 - DEBUG: Checking text-based badge pattern
+2026-02-03 14:56:50 - DEBUG: Text preview: '美团外卖多重福利群86902
+[2条] 天天神券福利君: [小程序] 💥每日幸运礼抽外卖免单
+14:35
+消息免打扰
+'
+2026-02-03 14:56:50 - DEBUG: Text length: 60
+2026-02-03 14:56:50 - DEBUG: Has brackets - open: True, close: True
+2026-02-03 14:56:50 - DEBUG: Bracket content: '2条'
+2026-02-03 14:56:50 - DEBUG: Found number in brackets: 2
+2026-02-03 14:56:50 - DEBUG: Found badge count 2 (manual check)
+2026-02-03 14:56:50 - Parse-WeChatMessage: chatName='美团外卖多重福利群86902', content='[2条] 天天神券福利君: [小程序] 💥每日幸运礼抽外卖免单', type='text', lines=4
+2026-02-03 14:56:50 - DEBUG: Skipped muted chat: 美团外卖多重福利群86902 (count: 2)
+2026-02-03 14:56:50 - DEBUG: Processing ListItem - Name: '小程序运营沟通交流六
+[2条] 小肥羊 新疆分羊: [图片] 
+14:28
+消息免打扰
+', Rect: [240,817,335,68]
+2026-02-03 14:56:50 - DEBUG: Checking badge '(6)' [729,166] vs ListItem [240,817] - verticalOverlap=False, offset=154
+2026-02-03 14:56:50 - DEBUG: Checking text-based badge pattern
+2026-02-03 14:56:51 - DEBUG: Text preview: '小程序运营沟通交流六
+[2条] 小肥羊 新疆分羊: [图片] 
+14:28
+消息免打扰
+'
+2026-02-03 14:56:51 - DEBUG: Text length: 44
+2026-02-03 14:56:51 - DEBUG: Has brackets - open: True, close: True
+2026-02-03 14:56:51 - DEBUG: Bracket content: '2条'
+2026-02-03 14:56:51 - DEBUG: Found number in brackets: 2
+2026-02-03 14:56:51 - DEBUG: Found badge count 2 (manual check)
+2026-02-03 14:56:51 - Parse-WeChatMessage: chatName='小程序运营沟通交流六', content='[2条] 小肥羊 新疆分羊: [图片]', type='image', lines=4
+2026-02-03 14:56:51 - DEBUG: Skipped muted chat: 小程序运营沟通交流六 (count: 2)
+2026-02-03 14:56:51 - DEBUG: Processing ListItem - Name: '公众号
+[2条] i深圳: 深圳青年人才房迎来首批住户
+14:09
+', Rect: [240,885,335,68]
+2026-02-03 14:56:51 - DEBUG: Checking badge '(6)' [729,166] vs ListItem [240,885] - verticalOverlap=False, offset=154
+2026-02-03 14:56:51 - DEBUG: Checking text-based badge pattern
+2026-02-03 14:56:51 - DEBUG: Text preview: '公众号
+[2条] i深圳: 深圳青年人才房迎来首批住户
+14:09
+'
+2026-02-03 14:56:51 - DEBUG: Text length: 34
+2026-02-03 14:56:51 - DEBUG: Has brackets - open: True, close: True
+2026-02-03 14:56:51 - DEBUG: Bracket content: '2条'
+2026-02-03 14:56:51 - DEBUG: Found number in brackets: 2
+2026-02-03 14:56:51 - DEBUG: Found badge count 2 (manual check)
+2026-02-03 14:56:51 - Parse-WeChatMessage: chatName='公众号', content='[2条] i深圳: 深圳青年人才房迎来首批住户', type='text', lines=3
+2026-02-03 14:56:51 - DEBUG: Skipped system/official account: 公众号 (count: 2)
+2026-02-03 14:56:51 - Skip: 服务号 - Count: 16 - Already emitted
+2026-02-03 14:56:52 - DEBUG: WinRect: [179, 137, 1418, 813]
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[197,221,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[197,221,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[197,215,40,17], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[197,269,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[197,269,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[197,263,40,17], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[197,317,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[197,317,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[197,311,40,17], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[197,365,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[197,365,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[197,359,40,17], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[197,413,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[197,413,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[197,407,40,17], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[197,461,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[197,461,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[197,455,40,17], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[197,854,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[197,854,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[197,902,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[197,902,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Text, Name='(6)', Rect=[729,166,21,23], InSidebar=True, HasNumber=True
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[1451,169,56,32], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='聊天记录', Rect=[1451,169,32,32], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[1455,173,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[1455,173,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='从手机导入聊天记录', Rect=[1483,169,16,32], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[1483,181,16,8], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[1483,181,16,8], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[1507,169,40,32], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='语音通话', Rect=[1507,169,32,32], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[1511,173,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[1511,173,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='聊天信息', Rect=[1547,169,32,32], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[1551,173,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:52 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[1551,173,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:53 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='发送表情(Alt+E)', Rect=[588,726,32,32], InSidebar=True, HasNumber=False
+2026-02-03 14:56:53 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[592,730,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:53 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[592,730,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:53 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='发送收藏', Rect=[628,726,32,32], InSidebar=True, HasNumber=False
+2026-02-03 14:56:53 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[632,730,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:53 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[632,730,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:53 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='发送文件', Rect=[668,726,32,32], InSidebar=True, HasNumber=False
+2026-02-03 14:56:53 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[672,730,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:53 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[672,730,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:53 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[708,726,48,32], InSidebar=True, HasNumber=False
+2026-02-03 14:56:53 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='截图(Alt+A)', Rect=[708,726,32,32], InSidebar=True, HasNumber=False
+2026-02-03 14:56:53 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[712,730,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:53 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[712,730,24,24], InSidebar=True, HasNumber=False
+2026-02-03 14:56:53 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='隐藏窗口截图', Rect=[740,726,16,32], InSidebar=True, HasNumber=False
+2026-02-03 14:56:53 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[740,738,16,8], InSidebar=True, HasNumber=False
+2026-02-03 14:56:53 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[740,738,16,8], InSidebar=True, HasNumber=False
+2026-02-03 14:56:53 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='视频号直播伴侣', Rect=[764,726,32,32], InSidebar=True, HasNumber=False
+2026-02-03 14:56:53 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[768,730,24,24], InSidebar=True, HasNumber=False
