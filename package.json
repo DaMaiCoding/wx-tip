@@ -38,6 +38,10 @@
           "!**/*.log",
           "!**/*.tmp"
         ]
+      },
+      {
+        "from": "assets/icon.png",
+        "to": "assets/icon.png"
       }
     ],
     "win": {

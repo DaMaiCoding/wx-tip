@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog, Notification, screen } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, Notification, screen, Tray, Menu } = require('electron');
 const path = require('path');
 const { spawn } = require('child_process');
 const patcher = require('./services/patcher');
@@ -33,7 +33,12 @@ let monitorProcess = null;
 let mainWindow = null;
 let popupWindow = null;
 let popupCloseTimer = null;
+let tray = null;
+let isQuitting = false;
 const iconPath = path.join(__dirname, '../../assets/icon.png');
+const trayIconPath = app.isPackaged 
+    ? path.join(process.resourcesPath, 'assets/icon.png')
+    : path.join(__dirname, '../../assets/icon.png');
 const configPath = app.isPackaged 
     ? path.join(process.resourcesPath, 'services', 'config.json')
     : path.join(__dirname, 'services/config.json');
@@ -64,6 +69,54 @@ function saveConfig() {
 }
 
 loadConfig();
+
+// --- System Tray Logic ---
+function createTray() {
+    if (tray) {
+        return;
+    }
+
+    tray = new Tray(trayIconPath);
+
+    const contextMenu = Menu.buildFromTemplate([
+        {
+            label: '显示主窗口',
+            click: () => {
+                if (mainWindow) {
+                    mainWindow.show();
+                    mainWindow.focus();
+                }
+            }
+        },
+        {
+            label: '退出',
+            click: () => {
+                app.quit();
+            }
+        }
+    ]);
+
+    tray.setToolTip('wxTip - 微信消息提醒');
+    tray.setContextMenu(contextMenu);
+
+    tray.on('click', () => {
+        if (mainWindow) {
+            if (mainWindow.isVisible()) {
+                mainWindow.hide();
+            } else {
+                mainWindow.show();
+                mainWindow.focus();
+            }
+        }
+    });
+}
+
+function destroyTray() {
+    if (tray) {
+        tray.destroy();
+        tray = null;
+    }
+}
 
 // --- Popup Window Logic ---
 function createPopupWindow() {
@@ -268,8 +321,17 @@ function createWindow() {
 
     mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'));
 
+    mainWindow.on('close', (event) => {
+        if (!isQuitting) {
+            event.preventDefault();
+            mainWindow.hide();
+        }
+    });
+
+    createTray();
+
     ipcMain.on('window:minimize', () => mainWindow.minimize());
-    ipcMain.on('window:close', () => mainWindow.close());
+    ipcMain.on('window:close', () => mainWindow.hide());
 }
 
 // Start PowerShell Monitor (sends to Internal Express Server)
@@ -448,7 +510,15 @@ app.whenReady().then(async () => {
 
 app.on('window-all-closed', function () {
     stopMonitor();
-    if (process.platform !== 'darwin') app.quit();
+    if (process.platform !== 'darwin') {
+        isQuitting = true;
+        destroyTray();
+        app.quit();
+    }
+});
+
+app.on('before-quit', () => {
+    isQuitting = true;
 });
 
 // IPC Handlers
