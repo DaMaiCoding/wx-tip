@@ -26,6 +26,7 @@
     },
     "files": [
       "src/**/*",
+      "assets/icon.ico",
       "assets/icon.png",
       "package.json"
     ],
@@ -45,7 +46,7 @@
       }
     ],
     "win": {
-      "icon": "assets/icon.png",
+      "icon": "assets/icon.ico",
       "target": [
         {
           "target": "nsis",
@@ -77,7 +78,7 @@
       "artifactName": "${productName}-${version}-portable.${ext}"
     },
     "mac": {
-      "icon": "assets/icon.icns",
+      "icon": "assets/icon.png",
       "target": [
         "dmg"
       ]
