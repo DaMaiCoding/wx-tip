@@ -43,6 +43,10 @@
       {
         "from": "assets/icon.png",
         "to": "assets/icon.png"
+      },
+      {
+        "from": "assets/icon.ico",
+        "to": "assets/icon.ico"
       }
     ],
     "win": {

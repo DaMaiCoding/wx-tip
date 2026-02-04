@@ -179,7 +179,7 @@ function createPopupWindow() {
         skipTaskbar: true,
         focusable: false,
         show: false,
-        icon: iconPath,
+        icon: process.platform === 'win32' ? iconIcoPath : iconPath,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
@@ -359,7 +359,9 @@ function createWindow() {
         height: 600,
         frame: false, 
         titleBarStyle: 'hidden',
-        icon: iconPath,
+        skipTaskbar: false,
+        showInTaskbar: true,
+        icon: process.platform === 'win32' ? iconIcoPath : iconPath,
         webPreferences: {
             preload: path.join(__dirname, '../preload/index.js'),
             nodeIntegration: false,
