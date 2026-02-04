@@ -1,10 +1,15 @@
-﻿# Configuration
+# Configuration
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $logFile = Join-Path $PSScriptRoot "monitor.log"
 $configFile = Join-Path $PSScriptRoot "config.json"
 $maxLogLines = 200
+$DebugMode = $false # Set to true to enable debug logs
 
 function Log-Message($msg) {
+    if ($msg -match "^DEBUG:" -and -not $DebugMode) {
+        return
+    }
+
     $timestamp = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
     $logEntry = "$timestamp - $msg"
     try {

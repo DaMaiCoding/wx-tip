@@ -1,200 +1,201 @@
-﻿2026-02-03 22:09:24 - DEBUG: No badge found for '飞牛fnOS粉丝群684
-飞牛群发工具人: 这位童鞋，触发企微风控，为避免大家的群聊被封，三次后会踢出群聊，请谨慎发言（此消息为企…
-22:03
+﻿18:47
+'
+2026-02-04 19:55:12 - DEBUG: Processing ListItem - Name: '林枚钟
+好
+18:47
+', Rect: [361,847,335,68]
+2026-02-04 19:55:12 - DEBUG: Checking text-based badge pattern
+2026-02-04 19:55:12 - DEBUG: Text preview: '林枚钟
+好
+18:47
+'
+2026-02-04 19:55:12 - DEBUG: Text length: 12
+2026-02-04 19:55:12 - DEBUG: Has brackets - open: False, close: False
+2026-02-04 19:55:12 - DEBUG: No brackets found in text (skipping regex)
+2026-02-04 19:55:12 - DEBUG: No badge found for '林枚钟
+好
+18:47
+'
+2026-02-04 19:55:12 - DEBUG: WinRect: [300, 99, 1418, 813]
+2026-02-04 19:55:12 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,183,24,24], InSidebar=True, HasNumber=False
+2026-02-04 19:55:12 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[318,183,24,24], InSidebar=True, HasNumber=False
+2026-02-04 19:55:12 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,177,40,17], InSidebar=True, HasNumber=False
+2026-02-04 19:55:12 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,231,24,24], InSidebar=True, HasNumber=False
+2026-02-04 19:55:12 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[318,231,24,24], InSidebar=True, HasNumber=False
+2026-02-04 19:55:12 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,225,40,17], InSidebar=True, HasNumber=False
+2026-02-04 19:55:12 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,279,24,24], InSidebar=True, HasNumber=False
+2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[318,279,24,24], InSidebar=True, HasNumber=False
+2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,273,40,17], InSidebar=True, HasNumber=False
+2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,327,24,24], InSidebar=True, HasNumber=False
+2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[318,327,24,24], InSidebar=True, HasNumber=False
+2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,321,40,17], InSidebar=True, HasNumber=False
+2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,375,24,24], InSidebar=True, HasNumber=False
+2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[318,375,24,24], InSidebar=True, HasNumber=False
+2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,369,40,17], InSidebar=True, HasNumber=False
+2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,423,24,24], InSidebar=True, HasNumber=False
+2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[318,423,24,24], InSidebar=True, HasNumber=False
+2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,417,40,17], InSidebar=True, HasNumber=False
+2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,816,24,24], InSidebar=True, HasNumber=False
+2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[318,816,24,24], InSidebar=True, HasNumber=False
+2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,864,24,24], InSidebar=True, HasNumber=False
+2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[318,864,24,24], InSidebar=True, HasNumber=False
+2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Text, Name='公众号', Rect=[713,127,48,23], InSidebar=True, HasNumber=False
+2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Text, Name='公众号', Rect=[713,127,48,23], InSidebar=True, HasNumber=False
+2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='快捷操作', Rect=[656,126,28,28], InSidebar=True, HasNumber=False
+2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[662,132,16,16], InSidebar=True, HasNumber=False
+2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[662,132,16,16], InSidebar=True, HasNumber=False
+2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[381,132,16,16], InSidebar=True, HasNumber=False
+2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[381,132,16,16], InSidebar=True, HasNumber=False
+2026-02-04 19:55:13 - DEBUG: Found 11 Sidebar ListItems and 29 Potential Badges
+2026-02-04 19:55:13 - DEBUG: Processing ListItem - Name: '优质站外群组——除夕清仓折扣群
+已置顶
+过恶
+18:25
+', Rect: [361,167,335,68]
+2026-02-04 19:55:13 - DEBUG: Checking text-based badge pattern
+2026-02-04 19:55:13 - DEBUG: Text preview: '优质站外群组——除夕清仓折扣群
+已置顶
+过恶
+18:25
+'
+2026-02-04 19:55:13 - DEBUG: Text length: 29
+2026-02-04 19:55:13 - DEBUG: Has brackets - open: False, close: False
+2026-02-04 19:55:13 - DEBUG: No brackets found in text (skipping regex)
+2026-02-04 19:55:13 - DEBUG: No badge found for '优质站外群组——除夕清仓折扣群
+已置顶
+过恶
+18:25
+'
+2026-02-04 19:55:13 - DEBUG: Processing ListItem - Name: '文件传输助手
+已置顶
+bbc91b01ea3e49399c1d9738ffa30b3f.XhFxzgL6juk8GBF6
+星期一
+', Rect: [361,235,335,68]
+2026-02-04 19:55:13 - DEBUG: Checking text-based badge pattern
+2026-02-04 19:55:13 - DEBUG: Text preview: '文件传输助手
+已置顶
+bbc91b01ea3e49399c1d9738ffa30b3f.XhFxzgL6juk8GBF6
+星期一
+'
+2026-02-04 19:55:13 - DEBUG: Text length: 65
+2026-02-04 19:55:13 - DEBUG: Has brackets - open: False, close: False
+2026-02-04 19:55:13 - DEBUG: No brackets found in text (skipping regex)
+2026-02-04 19:55:13 - DEBUG: No badge found for '文件传输助手
+已置顶
+bbc91b01ea3e49399c1d9738ffa30b3f.XhFxzgL6juk8GBF6
+星期一
+'
+2026-02-04 19:55:13 - DEBUG: Processing ListItem - Name: '飞牛fnOS粉丝群684
+米斯特威: 天天分享啥呢
+19:52
+消息免打扰
+', Rect: [361,303,335,68]
+2026-02-04 19:55:13 - DEBUG: Checking text-based badge pattern
+2026-02-04 19:55:13 - DEBUG: Text preview: '飞牛fnOS粉丝群684
+米斯特威: 天天分享啥呢
+19:52
 消息免打扰
 '
-2026-02-03 22:09:24 - DEBUG: Processing ListItem - Name: '🕊 流莺大院
-深圳-4-发: 车主：喜提一猫
-21:35
-消息免打扰
-', Rect: [640,823,654,102]
-2026-02-03 22:09:24 - DEBUG: Checking text-based badge pattern
-2026-02-03 22:09:24 - DEBUG: Text preview: '🕊 流莺大院
-深圳-4-发: 车主：喜提一猫
-21:35
+2026-02-04 19:55:13 - DEBUG: Text length: 38
+2026-02-04 19:55:13 - DEBUG: Has brackets - open: False, close: False
+2026-02-04 19:55:13 - DEBUG: No brackets found in text (skipping regex)
+2026-02-04 19:55:13 - DEBUG: No badge found for '飞牛fnOS粉丝群684
+米斯特威: 天天分享啥呢
+19:52
 消息免打扰
 '
-2026-02-03 22:09:24 - DEBUG: Text length: 36
-2026-02-03 22:09:24 - DEBUG: Has brackets - open: False, close: False
-2026-02-03 22:09:24 - DEBUG: No brackets found in text (skipping regex)
-2026-02-03 22:09:24 - DEBUG: No badge found for '🕊 流莺大院
-深圳-4-发: 车主：喜提一猫
-21:35
+2026-02-04 19:55:13 - DEBUG: Processing ListItem - Name: '豆鲨包警告
+啦啦啦啦啦
+19:51
+', Rect: [361,371,335,68]
+2026-02-04 19:55:13 - DEBUG: Checking text-based badge pattern
+2026-02-04 19:55:13 - DEBUG: Text preview: '豆鲨包警告
+啦啦啦啦啦
+19:51
+'
+2026-02-04 19:55:13 - DEBUG: Text length: 18
+2026-02-04 19:55:13 - DEBUG: Has brackets - open: False, close: False
+2026-02-04 19:55:13 - DEBUG: No brackets found in text (skipping regex)
+2026-02-04 19:55:13 - DEBUG: No badge found for '豆鲨包警告
+啦啦啦啦啦
+19:51
+'
+2026-02-04 19:55:13 - DEBUG: Processing ListItem - Name: '公众号
+深圳租房团V: 深圳租房【南山3则】房源①：9号线深圳南山南油西三房一厅合租房找室友次卧招租2200元/月；房源②…
+19:50
+', Rect: [361,439,335,68]
+2026-02-04 19:55:13 - DEBUG: Checking text-based badge pattern
+2026-02-04 19:55:13 - DEBUG: Text preview: '公众号
+深圳租房团V: 深圳租房【南山3则】房源①：9号线深圳南山南油西三房一厅合租房找室友次卧招租2200元/月；房源②…
+19:50
+'
+2026-02-04 19:55:13 - DEBUG: Text length: 69
+2026-02-04 19:55:13 - DEBUG: Has brackets - open: False, close: False
+2026-02-04 19:55:13 - DEBUG: No brackets found in text (skipping regex)
+2026-02-04 19:55:13 - DEBUG: No badge found for '公众号
+深圳租房团V: 深圳租房【南山3则】房源①：9号线深圳南山南油西三房一厅合租房找室友次卧招租2200元/月；房源②…
+19:50
+'
+2026-02-04 19:55:13 - DEBUG: Processing ListItem - Name: '🕊 流莺大院
+失业-5-废物的能小右-美团月卡: house周三吃这么好
+19:50
+消息免打扰
+', Rect: [361,507,335,68]
+2026-02-04 19:55:13 - DEBUG: Checking text-based badge pattern
+2026-02-04 19:55:14 - DEBUG: Text preview: '🕊 流莺大院
+失业-5-废物的能小右-美团月卡: house周三吃这么好
+19:50
 消息免打扰
 '
-2026-02-03 22:09:24 - DEBUG: Processing ListItem - Name: '启楠
-[图片] 
-21:28
-', Rect: [640,925,654,102]
-2026-02-03 22:09:24 - DEBUG: Checking text-based badge pattern
-2026-02-03 22:09:24 - DEBUG: Text preview: '启楠
-[图片] 
-21:28
-'
-2026-02-03 22:09:24 - DEBUG: Text length: 15
-2026-02-03 22:09:24 - DEBUG: Has brackets - open: True, close: True
-2026-02-03 22:09:25 - DEBUG: Bracket content: '图片'
-2026-02-03 22:09:25 - DEBUG: No text-based badge pattern found (regex failed)
-2026-02-03 22:09:25 - DEBUG: No badge found for '启楠
-[图片] 
-21:28
-'
-2026-02-03 22:09:25 - DEBUG: Processing ListItem - Name: '服务号
-多多买菜代收点: 支付成功提醒
-21:13
-', Rect: [640,1027,654,102]
-2026-02-03 22:09:25 - DEBUG: Checking text-based badge pattern
-2026-02-03 22:09:25 - DEBUG: Text preview: '服务号
-多多买菜代收点: 支付成功提醒
-21:13
-'
-2026-02-03 22:09:25 - DEBUG: Text length: 26
-2026-02-03 22:09:25 - DEBUG: Has brackets - open: False, close: False
-2026-02-03 22:09:25 - DEBUG: No brackets found in text (skipping regex)
-2026-02-03 22:09:25 - DEBUG: No badge found for '服务号
-多多买菜代收点: 支付成功提醒
-21:13
-'
-2026-02-03 22:09:25 - DEBUG: Processing ListItem - Name: '林枚钟
-嗯呐
-21:00
-', Rect: [640,1129,654,102]
-2026-02-03 22:09:25 - DEBUG: Checking text-based badge pattern
-2026-02-03 22:09:25 - DEBUG: Text preview: '林枚钟
-嗯呐
-21:00
-'
-2026-02-03 22:09:25 - DEBUG: Text length: 13
-2026-02-03 22:09:25 - DEBUG: Has brackets - open: False, close: False
-2026-02-03 22:09:25 - DEBUG: No brackets found in text (skipping regex)
-2026-02-03 22:09:25 - DEBUG: No badge found for '林枚钟
-嗯呐
-21:00
-'
-2026-02-03 22:09:25 - DEBUG: Processing ListItem - Name: '掘金小册·Trae 交流群课程
-"李轩"通过扫描"优弧@北比"分享的二维码加入群聊
-20:47
-消息免打扰
-', Rect: [640,1231,654,102]
-2026-02-03 22:09:25 - DEBUG: Checking text-based badge pattern
-2026-02-03 22:09:25 - DEBUG: Text preview: '掘金小册·Trae 交流群课程
-"李轩"通过扫描"优弧@北比"分享的二维码加入群聊
-20:47
+2026-02-04 19:55:14 - DEBUG: Text length: 50
+2026-02-04 19:55:14 - DEBUG: Has brackets - open: False, close: False
+2026-02-04 19:55:14 - DEBUG: No brackets found in text (skipping regex)
+2026-02-04 19:55:14 - DEBUG: No badge found for '🕊 流莺大院
+失业-5-废物的能小右-美团月卡: house周三吃这么好
+19:50
 消息免打扰
 '
-2026-02-03 22:09:25 - DEBUG: Text length: 54
-2026-02-03 22:09:25 - DEBUG: Has brackets - open: False, close: False
-2026-02-03 22:09:25 - DEBUG: No brackets found in text (skipping regex)
-2026-02-03 22:09:25 - DEBUG: No badge found for '掘金小册·Trae 交流群课程
-"李轩"通过扫描"优弧@北比"分享的二维码加入群聊
-20:47
-消息免打扰
+2026-02-04 19:55:14 - DEBUG: Processing ListItem - Name: '老爸
+我刚刚去吃喽
+19:46
+', Rect: [361,575,335,68]
+2026-02-04 19:55:14 - DEBUG: Checking text-based badge pattern
+2026-02-04 19:55:14 - DEBUG: Text preview: '老爸
+我刚刚去吃喽
+19:46
 '
-2026-02-03 22:09:25 - DEBUG: Processing ListItem - Name: 'D【上星三村】美团拼好饭群
-拼好饭-拼拼: . ∧_∧
-( • ヮ• ๑)⌒⌒⊃
-||￣￣￣∪￣￣||
-🍢你的夜宵小分队已上线！
-✨ 被窝和美食之间
-🍜只有…
-20:02
-消息免打扰
-', Rect: [640,1333,654,102]
-2026-02-03 22:09:25 - DEBUG: Checking text-based badge pattern
-2026-02-03 22:09:25 - DEBUG: Text preview: 'D【上星三村】美团拼好饭群
-拼好饭-拼拼: . ∧_∧
-( • ヮ• ๑)⌒⌒⊃
-||￣￣￣∪￣￣||
-🍢你的夜宵小分队已上线！
-✨ 被窝和美食之间
-🍜只有…
-20:02
-消息免打扰
+2026-02-04 19:55:14 - DEBUG: Text length: 16
+2026-02-04 19:55:14 - DEBUG: Has brackets - open: False, close: False
+2026-02-04 19:55:14 - DEBUG: No brackets found in text (skipping regex)
+2026-02-04 19:55:14 - DEBUG: No badge found for '老爸
+我刚刚去吃喽
+19:46
 '
-2026-02-03 22:09:25 - DEBUG: Text length: 94
-2026-02-03 22:09:25 - DEBUG: Has brackets - open: False, close: False
-2026-02-03 22:09:25 - DEBUG: No brackets found in text (skipping regex)
-2026-02-03 22:09:25 - DEBUG: No badge found for 'D【上星三村】美团拼好饭群
-拼好饭-拼拼: . ∧_∧
-( • ヮ• ๑)⌒⌒⊃
-||￣￣￣∪￣￣||
-🍢你的夜宵小分队已上线！
-✨ 被窝和美食之间
-🍜只有…
-20:02
-消息免打扰
+2026-02-04 19:55:14 - DEBUG: Processing ListItem - Name: '服务通知
+用餐评价提醒
+19:10
+', Rect: [361,643,335,68]
+2026-02-04 19:55:14 - DEBUG: Checking text-based badge pattern
+2026-02-04 19:55:14 - DEBUG: Text preview: '服务通知
+用餐评价提醒
+19:10
 '
-2026-02-03 22:09:25 - DEBUG: Processing ListItem - Name: '微信支付
-已支付¥21.00
-20:00
-', Rect: [640,1435,654,102]
-2026-02-03 22:09:25 - DEBUG: Checking text-based badge pattern
-2026-02-03 22:09:25 - DEBUG: Text preview: '微信支付
-已支付¥21.00
-20:00
+2026-02-04 19:55:14 - DEBUG: Text length: 18
+2026-02-04 19:55:14 - DEBUG: Has brackets - open: False, close: False
+2026-02-04 19:55:14 - DEBUG: No brackets found in text (skipping regex)
+2026-02-04 19:55:14 - DEBUG: No badge found for '服务通知
+用餐评价提醒
+19:10
 '
-2026-02-03 22:09:25 - DEBUG: Text length: 21
-2026-02-03 22:09:25 - DEBUG: Has brackets - open: False, close: False
-2026-02-03 22:09:25 - DEBUG: No brackets found in text (skipping regex)
-2026-02-03 22:09:25 - DEBUG: No badge found for '微信支付
-已支付¥21.00
-20:00
+2026-02-04 19:55:14 - DEBUG: Processing ListItem - Name: '老妈
+[语音] 3"
+19:08
+', Rect: [361,711,335,68]
+2026-02-04 19:55:14 - DEBUG: Checking text-based badge pattern
+2026-02-04 19:55:14 - DEBUG: Text preview: '老妈
+[语音] 3"
+19:08
 '
-2026-02-03 22:09:25 - DEBUG: Processing ListItem - Name: '快金-谭正柱-前端
-你提提看喽
-19:40
-', Rect: [640,1537,654,102]
-2026-02-03 22:09:25 - DEBUG: Checking text-based badge pattern
-2026-02-03 22:09:25 - DEBUG: Text preview: '快金-谭正柱-前端
-你提提看喽
-19:40
-'
-2026-02-03 22:09:25 - DEBUG: Text length: 22
-2026-02-03 22:09:25 - DEBUG: Has brackets - open: False, close: False
-2026-02-03 22:09:25 - DEBUG: No brackets found in text (skipping regex)
-2026-02-03 22:09:25 - DEBUG: No badge found for '快金-谭正柱-前端
-你提提看喽
-19:40
-'
-2026-02-03 22:09:25 - DEBUG: Processing ListItem - Name: '稀土掘金 x 金石计划活动群3
-何贤: [动画表情] 
-19:36
-消息免打扰
-', Rect: [640,1639,654,102]
-2026-02-03 22:09:25 - DEBUG: Checking text-based badge pattern
-2026-02-03 22:09:25 - DEBUG: Text preview: '稀土掘金 x 金石计划活动群3
-何贤: [动画表情] 
-19:36
-消息免打扰
-'
-2026-02-03 22:09:25 - DEBUG: Text length: 40
-2026-02-03 22:09:25 - DEBUG: Has brackets - open: True, close: True
-2026-02-03 22:09:25 - DEBUG: Bracket content: '动画表情'
-2026-02-03 22:09:25 - DEBUG: No text-based badge pattern found (regex failed)
-2026-02-03 22:09:25 - DEBUG: No badge found for '稀土掘金 x 金石计划活动群3
-何贤: [动画表情] 
-19:36
-消息免打扰
-'
-2026-02-03 22:09:25 - DEBUG: Processing ListItem - Name: 'M008.恰瓜屋 🈲言
-小心: [聊天记录]
-18:55
-消息免打扰
-', Rect: [640,1741,654,102]
-2026-02-03 22:09:25 - DEBUG: Checking text-based badge pattern
-2026-02-03 22:09:25 - DEBUG: Text preview: 'M008.恰瓜屋 🈲言
-小心: [聊天记录]
-18:55
-消息免打扰
-'
-2026-02-03 22:09:25 - DEBUG: Text length: 36
-2026-02-03 22:09:25 - DEBUG: Has brackets - open: True, close: True
-2026-02-03 22:09:25 - DEBUG: Bracket content: '聊天记录'
-2026-02-03 22:09:25 - DEBUG: No text-based badge pattern found (regex failed)
-2026-02-03 22:09:25 - DEBUG: No badge found for 'M008.恰瓜屋 🈲言
-小心: [聊天记录]
-18:55
-消息免打扰
-'
-2026-02-03 22:09:25 - Skip: 优质站外群组——除夕清仓折扣群 - Count: 3 - Already emitted
-2026-02-03 22:09:25 - Skip: 豆鲨包警告 - Count: 3 - Already emitted
+2026-02-04 19:55:14 - DEBUG: Text length: 17
+2026-02-04 19:55:14 - DEBUG: Has brackets - open: True, close: True
+2026-02-04 19:55:14 - DEBUG: Bracket content: '语音'

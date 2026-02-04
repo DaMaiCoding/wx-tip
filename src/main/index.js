@@ -22,7 +22,8 @@ if (!app.isPackaged) {
 
 // 1. Set AppUserModelId for Windows Notifications
 // This removes "electron.app.Electron" from the notification title
-const APP_ID = 'com.wxtip.app';
+const isPortable = Boolean(process.env.PORTABLE_EXECUTABLE_FILE || process.env.PORTABLE_EXECUTABLE_DIR);
+const APP_ID = app.isPackaged ? (isPortable ? 'wxtip' : 'com.wxtip.app') : 'wxtip';
 app.setAppUserModelId(APP_ID);
 
 // Configure Auto Updater Logging
@@ -41,7 +42,7 @@ const iconPath = app.isPackaged
 const iconIcoPath = app.isPackaged 
     ? path.join(process.resourcesPath, 'assets/icon.ico')
     : path.join(__dirname, '../../assets/icon.ico');
-const trayIconPath = iconPath;
+const trayIconPath = process.platform === 'win32' ? iconIcoPath : iconPath;
 const configPath = app.isPackaged 
     ? path.join(process.resourcesPath, 'services', 'config.json')
     : path.join(__dirname, 'services/config.json');
@@ -290,18 +291,22 @@ function processMessageQueue() {
         showCustomPopup(latestMsg);
     } else if (appConfig.enableNativeNotification) {
         const notificationTitle = `${latestMsg.title} (${latestMsg.count})`;
-        const notifyOpts = {
-            title: notificationTitle, 
-            body: latestMsg.content,
-        };
-        // Prefer .ico for Windows Notifications if available, as requested
-        if (process.platform === 'win32' && fs.existsSync(iconIcoPath)) {
-            notifyOpts.icon = iconIcoPath;
-        } else if (fs.existsSync(iconPath)) {
-            notifyOpts.icon = iconPath;
-        }
-        new Notification(notifyOpts).show();
+        showNativeNotification(notificationTitle, latestMsg.content);
     }
+}
+
+function showNativeNotification(title, body) {
+    const notifyOpts = {
+        title: title, 
+        body: body,
+    };
+    // Prefer .ico for Windows Notifications if available, as requested
+    if (process.platform === 'win32' && fs.existsSync(iconIcoPath)) {
+        notifyOpts.icon = iconIcoPath;
+    } else if (fs.existsSync(iconPath)) {
+        notifyOpts.icon = iconPath;
+    }
+    new Notification(notifyOpts).show();
 }
 
 // --- Express Notify Server (Internal) ---
@@ -604,34 +609,14 @@ ipcMain.handle('notification:show', (event, { title, body, type }) => {
     if (type === 'custom') {
         showCustomPopup({ content: body, timestamp: '测试' });
     } else if (type === 'native') {
-        const notifyOpts = {
-            title: title, 
-            body, 
-        };
-        // Prefer .ico for Windows Notifications if available, as requested
-        if (process.platform === 'win32' && fs.existsSync(iconIcoPath)) {
-            notifyOpts.icon = iconIcoPath;
-        } else if (fs.existsSync(iconPath)) {
-            notifyOpts.icon = iconPath;
-        }
-        new Notification(notifyOpts).show();
+        showNativeNotification(title, body);
     } else {
         // Fallback or "Both" logic if previously intended, but here we separate them clearly.
         // If no type provided (legacy calls), we follow config
         if (appConfig.enableCustomPopup) {
             showCustomPopup({ content: body, timestamp: '测试' });
         } else {
-            const notifyOpts = {
-                title: title, 
-                body, 
-            };
-            // Prefer .ico for Windows Notifications if available, as requested
-            if (process.platform === 'win32' && fs.existsSync(iconIcoPath)) {
-                notifyOpts.icon = iconIcoPath;
-            } else if (fs.existsSync(iconPath)) {
-                notifyOpts.icon = iconPath;
-            }
-            new Notification(notifyOpts).show();
+            showNativeNotification(title, body);
         }
     }
     return 'Notification sent';
