@@ -1,6 +1,9 @@
 node_modules
 .DS_Store
 dist
+dist_final
+release_build
+release_out
 *.bak
 package-lock.json
 .cache

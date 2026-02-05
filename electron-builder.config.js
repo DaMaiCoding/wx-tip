@@ -80,7 +80,7 @@ module.exports = {
   },
   publish: {
     provider: "github",
-    owner: "your-username",
+    owner: "DaMaiCoding",
     repo: "wx-tip"
   }
 };

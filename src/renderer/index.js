@@ -130,33 +130,56 @@ chkAutoLaunch.addEventListener('change', async (e) => {
 })();
 
 // Auto Update
-btnCheckUpdate.addEventListener('click', () => {
-    // In dev mode this might not work as expected without electron-builder configuration
+btnCheckUpdate.addEventListener('click', async () => {
     updateStatus.innerText = '正在检查更新...';
     updateStatus.className = '';
-    // Trigger update check via IPC if needed, or rely on auto-updater events
-    // For now, we assume auto-updater runs on main process start/interval
-    // But we can trigger it manually via restart in a real app, 
-    // here we just simulate the check visually if no event comes immediately.
-    setTimeout(() => {
-        if (updateStatus.innerText === '正在检查更新...') {
-             updateStatus.innerText = '暂无更新 (开发模式)';
-        }
-    }, 2000);
+    btnCheckUpdate.disabled = true;
+    
+    try {
+        await window.electronAPI.checkUpdate();
+    } catch (error) {
+        updateStatus.innerText = '检查更新出错';
+        updateStatus.className = 'error';
+        btnCheckUpdate.disabled = false;
+    }
 });
 
-window.electronAPI.onUpdateAvailable(() => {
-    updateStatus.innerText = '发现新版本，正在下载...';
+window.electronAPI.onCheckingForUpdate(() => {
+    updateStatus.innerText = '正在检查更新...';
+    updateStatus.className = '';
+});
+
+window.electronAPI.onUpdateAvailable((info) => {
+    updateStatus.innerText = `发现新版本 v${info.version}，正在下载...`;
     updateStatus.className = 'success';
+    btnCheckUpdate.disabled = true;
 });
 
-window.electronAPI.onUpdateDownloaded(() => {
-    updateStatus.innerText = '下载完成，重启安装...';
-    const installBtn = document.createElement('button');
-    installBtn.innerText = '立即安装';
-    installBtn.className = 'primary-btn small-btn';
-    installBtn.style.marginTop = '10px';
-    installBtn.onclick = () => window.electronAPI.installUpdate();
-    updateStatus.appendChild(document.createElement('br'));
-    updateStatus.appendChild(installBtn);
+window.electronAPI.onUpdateNotAvailable((info) => {
+    updateStatus.innerText = `当前已是最新版本 (v${info.version || 'Unknown'})`;
+    updateStatus.className = '';
+    btnCheckUpdate.disabled = false;
+});
+
+window.electronAPI.onUpdateError((err) => {
+    updateStatus.innerText = `更新出错: ${err}`;
+    updateStatus.className = 'error';
+    btnCheckUpdate.disabled = false;
+});
+
+window.electronAPI.onUpdateDownloaded((info) => {
+    updateStatus.innerText = `v${info.version} 下载完成，准备安装...`;
+    updateStatus.className = 'success';
+    
+    // Check if button already exists to avoid duplicates
+    if (!document.getElementById('btn-install-update')) {
+        const installBtn = document.createElement('button');
+        installBtn.id = 'btn-install-update';
+        installBtn.innerText = '立即安装重启';
+        installBtn.className = 'primary-btn small-btn';
+        installBtn.style.marginTop = '10px';
+        installBtn.onclick = () => window.electronAPI.installUpdate();
+        updateStatus.appendChild(document.createElement('br'));
+        updateStatus.appendChild(installBtn);
+    }
 });

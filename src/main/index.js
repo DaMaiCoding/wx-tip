@@ -542,16 +542,29 @@ function stopMonitor() {
 // Auto Update Logic
 function checkForUpdates() {
     if (app.isPackaged) {
+        // Silent check on start
         autoUpdater.checkForUpdatesAndNotify();
     }
 }
 
-autoUpdater.on('update-available', () => {
-    if (mainWindow) mainWindow.webContents.send('update:available');
+autoUpdater.on('checking-for-update', () => {
+    if (mainWindow) mainWindow.webContents.send('update:checking');
 });
 
-autoUpdater.on('update-downloaded', () => {
-    if (mainWindow) mainWindow.webContents.send('update:downloaded');
+autoUpdater.on('update-available', (info) => {
+    if (mainWindow) mainWindow.webContents.send('update:available', info);
+});
+
+autoUpdater.on('update-not-available', (info) => {
+    if (mainWindow) mainWindow.webContents.send('update:not-available', info);
+});
+
+autoUpdater.on('error', (err) => {
+    if (mainWindow) mainWindow.webContents.send('update:error', err.toString());
+});
+
+autoUpdater.on('update-downloaded', (info) => {
+    if (mainWindow) mainWindow.webContents.send('update:downloaded', info);
 });
 
 // Auto Launch Logic
@@ -653,6 +666,21 @@ ipcMain.handle('app:toggle-auto-launch', (event, enable) => {
 
 ipcMain.handle('app:get-auto-launch', () => {
     return app.getLoginItemSettings().openAtLogin;
+});
+
+ipcMain.handle('app:check-update', async () => {
+    if (!app.isPackaged) {
+        // Simulate checking delay in dev
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        if (mainWindow) mainWindow.webContents.send('update:not-available', { version: '1.0.0 (Dev)' });
+        return;
+    }
+    try {
+        await autoUpdater.checkForUpdates();
+    } catch (error) {
+        log.error('Check for updates failed', error);
+        if (mainWindow) mainWindow.webContents.send('update:error', error.message);
+    }
 });
 
 // Update IPC
