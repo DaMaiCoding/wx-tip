@@ -6,6 +6,7 @@ productName: wxTip
 files:
   - filter:
       - src/**/*
+      - assets/icon.ico
       - assets/icon.png
       - package.json
 extraResources:
@@ -15,7 +16,12 @@ extraResources:
       - '**/*'
       - '!**/*.log'
       - '!**/*.tmp'
+  - from: assets/icon.png
+    to: assets/icon.png
+  - from: assets/icon.ico
+    to: assets/icon.ico
 win:
+  icon: assets/icon.ico
   target:
     - target: nsis
       arch:
@@ -37,7 +43,7 @@ nsis:
 portable:
   artifactName: ${productName}-${version}-portable.${ext}
 mac:
-  icon: assets/icon.icns
+  icon: assets/icon.png
   target:
     - dmg
 linux:
@@ -50,5 +56,4 @@ publish:
   provider: github
   owner: your-username
   repo: wx-tip
-compression: maximum
 electronVersion: 40.1.0
