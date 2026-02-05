@@ -21,10 +21,15 @@ if (!app.isPackaged) {
     }
 }
 
+// Set App Name if provided via env
+if (process.env.PRODUCT_NAME) {
+    app.name = process.env.PRODUCT_NAME;
+}
+
 // 1. Set AppUserModelId for Windows Notifications
 // This removes "electron.app.Electron" from the notification title
 const isPortable = Boolean(process.env.PORTABLE_EXECUTABLE_FILE || process.env.PORTABLE_EXECUTABLE_DIR);
-const APP_ID = app.isPackaged ? (isPortable ? 'wxtip' : 'com.wxtip.app') : 'wxtip';
+const APP_ID = process.env.APP_ID || (app.isPackaged ? (isPortable ? 'wxtip' : 'com.wxtip.app') : 'wxtip');
 app.setAppUserModelId(APP_ID);
 
 // Configure Auto Updater Logging
@@ -37,12 +42,12 @@ let popupWindow = null;
 let popupCloseTimer = null;
 let tray = null;
 let isQuitting = false;
-const iconPath = app.isPackaged 
+const iconPath = process.env.APP_ICON_PNG || (app.isPackaged 
     ? path.join(process.resourcesPath, 'assets/icon.png')
-    : path.join(__dirname, '../../assets/icon.png');
-const iconIcoPath = app.isPackaged 
+    : path.join(__dirname, '../../assets/icon.png'));
+const iconIcoPath = process.env.APP_ICON_ICO || (app.isPackaged 
     ? path.join(process.resourcesPath, 'assets/icon.ico')
-    : path.join(__dirname, '../../assets/icon.ico');
+    : path.join(__dirname, '../../assets/icon.ico'));
 const trayIconPath = process.platform === 'win32' ? iconIcoPath : iconPath;
 const configPath = app.isPackaged 
     ? path.join(process.resourcesPath, 'services', 'config.json')

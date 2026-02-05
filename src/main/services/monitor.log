@@ -1,201 +1,200 @@
-﻿18:47
-'
-2026-02-04 19:55:12 - DEBUG: Processing ListItem - Name: '林枚钟
-好
-18:47
-', Rect: [361,847,335,68]
-2026-02-04 19:55:12 - DEBUG: Checking text-based badge pattern
-2026-02-04 19:55:12 - DEBUG: Text preview: '林枚钟
-好
-18:47
-'
-2026-02-04 19:55:12 - DEBUG: Text length: 12
-2026-02-04 19:55:12 - DEBUG: Has brackets - open: False, close: False
-2026-02-04 19:55:12 - DEBUG: No brackets found in text (skipping regex)
-2026-02-04 19:55:12 - DEBUG: No badge found for '林枚钟
-好
-18:47
-'
-2026-02-04 19:55:12 - DEBUG: WinRect: [300, 99, 1418, 813]
-2026-02-04 19:55:12 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,183,24,24], InSidebar=True, HasNumber=False
-2026-02-04 19:55:12 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[318,183,24,24], InSidebar=True, HasNumber=False
-2026-02-04 19:55:12 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,177,40,17], InSidebar=True, HasNumber=False
-2026-02-04 19:55:12 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,231,24,24], InSidebar=True, HasNumber=False
-2026-02-04 19:55:12 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[318,231,24,24], InSidebar=True, HasNumber=False
-2026-02-04 19:55:12 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,225,40,17], InSidebar=True, HasNumber=False
-2026-02-04 19:55:12 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,279,24,24], InSidebar=True, HasNumber=False
-2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[318,279,24,24], InSidebar=True, HasNumber=False
-2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,273,40,17], InSidebar=True, HasNumber=False
-2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,327,24,24], InSidebar=True, HasNumber=False
-2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[318,327,24,24], InSidebar=True, HasNumber=False
-2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,321,40,17], InSidebar=True, HasNumber=False
-2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,375,24,24], InSidebar=True, HasNumber=False
-2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[318,375,24,24], InSidebar=True, HasNumber=False
-2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,369,40,17], InSidebar=True, HasNumber=False
-2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,423,24,24], InSidebar=True, HasNumber=False
-2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[318,423,24,24], InSidebar=True, HasNumber=False
-2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,417,40,17], InSidebar=True, HasNumber=False
-2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,816,24,24], InSidebar=True, HasNumber=False
-2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[318,816,24,24], InSidebar=True, HasNumber=False
-2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[318,864,24,24], InSidebar=True, HasNumber=False
-2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[318,864,24,24], InSidebar=True, HasNumber=False
-2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Text, Name='公众号', Rect=[713,127,48,23], InSidebar=True, HasNumber=False
-2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Text, Name='公众号', Rect=[713,127,48,23], InSidebar=True, HasNumber=False
-2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='快捷操作', Rect=[656,126,28,28], InSidebar=True, HasNumber=False
-2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[662,132,16,16], InSidebar=True, HasNumber=False
-2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[662,132,16,16], InSidebar=True, HasNumber=False
-2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Group, Name='', Rect=[381,132,16,16], InSidebar=True, HasNumber=False
-2026-02-04 19:55:13 - DEBUG: Potential Badge Candidate: Type=ControlType.Button, Name='', Rect=[381,132,16,16], InSidebar=True, HasNumber=False
-2026-02-04 19:55:13 - DEBUG: Found 11 Sidebar ListItems and 29 Potential Badges
-2026-02-04 19:55:13 - DEBUG: Processing ListItem - Name: '优质站外群组——除夕清仓折扣群
-已置顶
-过恶
-18:25
-', Rect: [361,167,335,68]
-2026-02-04 19:55:13 - DEBUG: Checking text-based badge pattern
-2026-02-04 19:55:13 - DEBUG: Text preview: '优质站外群组——除夕清仓折扣群
-已置顶
-过恶
-18:25
-'
-2026-02-04 19:55:13 - DEBUG: Text length: 29
-2026-02-04 19:55:13 - DEBUG: Has brackets - open: False, close: False
-2026-02-04 19:55:13 - DEBUG: No brackets found in text (skipping regex)
-2026-02-04 19:55:13 - DEBUG: No badge found for '优质站外群组——除夕清仓折扣群
-已置顶
-过恶
-18:25
-'
-2026-02-04 19:55:13 - DEBUG: Processing ListItem - Name: '文件传输助手
-已置顶
-bbc91b01ea3e49399c1d9738ffa30b3f.XhFxzgL6juk8GBF6
-星期一
-', Rect: [361,235,335,68]
-2026-02-04 19:55:13 - DEBUG: Checking text-based badge pattern
-2026-02-04 19:55:13 - DEBUG: Text preview: '文件传输助手
-已置顶
-bbc91b01ea3e49399c1d9738ffa30b3f.XhFxzgL6juk8GBF6
-星期一
-'
-2026-02-04 19:55:13 - DEBUG: Text length: 65
-2026-02-04 19:55:13 - DEBUG: Has brackets - open: False, close: False
-2026-02-04 19:55:13 - DEBUG: No brackets found in text (skipping regex)
-2026-02-04 19:55:13 - DEBUG: No badge found for '文件传输助手
-已置顶
-bbc91b01ea3e49399c1d9738ffa30b3f.XhFxzgL6juk8GBF6
-星期一
-'
-2026-02-04 19:55:13 - DEBUG: Processing ListItem - Name: '飞牛fnOS粉丝群684
-米斯特威: 天天分享啥呢
-19:52
-消息免打扰
-', Rect: [361,303,335,68]
-2026-02-04 19:55:13 - DEBUG: Checking text-based badge pattern
-2026-02-04 19:55:13 - DEBUG: Text preview: '飞牛fnOS粉丝群684
-米斯特威: 天天分享啥呢
-19:52
-消息免打扰
-'
-2026-02-04 19:55:13 - DEBUG: Text length: 38
-2026-02-04 19:55:13 - DEBUG: Has brackets - open: False, close: False
-2026-02-04 19:55:13 - DEBUG: No brackets found in text (skipping regex)
-2026-02-04 19:55:13 - DEBUG: No badge found for '飞牛fnOS粉丝群684
-米斯特威: 天天分享啥呢
-19:52
-消息免打扰
-'
-2026-02-04 19:55:13 - DEBUG: Processing ListItem - Name: '豆鲨包警告
-啦啦啦啦啦
-19:51
-', Rect: [361,371,335,68]
-2026-02-04 19:55:13 - DEBUG: Checking text-based badge pattern
-2026-02-04 19:55:13 - DEBUG: Text preview: '豆鲨包警告
-啦啦啦啦啦
-19:51
-'
-2026-02-04 19:55:13 - DEBUG: Text length: 18
-2026-02-04 19:55:13 - DEBUG: Has brackets - open: False, close: False
-2026-02-04 19:55:13 - DEBUG: No brackets found in text (skipping regex)
-2026-02-04 19:55:13 - DEBUG: No badge found for '豆鲨包警告
-啦啦啦啦啦
-19:51
-'
-2026-02-04 19:55:13 - DEBUG: Processing ListItem - Name: '公众号
-深圳租房团V: 深圳租房【南山3则】房源①：9号线深圳南山南油西三房一厅合租房找室友次卧招租2200元/月；房源②…
-19:50
-', Rect: [361,439,335,68]
-2026-02-04 19:55:13 - DEBUG: Checking text-based badge pattern
-2026-02-04 19:55:13 - DEBUG: Text preview: '公众号
-深圳租房团V: 深圳租房【南山3则】房源①：9号线深圳南山南油西三房一厅合租房找室友次卧招租2200元/月；房源②…
-19:50
-'
-2026-02-04 19:55:13 - DEBUG: Text length: 69
-2026-02-04 19:55:13 - DEBUG: Has brackets - open: False, close: False
-2026-02-04 19:55:13 - DEBUG: No brackets found in text (skipping regex)
-2026-02-04 19:55:13 - DEBUG: No badge found for '公众号
-深圳租房团V: 深圳租房【南山3则】房源①：9号线深圳南山南油西三房一厅合租房找室友次卧招租2200元/月；房源②…
-19:50
-'
-2026-02-04 19:55:13 - DEBUG: Processing ListItem - Name: '🕊 流莺大院
-失业-5-废物的能小右-美团月卡: house周三吃这么好
-19:50
-消息免打扰
-', Rect: [361,507,335,68]
-2026-02-04 19:55:13 - DEBUG: Checking text-based badge pattern
-2026-02-04 19:55:14 - DEBUG: Text preview: '🕊 流莺大院
-失业-5-废物的能小右-美团月卡: house周三吃这么好
-19:50
-消息免打扰
-'
-2026-02-04 19:55:14 - DEBUG: Text length: 50
-2026-02-04 19:55:14 - DEBUG: Has brackets - open: False, close: False
-2026-02-04 19:55:14 - DEBUG: No brackets found in text (skipping regex)
-2026-02-04 19:55:14 - DEBUG: No badge found for '🕊 流莺大院
-失业-5-废物的能小右-美团月卡: house周三吃这么好
-19:50
-消息免打扰
-'
-2026-02-04 19:55:14 - DEBUG: Processing ListItem - Name: '老爸
-我刚刚去吃喽
-19:46
-', Rect: [361,575,335,68]
-2026-02-04 19:55:14 - DEBUG: Checking text-based badge pattern
-2026-02-04 19:55:14 - DEBUG: Text preview: '老爸
-我刚刚去吃喽
-19:46
-'
-2026-02-04 19:55:14 - DEBUG: Text length: 16
-2026-02-04 19:55:14 - DEBUG: Has brackets - open: False, close: False
-2026-02-04 19:55:14 - DEBUG: No brackets found in text (skipping regex)
-2026-02-04 19:55:14 - DEBUG: No badge found for '老爸
-我刚刚去吃喽
-19:46
-'
-2026-02-04 19:55:14 - DEBUG: Processing ListItem - Name: '服务通知
-用餐评价提醒
-19:10
-', Rect: [361,643,335,68]
-2026-02-04 19:55:14 - DEBUG: Checking text-based badge pattern
-2026-02-04 19:55:14 - DEBUG: Text preview: '服务通知
-用餐评价提醒
-19:10
-'
-2026-02-04 19:55:14 - DEBUG: Text length: 18
-2026-02-04 19:55:14 - DEBUG: Has brackets - open: False, close: False
-2026-02-04 19:55:14 - DEBUG: No brackets found in text (skipping regex)
-2026-02-04 19:55:14 - DEBUG: No badge found for '服务通知
-用餐评价提醒
-19:10
-'
-2026-02-04 19:55:14 - DEBUG: Processing ListItem - Name: '老妈
-[语音] 3"
-19:08
-', Rect: [361,711,335,68]
-2026-02-04 19:55:14 - DEBUG: Checking text-based badge pattern
-2026-02-04 19:55:14 - DEBUG: Text preview: '老妈
-[语音] 3"
-19:08
-'
-2026-02-04 19:55:14 - DEBUG: Text length: 17
-2026-02-04 19:55:14 - DEBUG: Has brackets - open: True, close: True
-2026-02-04 19:55:14 - DEBUG: Bracket content: '语音'
+﻿2026-02-05 15:55:36 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:55:37 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[12条] 失业-5-废物的能小右-美团月卡: 500？块！', type='text', lines=4
+2026-02-05 15:55:37 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[9条]'
+2026-02-05 15:55:37 - Parse-WeChatMessage: chatName='python技术交流群', content='林春展 - 腾飞: 没人了是这样', type='text', lines=4
+2026-02-05 15:55:37 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:55:37 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:55:37 - Skip: python技术交流群 - Count: 9 - Already emitted
+2026-02-05 15:55:37 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:55:38 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[12条] 失业-5-废物的能小右-美团月卡: 500？块！', type='text', lines=4
+2026-02-05 15:55:38 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[9条]'
+2026-02-05 15:55:38 - Parse-WeChatMessage: chatName='python技术交流群', content='林春展 - 腾飞: 没人了是这样', type='text', lines=4
+2026-02-05 15:55:38 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:55:38 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:55:39 - Skip: python技术交流群 - Count: 9 - Already emitted
+2026-02-05 15:55:39 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:55:40 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[12条] 失业-5-废物的能小右-美团月卡: 500？块！', type='text', lines=4
+2026-02-05 15:55:40 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[9条]'
+2026-02-05 15:55:40 - Parse-WeChatMessage: chatName='python技术交流群', content='林春展 - 腾飞: 没人了是这样', type='text', lines=4
+2026-02-05 15:55:40 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:55:40 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:55:40 - Skip: python技术交流群 - Count: 9 - Already emitted
+2026-02-05 15:55:40 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:55:41 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[12条] 失业-5-废物的能小右-美团月卡: 500？块！', type='text', lines=4
+2026-02-05 15:55:41 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[9条]'
+2026-02-05 15:55:41 - Parse-WeChatMessage: chatName='python技术交流群', content='林春展 - 腾飞: 没人了是这样', type='text', lines=4
+2026-02-05 15:55:41 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:55:41 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:55:41 - Skip: python技术交流群 - Count: 9 - Already emitted
+2026-02-05 15:55:41 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:55:42 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[12条] 失业-5-废物的能小右-美团月卡: 500？块！', type='text', lines=4
+2026-02-05 15:55:42 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[9条]'
+2026-02-05 15:55:42 - Parse-WeChatMessage: chatName='python技术交流群', content='林春展 - 腾飞: 没人了是这样', type='text', lines=4
+2026-02-05 15:55:42 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:55:42 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:55:43 - Skip: python技术交流群 - Count: 9 - Already emitted
+2026-02-05 15:55:43 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:55:44 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[12条] 失业-5-废物的能小右-美团月卡: 500？块！', type='text', lines=4
+2026-02-05 15:55:44 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[9条]'
+2026-02-05 15:55:44 - Parse-WeChatMessage: chatName='python技术交流群', content='林春展 - 腾飞: 没人了是这样', type='text', lines=4
+2026-02-05 15:55:44 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:55:44 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:55:44 - Skip: python技术交流群 - Count: 9 - Already emitted
+2026-02-05 15:55:44 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:55:45 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[12条] 失业-5-废物的能小右-美团月卡: 500？块！', type='text', lines=4
+2026-02-05 15:55:45 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[9条]'
+2026-02-05 15:55:45 - Parse-WeChatMessage: chatName='python技术交流群', content='林春展 - 腾飞: 没人了是这样', type='text', lines=4
+2026-02-05 15:55:45 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:55:45 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:55:45 - Skip: python技术交流群 - Count: 9 - Already emitted
+2026-02-05 15:55:45 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:55:46 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[12条] 失业-5-废物的能小右-美团月卡: 500？块！', type='text', lines=4
+2026-02-05 15:55:46 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[10条]'
+2026-02-05 15:55:46 - Parse-WeChatMessage: chatName='python技术交流群', content='丁家辉: [动画表情]', type='sticker', lines=4
+2026-02-05 15:55:46 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:55:46 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:55:47 - Emit: python技术交流群 - Count: 10 (Unread: True) - First time
+2026-02-05 15:55:47 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:55:47 - Cleanup: Removed old signature for python技术交流群|5
+2026-02-05 15:55:48 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[10条]'
+2026-02-05 15:55:48 - Parse-WeChatMessage: chatName='python技术交流群', content='丁家辉: [动画表情]', type='sticker', lines=4
+2026-02-05 15:55:48 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[12条] 失业-5-废物的能小右-美团月卡: 500？块！', type='text', lines=4
+2026-02-05 15:55:48 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:55:48 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:55:48 - Skip: python技术交流群 - Count: 10 - Already emitted
+2026-02-05 15:55:48 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:55:49 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[10条]'
+2026-02-05 15:55:49 - Parse-WeChatMessage: chatName='python技术交流群', content='丁家辉: [动画表情]', type='sticker', lines=4
+2026-02-05 15:55:49 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[13条] 西安-3-小羽: bug修不好', type='text', lines=4
+2026-02-05 15:55:49 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:55:49 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:55:49 - Skip: python技术交流群 - Count: 10 - Already emitted
+2026-02-05 15:55:49 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:55:50 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[13条] 西安-3-小羽: bug修不好', type='text', lines=4
+2026-02-05 15:55:51 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[10条]'
+2026-02-05 15:55:51 - Parse-WeChatMessage: chatName='python技术交流群', content='丁家辉: [动画表情]', type='sticker', lines=4
+2026-02-05 15:55:51 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:55:51 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:55:51 - Skip: python技术交流群 - Count: 10 - Already emitted
+2026-02-05 15:55:51 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:55:52 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[14条] 西安-3-小羽: [动画表情]', type='sticker', lines=4
+2026-02-05 15:55:52 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[10条]'
+2026-02-05 15:55:52 - Parse-WeChatMessage: chatName='python技术交流群', content='丁家辉: [动画表情]', type='sticker', lines=4
+2026-02-05 15:55:52 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:55:52 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:55:52 - Skip: python技术交流群 - Count: 10 - Already emitted
+2026-02-05 15:55:52 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:55:53 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[14条] 西安-3-小羽: [动画表情]', type='sticker', lines=4
+2026-02-05 15:55:53 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[10条]'
+2026-02-05 15:55:53 - Parse-WeChatMessage: chatName='python技术交流群', content='丁家辉: [动画表情]', type='sticker', lines=4
+2026-02-05 15:55:53 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:55:53 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:55:54 - Skip: python技术交流群 - Count: 10 - Already emitted
+2026-02-05 15:55:54 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:55:54 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[14条] 西安-3-小羽: [动画表情]', type='sticker', lines=4
+2026-02-05 15:55:54 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[10条]'
+2026-02-05 15:55:54 - Parse-WeChatMessage: chatName='python技术交流群', content='丁家辉: [动画表情]', type='sticker', lines=4
+2026-02-05 15:55:55 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:55:55 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:55:55 - Skip: python技术交流群 - Count: 10 - Already emitted
+2026-02-05 15:55:55 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:55:56 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[15条] 杭州-1-阿轩爱睡觉: 1k', type='text', lines=4
+2026-02-05 15:55:56 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[10条]'
+2026-02-05 15:55:56 - Parse-WeChatMessage: chatName='python技术交流群', content='丁家辉: [动画表情]', type='sticker', lines=4
+2026-02-05 15:55:56 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:55:56 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:55:56 - Skip: python技术交流群 - Count: 10 - Already emitted
+2026-02-05 15:55:56 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:55:57 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[15条] 杭州-1-阿轩爱睡觉: 1k', type='text', lines=4
+2026-02-05 15:55:57 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[10条]'
+2026-02-05 15:55:57 - Parse-WeChatMessage: chatName='python技术交流群', content='丁家辉: [动画表情]', type='sticker', lines=4
+2026-02-05 15:55:57 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:55:57 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:55:57 - Skip: python技术交流群 - Count: 10 - Already emitted
+2026-02-05 15:55:57 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:55:58 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[15条] 杭州-1-阿轩爱睡觉: 1k', type='text', lines=4
+2026-02-05 15:55:58 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[10条]'
+2026-02-05 15:55:58 - Parse-WeChatMessage: chatName='python技术交流群', content='丁家辉: [动画表情]', type='sticker', lines=4
+2026-02-05 15:55:58 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:55:58 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:55:59 - Skip: python技术交流群 - Count: 10 - Already emitted
+2026-02-05 15:55:59 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:56:00 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[15条] 杭州-1-阿轩爱睡觉: 1k', type='text', lines=4
+2026-02-05 15:56:00 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[10条]'
+2026-02-05 15:56:00 - Parse-WeChatMessage: chatName='python技术交流群', content='丁家辉: [动画表情]', type='sticker', lines=4
+2026-02-05 15:56:00 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:56:00 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:56:00 - Skip: python技术交流群 - Count: 10 - Already emitted
+2026-02-05 15:56:00 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:56:01 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[15条] 杭州-1-阿轩爱睡觉: 1k', type='text', lines=4
+2026-02-05 15:56:01 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[10条]'
+2026-02-05 15:56:01 - Parse-WeChatMessage: chatName='python技术交流群', content='丁家辉: [动画表情]', type='sticker', lines=4
+2026-02-05 15:56:01 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:56:01 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:56:01 - Skip: python技术交流群 - Count: 10 - Already emitted
+2026-02-05 15:56:01 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:56:02 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[15条] 杭州-1-阿轩爱睡觉: 1k', type='text', lines=4
+2026-02-05 15:56:02 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[10条]'
+2026-02-05 15:56:02 - Parse-WeChatMessage: chatName='python技术交流群', content='丁家辉: [动画表情]', type='sticker', lines=4
+2026-02-05 15:56:02 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:56:02 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:56:03 - Skip: python技术交流群 - Count: 10 - Already emitted
+2026-02-05 15:56:03 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:56:04 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[15条] 杭州-1-阿轩爱睡觉: 1k', type='text', lines=4
+2026-02-05 15:56:04 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[10条]'
+2026-02-05 15:56:04 - Parse-WeChatMessage: chatName='python技术交流群', content='丁家辉: [动画表情]', type='sticker', lines=4
+2026-02-05 15:56:04 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:56:04 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:56:04 - Skip: python技术交流群 - Count: 10 - Already emitted
+2026-02-05 15:56:04 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:56:05 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[11条]'
+2026-02-05 15:56:05 - Parse-WeChatMessage: chatName='python技术交流群', content='丁家辉: 有啊 还有小王 小胡', type='text', lines=4
+2026-02-05 15:56:05 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[15条] 杭州-1-阿轩爱睡觉: 1k', type='text', lines=4
+2026-02-05 15:56:05 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:56:05 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:56:05 - Emit: python技术交流群 - Count: 11 (Unread: True) - First time
+2026-02-05 15:56:05 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:56:06 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[16条] 杭州-1-阿轩爱睡觉: [动画表情]', type='sticker', lines=4
+2026-02-05 15:56:06 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[11条]'
+2026-02-05 15:56:06 - Parse-WeChatMessage: chatName='python技术交流群', content='丁家辉: 有啊 还有小王 小胡', type='text', lines=4
+2026-02-05 15:56:06 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:56:06 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:56:06 - Skip: python技术交流群 - Count: 11 - Already emitted
+2026-02-05 15:56:06 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:56:07 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[16条] 杭州-1-阿轩爱睡觉: [动画表情]', type='sticker', lines=4
+2026-02-05 15:56:07 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[11条]'
+2026-02-05 15:56:07 - Parse-WeChatMessage: chatName='python技术交流群', content='丁家辉: 有啊 还有小王 小胡', type='text', lines=4
+2026-02-05 15:56:07 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:56:07 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:56:08 - Skip: python技术交流群 - Count: 11 - Already emitted
+2026-02-05 15:56:08 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:56:09 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[16条] 杭州-1-阿轩爱睡觉: [动画表情]', type='sticker', lines=4
+2026-02-05 15:56:09 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[11条]'
+2026-02-05 15:56:09 - Parse-WeChatMessage: chatName='python技术交流群', content='丁家辉: 有啊 还有小王 小胡', type='text', lines=4
+2026-02-05 15:56:09 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:56:09 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:56:09 - Skip: python技术交流群 - Count: 11 - Already emitted
+2026-02-05 15:56:09 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:56:10 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[16条] 杭州-1-阿轩爱睡觉: [动画表情]', type='sticker', lines=4
+2026-02-05 15:56:10 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[11条]'
+2026-02-05 15:56:10 - Parse-WeChatMessage: chatName='python技术交流群', content='丁家辉: 有啊 还有小王 小胡', type='text', lines=4
+2026-02-05 15:56:10 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:56:10 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:56:10 - Skip: python技术交流群 - Count: 11 - Already emitted
+2026-02-05 15:56:10 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:56:11 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[16条] 杭州-1-阿轩爱睡觉: [动画表情]', type='sticker', lines=4
+2026-02-05 15:56:11 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[11条]'
+2026-02-05 15:56:11 - Parse-WeChatMessage: chatName='python技术交流群', content='丁家辉: 有啊 还有小王 小胡', type='text', lines=4
+2026-02-05 15:56:11 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:56:11 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:56:12 - Skip: python技术交流群 - Count: 11 - Already emitted
+2026-02-05 15:56:12 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:56:12 - Parse-WeChatMessage: chatName='🕊 流莺大院', content='[16条] 杭州-1-阿轩爱睡觉: [动画表情]', type='sticker', lines=4
+2026-02-05 15:56:12 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[11条]'
+2026-02-05 15:56:12 - Parse-WeChatMessage: chatName='python技术交流群', content='丁家辉: 有啊 还有小王 小胡', type='text', lines=4
+2026-02-05 15:56:13 - Parse-WeChatMessage: Skipped pattern '^\[\d+条?\]$' - '[4条]'
+2026-02-05 15:56:13 - Parse-WeChatMessage: chatName='豆鲨包警告', content='[破涕为笑][破涕为笑][破涕为笑]', type='text', lines=4
+2026-02-05 15:56:13 - Skip: python技术交流群 - Count: 11 - Already emitted
+2026-02-05 15:56:13 - Skip: 豆鲨包警告 - Count: 4 - Already emitted
+2026-02-05 15:56:13 - Cleanup: Removed old signature for python技术交流群|6
+2026-02-05 15:56:13 - Cleanup: Removed old signature for python技术交流群|7
