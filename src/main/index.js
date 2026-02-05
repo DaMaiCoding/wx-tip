@@ -383,6 +383,14 @@ function createWindow() {
 
     mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'));
 
+    mainWindow.once('ready-to-show', () => {
+        mainWindow.show();
+        // Force set icon again to fix potential Windows taskbar icon cache issues
+        if (process.platform === 'win32' && iconIcoPath) {
+            mainWindow.setIcon(iconIcoPath);
+        }
+    });
+
     mainWindow.on('close', (event) => {
         if (!isQuitting) {
             event.preventDefault();
