@@ -14,6 +14,7 @@ if (!app.isPackaged) {
         require('electron-reload')(path.join(__dirname, '../'), {
             electron: require(path.join(__dirname, '../../node_modules/electron')),
             awaitWriteFinish: true,
+            ignored: /config\.json|monitor\.log/
         });
     } catch (e) {
         console.log('Error loading electron-reload:', e);
@@ -296,6 +297,7 @@ function processMessageQueue() {
 }
 
 function showNativeNotification(title, body) {
+    console.log(`[Notification] Showing native notification: ${title} - ${body}`);
     const notifyOpts = {
         title: title, 
         body: body,

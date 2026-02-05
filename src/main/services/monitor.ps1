@@ -1,4 +1,4 @@
-# Configuration
+﻿# Configuration
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $logFile = Join-Path $PSScriptRoot "monitor.log"
 $configFile = Join-Path $PSScriptRoot "config.json"

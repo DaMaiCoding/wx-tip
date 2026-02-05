@@ -78,10 +78,16 @@ btnTestCustom.addEventListener('click', () => {
 });
 
 // Real Monitor Control
-chkMonitor.addEventListener('change', (e) => {
+chkMonitor.addEventListener('change', async (e) => {
     const enabled = e.target.checked;
     console.log(`监听状态切换: ${enabled}`);
     window.electronAPI.toggleMonitor(enabled);
+
+    // 互斥逻辑：关闭监听时，自动关闭自定义弹窗
+    if (!enabled && chkCustomPopup.checked) {
+        chkCustomPopup.checked = false;
+        await window.electronAPI.setCustomPopupConfig(false);
+    }
 });
 
 // Custom Popup Control
@@ -89,6 +95,12 @@ chkCustomPopup.addEventListener('change', async (e) => {
     const enabled = e.target.checked;
     console.log(`自定义弹窗切换: ${enabled}`);
     await window.electronAPI.setCustomPopupConfig(enabled);
+
+    // 互斥/联动逻辑：开启自定义弹窗时，必须开启监听
+    if (enabled && !chkMonitor.checked) {
+        chkMonitor.checked = true;
+        window.electronAPI.toggleMonitor(true);
+    }
 });
 
 // Listen for messages
