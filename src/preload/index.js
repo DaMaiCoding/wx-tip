@@ -19,7 +19,11 @@ contextBridge.exposeInMainWorld('electronAPI', {
     getMonitorConfig: () => ipcRenderer.invoke('config:get-monitor'),
 
     // Auto Update
-    onUpdateAvailable: (callback) => ipcRenderer.on('update:available', () => callback()),
-    onUpdateDownloaded: (callback) => ipcRenderer.on('update:downloaded', () => callback()),
+    checkUpdate: () => ipcRenderer.invoke('app:check-update'),
+    onUpdateAvailable: (callback) => ipcRenderer.on('update:available', (event, info) => callback(info)),
+    onUpdateNotAvailable: (callback) => ipcRenderer.on('update:not-available', (event, info) => callback(info)),
+    onUpdateDownloaded: (callback) => ipcRenderer.on('update:downloaded', (event, info) => callback(info)),
+    onUpdateError: (callback) => ipcRenderer.on('update:error', (event, error) => callback(error)),
+    onCheckingForUpdate: (callback) => ipcRenderer.on('update:checking', () => callback()),
     installUpdate: () => ipcRenderer.send('app:install-update')
 });
