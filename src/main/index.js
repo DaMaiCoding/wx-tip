@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Notification, screen, Tray, Menu, shell, nativeImage } = require('electron');
+const { app, BrowserWindow, ipcMain, Notification, screen, Tray, Menu, shell, nativeImage, nativeTheme, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const { spawn, execSync } = require('child_process');
@@ -85,7 +85,8 @@ function ensureShortcut() {
 let appConfig = {
     enableNativeNotification: true,
     enableCustomPopup: false,
-    enableMonitor: false
+    enableMonitor: false,
+    theme: 'system' // system, light, dark
 };
 
 function loadConfig() {
@@ -94,6 +95,8 @@ function loadConfig() {
             const data = fs.readFileSync(configPath, 'utf-8');
             appConfig = { ...appConfig, ...JSON.parse(data) };
         }
+        // Apply theme on load
+        nativeTheme.themeSource = appConfig.theme;
     } catch (e) {
         console.error('Failed to load config:', e);
     }
@@ -479,6 +482,10 @@ function createWindow() {
 
     ipcMain.on('window:minimize', () => mainWindow.minimize());
     ipcMain.on('window:close', () => mainWindow.hide());
+    ipcMain.on('app:quit', () => {
+        isQuitting = true;
+        app.quit();
+    });
 }
 
 // Auto Launch Logic
@@ -600,4 +607,15 @@ ipcMain.handle('popup:toggle', (event, enable) => {
 
 ipcMain.handle('popup:get-status', () => {
     return appConfig.enableCustomPopup;
+});
+
+ipcMain.handle('app:set-theme', (event, theme) => {
+    appConfig.theme = theme;
+    nativeTheme.themeSource = theme;
+    saveConfig();
+    return true;
+});
+
+ipcMain.handle('app:get-theme', () => {
+    return appConfig.theme;
 });

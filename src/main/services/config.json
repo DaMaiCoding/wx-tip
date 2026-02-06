@@ -1,5 +1,6 @@
 {
     "enableNativeNotification": true,
-    "enableCustomPopup": true,
-    "enableMonitor": true
+    "enableCustomPopup": false,
+    "enableMonitor": false,
+    "theme": "light"
 }

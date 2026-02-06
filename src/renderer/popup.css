@@ -1,3 +1,31 @@
+:root {
+    --popup-bg: rgba(255, 255, 255, 0.95);
+    --popup-border: rgba(0, 0, 0, 0.05);
+    --popup-shadow: rgba(0, 0, 0, 0.15);
+    --text-primary: #333;
+    --text-secondary: #444;
+    --text-tertiary: #888;
+    --close-btn-bg: rgba(0, 0, 0, 0.1);
+    --close-btn-hover: rgba(0, 0, 0, 0.2);
+    --close-icon-stroke: #555;
+    --badge-border: #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --popup-bg: rgba(30, 30, 30, 0.95);
+        --popup-border: rgba(255, 255, 255, 0.1);
+        --popup-shadow: rgba(0, 0, 0, 0.5);
+        --text-primary: #e0e0e0;
+        --text-secondary: #ccc;
+        --text-tertiary: #999;
+        --close-btn-bg: rgba(255, 255, 255, 0.1);
+        --close-btn-hover: rgba(255, 255, 255, 0.2);
+        --close-icon-stroke: #ccc;
+        --badge-border: #1e1e1e;
+    }
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -14,15 +42,15 @@ body {
 .notification-container {
     width: 360px;
     height: 80px;
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--popup-bg);
     border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 5px 15px var(--popup-shadow);
     display: flex;
     align-items: center;
     padding: 12px 16px;
     position: relative;
     cursor: default;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--popup-border);
 }
 
 .icon-area {
@@ -59,7 +87,7 @@ body {
 .app-name {
     font-size: 13px;
     font-weight: 600;
-    color: #333;
+    color: var(--text-primary);
     flex-shrink: 0;
 }
 
@@ -85,20 +113,20 @@ body {
     font-size: 10px;
     font-weight: 600;
     border-radius: 9px;
-    border: 1px solid #fff;
+    border: 1px solid var(--badge-border);
     z-index: 10;
     box-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
 
 .time {
     font-size: 11px;
-    color: #888;
+    color: var(--text-tertiary);
     margin-left: auto;
 }
 
 .message-body {
     font-size: 13px;
-    color: #444;
+    color: var(--text-secondary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -126,7 +154,7 @@ body {
     display: none;
     width: 20px;
     height: 20px;
-    background: rgba(0, 0, 0, 0.1);
+    background: var(--close-btn-bg);
     border-radius: 50%;
     justify-content: center;
     align-items: center;
@@ -138,11 +166,11 @@ body {
 }
 
 .close-btn:hover {
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--close-btn-hover);
 }
 
 .close-btn svg path {
-    stroke: #555;
+    stroke: var(--close-icon-stroke);
 }
 
 .fade-out {
