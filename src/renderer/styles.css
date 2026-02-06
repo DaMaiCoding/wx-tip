@@ -334,14 +334,14 @@ input:checked + .slider:before { transform: translateX(20px); }
     margin-bottom: 8px; transition: all 0.3s ease; color: var(--text-secondary);
 }
 .action-circle-btn:hover .circle-icon {
-    border-color: var(--accent-color); color: var(--accent-color);
+    color: var(--accent-color);
     box-shadow: 0 4px 12px rgba(255, 159, 67, 0.2); background-color: rgba(255, 159, 67, 0.05);
 }
 .circle-icon svg { width: 24px; height: 24px; }
 .action-circle-btn span { font-size: 13px; color: var(--text-secondary); transition: color 0.3s ease; font-weight: 500; }
 .action-circle-btn:hover span { color: var(--text-primary); }
 [data-theme="light"] .circle-icon { background-color: #fff; border-color: #eee; }
-[data-theme="light"] .action-circle-btn:hover .circle-icon { background-color: #fff; border-color: var(--accent-color); }
+[data-theme="light"] .action-circle-btn:hover .circle-icon { background-color: #fff; }
 
 /* No Box Icon Style */
 .item-icon-box.no-box {

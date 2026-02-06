@@ -2,5 +2,5 @@
     "enableNativeNotification": true,
     "enableCustomPopup": false,
     "enableMonitor": false,
-    "theme": "system"
+    "theme": "light"
 }
