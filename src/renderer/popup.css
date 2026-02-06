@@ -30,6 +30,8 @@ body {
     height: 48px;
     flex-shrink: 0;
     margin-right: 12px;
+    position: relative;
+    overflow: visible;
 }
 
 .app-icon {
@@ -69,17 +71,23 @@ body {
 }
 
 .count-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     min-width: 18px;
     height: 18px;
-    padding: 0 5px;
+    padding: 0 4px;
     background: #ff3b30;
     color: white;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 600;
     border-radius: 9px;
+    border: 1px solid #fff;
+    z-index: 10;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
 
 .time {

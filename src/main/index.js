@@ -236,6 +236,9 @@ function createTray() {
             click: () => {
                 if (mainWindow) {
                     mainWindow.show();
+                    if (process.platform === 'win32' && iconIcoPath) {
+                        mainWindow.setIcon(iconIcoPath);
+                    }
                     mainWindow.focus();
                 }
             }
@@ -257,6 +260,9 @@ function createTray() {
                 mainWindow.hide();
             } else {
                 mainWindow.show();
+                if (process.platform === 'win32' && iconIcoPath) {
+                    mainWindow.setIcon(iconIcoPath);
+                }
                 mainWindow.focus();
             }
         }
