@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Notification, screen, Tray, Menu, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, Notification, screen, Tray, Menu, shell, nativeImage } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const { spawn, execSync } = require('child_process');
@@ -40,6 +40,11 @@ const iconPath = process.env.APP_ICON_PNG || (app.isPackaged
 const iconIcoPath = process.env.APP_ICON_ICO || (app.isPackaged 
     ? path.join(process.resourcesPath, 'assets/icon.ico')
     : path.join(__dirname, '../../assets/icon.ico'));
+
+console.log(`[IconPath] Check: ${iconIcoPath}, Exists: ${fs.existsSync(iconIcoPath)}`);
+
+const appIcon = nativeImage.createFromPath(process.platform === 'win32' ? iconIcoPath : iconPath);
+
 const trayIconPath = process.platform === 'win32' ? iconIcoPath : iconPath;
 const configPath = app.isPackaged 
     ? path.join(process.resourcesPath, 'services', 'config.json')
@@ -228,7 +233,7 @@ function startNotifyServer() {
 function createTray() {
     if (tray) return;
 
-    tray = new Tray(trayIconPath);
+    tray = new Tray(appIcon);
 
     const contextMenu = Menu.buildFromTemplate([
         {
@@ -236,8 +241,8 @@ function createTray() {
             click: () => {
                 if (mainWindow) {
                     mainWindow.show();
-                    if (process.platform === 'win32' && iconIcoPath) {
-                        mainWindow.setIcon(iconIcoPath);
+                    if (process.platform === 'win32') {
+                        mainWindow.setIcon(appIcon);
                     }
                     mainWindow.focus();
                 }
@@ -260,8 +265,8 @@ function createTray() {
                 mainWindow.hide();
             } else {
                 mainWindow.show();
-                if (process.platform === 'win32' && iconIcoPath) {
-                    mainWindow.setIcon(iconIcoPath);
+                if (process.platform === 'win32') {
+                    mainWindow.setIcon(appIcon);
                 }
                 mainWindow.focus();
             }
@@ -296,7 +301,7 @@ function createPopupWindow() {
         skipTaskbar: true,
         focusable: false,
         show: false,
-        icon: process.platform === 'win32' ? iconIcoPath : iconPath,
+        icon: appIcon,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
@@ -414,7 +419,7 @@ function createWindow() {
         skipTaskbar: false,
         showInTaskbar: true,
         show: false,
-        icon: process.platform === 'win32' ? iconIcoPath : iconPath,
+        icon: appIcon,
         webPreferences: {
             preload: path.join(__dirname, '../preload/index.js'),
             nodeIntegration: false,
@@ -430,8 +435,8 @@ function createWindow() {
         if (!isHidden) {
             mainWindow.show();
         }
-        if (process.platform === 'win32' && iconIcoPath) {
-            mainWindow.setIcon(iconIcoPath);
+        if (process.platform === 'win32') {
+            mainWindow.setIcon(appIcon);
         }
     });
 
