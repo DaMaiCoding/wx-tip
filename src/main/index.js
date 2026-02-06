@@ -348,6 +348,7 @@ function createWindow() {
         titleBarStyle: 'hidden',
         skipTaskbar: false,
         showInTaskbar: true,
+        show: false,
         icon: process.platform === 'win32' ? iconIcoPath : iconPath,
         webPreferences: {
             preload: path.join(__dirname, '../preload/index.js'),
@@ -359,7 +360,11 @@ function createWindow() {
     mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'));
 
     mainWindow.once('ready-to-show', () => {
-        mainWindow.show();
+        const isHidden = process.argv.includes('--hidden') || 
+                         (process.platform === 'darwin' && app.getLoginItemSettings().wasOpenedAsHidden);
+        if (!isHidden) {
+            mainWindow.show();
+        }
         if (process.platform === 'win32' && iconIcoPath) {
             mainWindow.setIcon(iconIcoPath);
         }
@@ -383,7 +388,8 @@ function setAutoLaunch(enable) {
     app.setLoginItemSettings({
         openAtLogin: enable,
         path: process.execPath,
-        args: ['--hidden']
+        args: ['--hidden'],
+        openAsHidden: enable
     });
 }
 
