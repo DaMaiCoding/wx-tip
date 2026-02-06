@@ -195,7 +195,6 @@ body {
 
 .summary-card:hover .summary-icon {
     transform: scale(1.05);
-    background: rgba(255, 159, 67, 0.12);
     box-shadow: 0 10px 25px rgba(255, 159, 67, 0.25);
 }
 

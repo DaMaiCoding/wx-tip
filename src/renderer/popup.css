@@ -44,7 +44,7 @@ body {
     height: 80px;
     background: var(--popup-bg);
     border-radius: 12px;
-    box-shadow: 0 5px 15px var(--popup-shadow);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
     padding: 12px 16px;
