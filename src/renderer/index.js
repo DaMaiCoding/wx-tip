@@ -155,6 +155,12 @@ window.electronAPI.onUpdateAvailable((info) => {
     btnCheckUpdate.disabled = true;
 });
 
+window.electronAPI.onDownloadProgress((progress) => {
+    const percent = Math.round(progress.percent);
+    updateStatus.innerText = `正在下载... ${percent}%`;
+    // Optional: Add a visual progress bar if needed, but text is fine for now
+});
+
 window.electronAPI.onUpdateNotAvailable((info) => {
     updateStatus.innerText = `当前已是最新版本 (v${info.version || 'Unknown'})`;
     updateStatus.className = '';
