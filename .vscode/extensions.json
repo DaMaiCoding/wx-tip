@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "cschleiden.vscode-github-actions",
+        "eamodio.gitlens",
+        "codezombiech.gitignore"
+    ]
+}

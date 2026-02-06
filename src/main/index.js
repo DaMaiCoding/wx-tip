@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain, dialog, Notification, screen, Tray, Menu, shell } = require('electron');
 const path = require('path');
+const os = require('os');
 const { spawn } = require('child_process');
 const patcher = require('./services/patcher');
 const express = require('express');
@@ -35,6 +36,12 @@ app.setAppUserModelId(APP_ID);
 // Configure Auto Updater Logging
 log.transports.file.level = 'info';
 autoUpdater.logger = log;
+
+if (process.env.FORCE_PROD_UPDATE === 'true') {
+    console.log('[Update] Force Prod Update Enabled');
+    autoUpdater.forceDevUpdateConfig = true;
+    // autoUpdater.autoDownload = true; // Default is true
+}
 
 let monitorProcess = null;
 let mainWindow = null;
@@ -540,30 +547,53 @@ function stopMonitor() {
 }
 
 // Auto Update Logic
-function checkForUpdates() {
-    if (app.isPackaged) {
-        // Silent check on start
-        autoUpdater.checkForUpdatesAndNotify();
+async function checkForUpdates() {
+    if (app.isPackaged || process.env.FORCE_PROD_UPDATE === 'true') {
+        console.log('[Update] Checking for updates (Force/Prod)...');
+        try {
+            await autoUpdater.checkForUpdates();
+        } catch (e) {
+            console.error('[Update] Error checking for updates:', e);
+        }
     }
 }
 
 autoUpdater.on('checking-for-update', () => {
+    console.log('[Update] Checking...');
     if (mainWindow) mainWindow.webContents.send('update:checking');
 });
 
 autoUpdater.on('update-available', (info) => {
+    console.log('[Update] Available:', info.version);
     if (mainWindow) mainWindow.webContents.send('update:available', info);
 });
 
 autoUpdater.on('update-not-available', (info) => {
+    console.log('[Update] Not Available:', info.version);
     if (mainWindow) mainWindow.webContents.send('update:not-available', info);
 });
 
-autoUpdater.on('error', (err) => {
-    if (mainWindow) mainWindow.webContents.send('update:error', err.toString());
+autoUpdater.on('error', (error) => {
+    console.error('[Update] Error:', error);
+    let message = error.message || error.toString();
+    
+    // Optimize error message for common issues
+    if (message.includes('HttpError: 406') || message.includes('Unable to find latest version')) {
+        message = '未找到可用的更新版本 (GitHub Releases)';
+    } else if (message.includes('Network Error')) {
+        message = '网络连接失败，无法检查更新';
+    }
+    
+    if (mainWindow) mainWindow.webContents.send('update:error', message);
+});
+
+autoUpdater.on('download-progress', (progressObj) => {
+    console.log(`[Update] Progress: ${progressObj.percent.toFixed(2)}%`);
+    if (mainWindow) mainWindow.webContents.send('update:download-progress', progressObj);
 });
 
 autoUpdater.on('update-downloaded', (info) => {
+    console.log('[Update] Downloaded:', info.version);
     if (mainWindow) mainWindow.webContents.send('update:downloaded', info);
 });
 
@@ -669,10 +699,38 @@ ipcMain.handle('app:get-auto-launch', () => {
 });
 
 ipcMain.handle('app:check-update', async () => {
-    if (!app.isPackaged) {
-        // Simulate checking delay in dev
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        if (mainWindow) mainWindow.webContents.send('update:not-available', { version: '1.0.0 (Dev)' });
+    // Enable force production update testing in dev
+    const forceProdUpdate = process.env.FORCE_PROD_UPDATE === 'true';
+
+    if (!app.isPackaged && !forceProdUpdate) {
+        // Simulate update flow in dev for testing
+        if (mainWindow) mainWindow.webContents.send('update:checking');
+        
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        
+        // Randomly decide if update is available or not (or force available for demo)
+        const demoUpdate = true; 
+
+        if (demoUpdate) {
+            const updateInfo = { version: '2.0.0', releaseNotes: 'Dev Simulation Update' };
+            if (mainWindow) mainWindow.webContents.send('update:available', updateInfo);
+            
+            // Simulate download progress
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                if (mainWindow) {
+                    mainWindow.webContents.send('update:download-progress', { percent: progress });
+                }
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    if (mainWindow) mainWindow.webContents.send('update:downloaded', updateInfo);
+                }
+            }, 500);
+        } else {
+            if (mainWindow) mainWindow.webContents.send('update:not-available', { version: '1.0.0 (Dev)' });
+        }
         return;
     }
     try {
@@ -685,7 +743,31 @@ ipcMain.handle('app:check-update', async () => {
 
 // Update IPC
 ipcMain.on('app:install-update', () => {
-    autoUpdater.quitAndInstall();
+    try {
+        console.log('[Update] Quitting and installing...');
+        // quitAndInstall(isSilent, isForceRunAfter)
+        autoUpdater.quitAndInstall(false, true);
+    } catch (error) {
+        console.error('[Update] Failed to quit and install:', error);
+        
+        // In dev mode (with FORCE_PROD_UPDATE), we can't really "install" 
+        // because we are running from source. Try to open the folder instead.
+        if (!app.isPackaged) {
+            console.log('[Update] Dev mode detected, opening cache directory...');
+            const path = require('path');
+            // Typical location: AppData/Local/wxTip-updater/pending
+            const cacheDir = path.join(os.homedir(), 'AppData', 'Local', 'wxTip-updater', 'pending');
+            if (fs.existsSync(cacheDir)) {
+                shell.openPath(cacheDir);
+            } else {
+                console.log('[Update] Cache dir not found:', cacheDir);
+            }
+        }
+        
+        if (mainWindow) {
+            mainWindow.webContents.send('update:error', `安装失败: ${error.message}`);
+        }
+    }
 });
 
 // Config IPC

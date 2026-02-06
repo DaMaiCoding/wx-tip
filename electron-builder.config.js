@@ -52,7 +52,8 @@ module.exports = {
       }
     ],
     compression: "maximum",
-    signAndEditExecutable: true
+    signAndEditExecutable: false,
+    sign: null
   },
   nsis: {
     oneClick: false,
