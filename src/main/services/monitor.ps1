@@ -65,6 +65,7 @@ function Parse-WeChatMessage {
     
     $chatName = $lines[0]
     $messageType = Get-MessageType -fullTxt $fullTxt
+    $isPinned = $false
     
     $skipPatterns = @(
         "^\[\d+条?\]$",
@@ -88,6 +89,12 @@ function Parse-WeChatMessage {
             continue
         }
         
+        # Check for Pinned status
+        if ($line -eq "已置顶") {
+            $isPinned = $true
+            continue
+        }
+        
         $shouldSkip = $false
         foreach ($pattern in $skipPatterns) {
             if ($line -match $pattern) {
@@ -108,6 +115,10 @@ function Parse-WeChatMessage {
     } else {
         Log-Message "Parse-WeChatMessage: No valid content found, using chatName as fallback"
         $messageContent = $chatName
+    }
+    
+    if ($isPinned) {
+        $chatName = "$chatName [已置顶]"
     }
     
     Log-Message "Parse-WeChatMessage: chatName='$chatName', content='$messageContent', type='$messageType', lines=$($lines.Count)"

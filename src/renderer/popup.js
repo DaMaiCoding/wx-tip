@@ -31,8 +31,13 @@ const MESSAGE_LABELS = {
     text: ''
 };
 
-closeBtn.addEventListener('click', () => {
+closeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
     ipcRenderer.send('popup:close');
+});
+
+notification.addEventListener('click', () => {
+    ipcRenderer.send('popup:click');
 });
 
 ipcRenderer.on('popup:update', (event, data) => {

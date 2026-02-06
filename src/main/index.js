@@ -339,6 +339,53 @@ ipcMain.on('popup:close', () => {
     }
 });
 
+ipcMain.on('popup:click', () => {
+    // Activate WeChat Window
+    const script = `
+    $code = @"
+    using System;
+    using System.Runtime.InteropServices;
+    public class User32 {
+        [DllImport("user32.dll")]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
+        [DllImport("user32.dll")]
+        public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+        [DllImport("user32.dll")]
+        public static extern bool IsIconic(IntPtr hWnd);
+    }
+"@
+    Add-Type -TypeDefinition $code -Language CSharp -ErrorAction SilentlyContinue
+    
+    $proc = Get-Process -Name "WeChat", "Weixin" -ErrorAction SilentlyContinue | Select-Object -First 1
+    if ($proc) {
+        $hwnd = $proc.MainWindowHandle
+        if ($hwnd -eq 0) {
+             # Window handle is 0, likely minimized to tray. Restarting executable usually wakes it up.
+             if ($proc.Path) {
+                 Start-Process $proc.Path
+             }
+        } else {
+            # SW_RESTORE = 9
+            if ([User32]::IsIconic($hwnd)) {
+                [User32]::ShowWindowAsync($hwnd, 9)
+            } else {
+                 # SW_SHOW = 5, just to be sure
+                 [User32]::ShowWindowAsync($hwnd, 5)
+            }
+            [User32]::SetForegroundWindow($hwnd)
+        }
+    }
+    `;
+    spawn('powershell.exe', ['-Command', script], {
+        windowsHide: true,
+        stdio: 'ignore'
+    });
+
+    if (popupWindow && !popupWindow.isDestroyed()) {
+        popupWindow.close();
+    }
+});
+
 function showNativeNotification(title, body) {
     const notifyOpts = {
         title: title, 
