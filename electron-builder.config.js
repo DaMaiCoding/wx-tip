@@ -78,10 +78,5 @@ module.exports = {
   },
   electronDownload: {
     mirror: "https://npmmirror.com/mirrors/electron/"
-  },
-  publish: {
-    provider: "github",
-    owner: "DaMaiCoding",
-    repo: "wx-tip"
   }
 };

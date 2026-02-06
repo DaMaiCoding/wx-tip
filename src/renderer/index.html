@@ -26,36 +26,13 @@
     </div>
 
     <div class="container">
-        <!-- Anti-Revoke Section -->
-        <div class="section">
-            <div class="section-header">
-                <div class="icon-box patch-icon">🛡️</div>
-                <div class="header-text">
-                    <h2>防撤回补丁</h2>
-                    <p class="subtitle">支持 WeChat 3.9.x - 4.1.x</p>
-                </div>
-            </div>
-
-            <div class="card-content">
-                <div class="action-row">
-                    <button id="btn-auto" class="primary-btn">自动查找</button>
-                    <button id="btn-select" class="secondary-btn">手动选择</button>
-                </div>
-
-                <div id="file-path" class="file-path-display">等待选择 WeChatWin.dll...</div>
-
-                <button id="btn-patch" class="full-width-btn" disabled>应用防撤回补丁</button>
-                <div id="patch-status" class="status-msg"></div>
-            </div>
-        </div>
-
         <!-- Notification Section -->
         <div class="section">
             <div class="section-header">
                 <div class="icon-box notify-icon">🔔</div>
                 <div class="header-text">
                     <h2>消息通知增强</h2>
-                    <p class="subtitle">系统级原生弹窗提醒</p>
+                    <p class="subtitle">系统级原生弹窗提醒测试</p>
                 </div>
             </div>
 
@@ -67,15 +44,13 @@
                     </label>
                     <span class="toggle-label">开启实时消息监听</span>
                 </div>
-
-                <div class="toggle-row">
+                <div class="toggle-row" style="margin-top: 10px;">
                     <label class="toggle-switch">
                         <input type="checkbox" id="chk-custom-popup">
                         <span class="slider"></span>
                     </label>
-                    <span class="toggle-label">开启自定义Mac风格弹窗</span>
+                    <span class="toggle-label">启用 Mac 风格弹窗</span>
                 </div>
-
                 <div class="action-row" style="margin-top: 15px; gap: 10px;">
                     <button id="btn-test-native" class="secondary-btn small-btn" style="flex: 1;">测试原生弹窗</button>
                     <button id="btn-test-custom" class="secondary-btn small-btn" style="flex: 1;">测试自定义弹窗</button>
@@ -89,7 +64,7 @@
                 <div class="icon-box settings-icon" style="background: #e3f2fd; color: #1976d2;">⚙️</div>
                 <div class="header-text">
                     <h2>系统设置</h2>
-                    <p class="subtitle">自启动与更新</p>
+                    <p class="subtitle">自启动与版本</p>
                 </div>
             </div>
 
@@ -102,10 +77,9 @@
                     <span class="toggle-label">开机自动启动</span>
                 </div>
 
-                <div class="action-row" style="margin-top: 15px;">
-                    <button id="btn-check-update" class="secondary-btn small-btn" style="width: 100%;">检查更新</button>
+                <div class="version-info" style="margin-top: 20px; text-align: center; color: #888; font-size: 13px;">
+                    当前版本: <span id="app-version">...</span>
                 </div>
-                <div id="update-status" class="status-msg"></div>
             </div>
         </div>
     </div>

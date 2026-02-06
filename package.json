@@ -1,7 +1,7 @@
 {
   "name": "wx-tip",
   "productName": "wxTip",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "src/main/index.js",
   "repository": {
     "type": "git",
@@ -40,7 +40,6 @@
   "dependencies": {
     "body-parser": "^2.2.2",
     "electron-log": "^5.4.3",
-    "electron-updater": "^6.7.3",
     "express": "^5.2.1"
   }
 }
