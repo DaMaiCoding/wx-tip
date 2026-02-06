@@ -64,7 +64,6 @@ function Parse-WeChatMessage {
     }
     
     $chatName = $lines[0]
-    $messageContent = ""
     $messageType = Get-MessageType -fullTxt $fullTxt
     
     $skipPatterns = @(
@@ -81,7 +80,7 @@ function Parse-WeChatMessage {
         "^视频通话\s*\d{1,3}秒$"
     )
     
-    $foundContent = $false
+    $contentLines = @()
     for ($i = 1; $i -lt $lines.Count; $i++) {
         $line = $lines[$i].Trim()
         
@@ -92,20 +91,21 @@ function Parse-WeChatMessage {
         $shouldSkip = $false
         foreach ($pattern in $skipPatterns) {
             if ($line -match $pattern) {
-                Log-Message "Parse-WeChatMessage: Skipped pattern '$pattern' - '$line'"
+                # Log-Message "Parse-WeChatMessage: Skipped pattern '$pattern' - '$line'"
                 $shouldSkip = $true
                 break
             }
         }
         
         if (-not $shouldSkip) {
-            $messageContent = $line
-            $foundContent = $true
-            break
+            $contentLines += $line
         }
     }
     
-    if (-not $foundContent) {
+    if ($contentLines.Count -gt 0) {
+        # Join multiple lines with a space to preserve content
+        $messageContent = $contentLines -join " "
+    } else {
         Log-Message "Parse-WeChatMessage: No valid content found, using chatName as fallback"
         $messageContent = $chatName
     }
@@ -185,11 +185,7 @@ function Get-BadgeTextFromPosition($itemRect, $potentialBadges) {
 }
 
 $lastMessageList = @()
-$emittedSignatures = @{} # Hashtable to track emitted messages
-
-function Get-MessageSignature($msg) {
-    return "$($msg.title)|$($msg.count)"
-}
+$global:lastState = @{} # Hashtable to track message counts: Key=Title, Value=Count
 
 while ($true) {
     try {
@@ -213,15 +209,13 @@ while ($true) {
         # Get Window Rect
         $winRect = $win.Current.BoundingRectangle
         if ($winRect.Width -eq 0) { 
-            Start-Sleep -Seconds 1
+            Start-Sleep -Milliseconds 200
             continue 
         }
 
         # Define Areas
         $msgAreaLeft = $winRect.X + ($winRect.Width * 0.28) 
         $inputAreaTop = $winRect.Top + ($winRect.Height * 0.80) 
-
-        Log-Message "DEBUG: WinRect: [$($winRect.X), $($winRect.Y), $($winRect.Width), $($winRect.Height)]"
         
         # 1. Find all ListItems (Chats)
         $condList = New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::ControlTypeProperty, [System.Windows.Automation.ControlType]::ListItem)
@@ -259,13 +253,10 @@ while ($true) {
                 
                 if ($r.Width -gt 0 -and $r.Width -lt 100 -and $r.Height -lt 50 -and ($isInSidebar -or $hasNumber)) {
                     $potentialBadges += $el
-                    Log-Message "DEBUG: Potential Badge Candidate: Type=$($el.Current.ControlType.ProgrammaticName), Name='$($name)', Rect=[$($r.Left),$($r.Top),$($r.Width),$($r.Height)], InSidebar=$isInSidebar, HasNumber=$hasNumber"
                 }
             } catch {}
         }
         
-        Log-Message "DEBUG: Found $($sidebarListItems.Count) Sidebar ListItems and $($potentialBadges.Count) Potential Badges"
-
         $currentMsgs = @()
         
         foreach ($el in $sidebarListItems) {
@@ -275,10 +266,6 @@ while ($true) {
                 $badgeCount = 0
                 $hasBadge = $false
                 
-                # Escape single quotes for logging
-                $safeTxt = $fullTxt -replace "'", "''"
-                Log-Message "DEBUG: Processing ListItem - Name: '$safeTxt', Rect: [$($itemRect.Left),$($itemRect.Top),$($itemRect.Width),$($itemRect.Height)]"
-                
                 # Filter out invalid ListItems based on position and size
                 $sidebarRightEdge = $winRect.X + ($winRect.Width * 0.4)
                 $minSidebarWidth = 200
@@ -286,7 +273,6 @@ while ($true) {
                 
                 # Valid sidebar ListItems: reasonable width AND left position in sidebar area
                 if ($itemRect.Width -lt $minSidebarWidth -or $itemRect.Width -gt $maxSidebarWidth -or $itemRect.Left -gt $sidebarRightEdge -or $itemRect.Height -lt 20) {
-                    Log-Message "DEBUG: Skipped invalid ListItem (Width: $($itemRect.Width), Left: $($itemRect.Left), SidebarRightEdge: $sidebarRightEdge, Height: $($itemRect.Height))"
                     continue
                 }
                 
@@ -295,66 +281,15 @@ while ($true) {
                 if ($badgeResult -gt 0) {
                     $hasBadge = $true
                     $badgeCount = $badgeResult
-                    Log-Message "DEBUG: Found badge count $badgeCount for position-based"
                 }
                 
                 # Text-based badge detection (e.g., "[2条]")
                 if (-not $hasBadge) {
-                    Log-Message "DEBUG: Checking text-based badge pattern"
-                    
-                    # Debug: Show first 100 chars of text
                     if ($fullTxt.Length -gt 0) {
-                        $debugTxt = $fullTxt.Substring(0, [Math]::Min(100, $fullTxt.Length))
-                        Log-Message "DEBUG: Text preview: '$debugTxt'"
-                        Log-Message "DEBUG: Text length: $($fullTxt.Length)"
-                        
-                        # Check for [X条] pattern with regex (ASCII only)
-                        
-                        # Debug: Check for bracket characters
-                        $hasOpenBracket = $false
-                        $hasCloseBracket = $false
-                        foreach ($char in $fullTxt.ToCharArray()) {
-                            if ($char -eq '[') { $hasOpenBracket = $true }
-                            if ($char -eq ']') { $hasCloseBracket = $true }
-                        }
-                        Log-Message "DEBUG: Has brackets - open: $hasOpenBracket, close: $hasCloseBracket"
-                        
-                        if ($hasOpenBracket -and $hasCloseBracket) {
-                            # Debug: Find bracket positions and check content
-                            $openIdx = $fullTxt.IndexOf("[")
-                            $closeIdx = $fullTxt.IndexOf("]")
-                            if ($openIdx -ge 0 -and $closeIdx -gt $openIdx) {
-                                $content = $fullTxt.Substring($openIdx + 1, $closeIdx - $openIdx - 1)
-                                Log-Message "DEBUG: Bracket content: '$content'"
-                                
-                                # Try to extract number
-                                if ($content -match "^(\d+)") {
-                                    $num = $matches[1]
-                                    Log-Message "DEBUG: Found number in brackets: $num"
-                                    
-                                    if ($content -match "^$num条") {
-                                        $badgeCount = [int]$num
-                                        $hasBadge = $true
-                                        Log-Message "DEBUG: Found badge count $badgeCount (manual check)"
-                                    } else {
-                                        Log-Message "DEBUG: Content does not match 'N条' pattern"
-                                    }
-                                }
-                            }
-                            
-                            # Try regex as fallback
-                            if (-not $hasBadge) {
-                                $match1 = [regex]::Match($fullTxt, "(?s)\[(\d+)条\]")
-                                if ($match1.Success) {
-                                    $badgeCount = [int]$match1.Groups[1].Value
-                                    $hasBadge = $true
-                                    Log-Message "DEBUG: Found Text-based Badge count $badgeCount (pattern [X条])"
-                                } else {
-                                    Log-Message "DEBUG: No text-based badge pattern found (regex failed)"
-                                }
-                            }
-                        } else {
-                            Log-Message "DEBUG: No brackets found in text (skipping regex)"
+                        # Check for bracket patterns like [2条]
+                        if ($fullTxt -match "\[(\d+)条\]") {
+                             $badgeCount = [int]$matches[1]
+                             $hasBadge = $true
                         }
                     }
                 }
@@ -366,12 +301,10 @@ while ($true) {
                     $messageType = $result.messageType
                     
                     if ($fullTxt -match "消息免打扰") {
-                        Log-Message "DEBUG: Skipped muted chat: $chatName (count: $badgeCount)"
                         continue
                     }
                     
                     if ($chatName -match "公众号" -or $chatName -match "QQ邮箱提醒" -or $chatName -match "文件传输助手" -or $chatName -match "微信团队" -or $chatName -match "提醒" -or $chatName -match "通知") {
-                        Log-Message "DEBUG: Skipped system/official account: $chatName (count: $badgeCount)"
                         continue
                     }
                     
@@ -385,57 +318,56 @@ while ($true) {
                         timestamp = (Get-Date).ToString("HH:mm:ss")
                     }
                     $currentMsgs += $msgObj
-                    Log-Message "DEBUG: Added message to currentMsgs: $chatName - $messageContent [$messageType] (count: $badgeCount)"
-                } else {
-                    $safeTxt = $fullTxt -replace "'", "''"
-                    Log-Message "DEBUG: No badge found for '$safeTxt'"
                 }
             } catch {
                 Log-Message "ERROR processing ListItem: $_"
             }
         }
 
-        # Diff Logic with Improved Deduplication
+        # Diff Logic with State Tracking (Fixes duplicate notifications)
+        $currentTitles = @{}
+        
         foreach ($msg in $currentMsgs) {
-            $sig = Get-MessageSignature $msg
+            $title = $msg.title
+            $count = $msg.count
+            $currentTitles[$title] = $true
+            
             $shouldEmit = $false
             
-            if (-not $emittedSignatures.ContainsKey($sig)) {
+            if (-not $global:lastState.ContainsKey($title)) {
+                # New conversation or first detection
                 $shouldEmit = $true
-                $emittedSignatures[$sig] = Get-Date
-                Log-Message "Emit: $($msg.title) - Count: $($msg.count) (Unread: $isUnread) - First time"
-            } else {
-                Log-Message "Skip: $($msg.title) - Count: $($msg.count) - Already emitted"
+                Log-Message "Emit: $title - New conversation detected"
+            } elseif ($count -gt $global:lastState[$title]) {
+                # Message count increased
+                $shouldEmit = $true
+                Log-Message "Emit: $title - Count increased from $($global:lastState[$title]) to $count"
             }
             
             if ($shouldEmit) {
                 $json = $msg | ConvertTo-Json -Compress
                 Write-Output $json
             }
+            
+            # Update state
+            $global:lastState[$title] = $count
+        }
+        
+        # Cleanup removed conversations (Read or Disappeared)
+        $titlesToRemove = @()
+        foreach ($key in $global:lastState.Keys) {
+            if (-not $currentTitles.ContainsKey($key)) {
+                $titlesToRemove += $key
+            }
+        }
+        foreach ($key in $titlesToRemove) {
+            $global:lastState.Remove($key)
+            Log-Message "State: Removed $key (read or disappeared)"
         }
 
         $lastMessageList = $currentMsgs
         
-        # Cleanup old signatures (every 10 loops)
-        if ($global:cleanupCounter -eq $null) { $global:cleanupCounter = 0 }
-        $global:cleanupCounter++
-        if ($global:cleanupCounter -ge 10) {
-            $global:cleanupCounter = 0
-            $now = Get-Date
-            $keysToRemove = @()
-            foreach ($key in $emittedSignatures.Keys) {
-                $age = ($now - $emittedSignatures[$key]).TotalSeconds
-                if ($age -gt 60) {
-                    $keysToRemove += $key
-                }
-            }
-            foreach ($key in $keysToRemove) {
-                $emittedSignatures.Remove($key)
-                Log-Message "Cleanup: Removed old signature for $key"
-            }
-        }
-
-        Start-Sleep -Milliseconds 500
+        Start-Sleep -Milliseconds 100
 
     } catch {
         Log-Message "Error in loop: $_"

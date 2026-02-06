@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain, Notification, screen, Tray, Menu, shell } = require('electron');
 const path = require('path');
 const fs = require('fs');
-const { spawn } = require('child_process');
+const { spawn, execSync } = require('child_process');
 const express = require('express');
 const bodyParser = require('body-parser');
 
@@ -165,8 +165,20 @@ function startMonitor() {
 function stopMonitor() {
     if (monitorProcess) {
         console.log('Stopping Monitor Service...');
-        monitorProcess.kill();
-        monitorProcess = null;
+        try {
+            if (process.platform === 'win32' && monitorProcess.pid) {
+                // Force kill process tree on Windows
+                execSync(`taskkill /pid ${monitorProcess.pid} /T /F`);
+            }
+        } catch (e) {
+            // Ignore errors (e.g. process already dead)
+            console.log('Monitor process already killed or error killing:', e.message);
+        } finally {
+            if (monitorProcess) {
+                monitorProcess.kill();
+                monitorProcess = null;
+            }
+        }
     }
 }
 
@@ -418,6 +430,15 @@ app.on('window-all-closed', function () {
 
 app.on('before-quit', () => {
     isQuitting = true;
+});
+
+app.on('will-quit', () => {
+    stopMonitor();
+    if (notifyServer) {
+        console.log('Stopping Notify Server...');
+        notifyServer.close();
+        notifyServer = null;
+    }
 });
 
 // IPC Handlers
