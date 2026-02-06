@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const distDir = path.join(__dirname, '..', 'dist');
+const distDir = path.join(__dirname, '..', process.env.BUILD_OUTPUT_DIR || 'dist');
 
 function cleanDist() {
   if (!fs.existsSync(distDir)) {

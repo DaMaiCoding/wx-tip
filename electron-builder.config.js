@@ -11,7 +11,7 @@ module.exports = {
   appId: APP_ID,
   productName: PRODUCT_NAME,
   directories: {
-    output: "dist",
+    output: process.env.BUILD_OUTPUT_DIR || "dist",
     buildResources: "assets"
   },
   files: [
@@ -52,7 +52,6 @@ module.exports = {
       }
     ],
     compression: "maximum",
-    signAndEditExecutable: false,
     sign: null
   },
   nsis: {

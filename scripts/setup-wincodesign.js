@@ -9,13 +9,19 @@ const VERSION = '2.6.0';
 const TOOL_NAME = `winCodeSign-${VERSION}`;
 const DOWNLOAD_URL = `https://npmmirror.com/mirrors/electron-builder-binaries/winCodeSign-${VERSION}/${TOOL_NAME}.7z`;
 const ARCHIVE_PATH = path.join(CACHE_ROOT, `${TOOL_NAME}.7z`);
-const EXTRACT_PATH = path.join(CACHE_ROOT, TOOL_NAME);
+const EXTRACT_PATH = path.join(CACHE_ROOT, 'winCodeSign', '197602331');
 
-if (!fs.existsSync(CACHE_ROOT)) {
-    fs.mkdirSync(CACHE_ROOT, { recursive: true });
+if (!fs.existsSync(path.dirname(EXTRACT_PATH))) {
+    fs.mkdirSync(path.dirname(EXTRACT_PATH), { recursive: true });
 }
 
 console.log(`Downloading ${DOWNLOAD_URL}...`);
+// Force download even if exists to ensure integrity
+if (fs.existsSync(ARCHIVE_PATH)) {
+    try {
+        fs.unlinkSync(ARCHIVE_PATH);
+    } catch (e) {}
+}
 
 function downloadFile(url, destPath, callback) {
     const file = fs.createWriteStream(destPath);
@@ -59,17 +65,20 @@ function extract() {
              }
         }
         
-        const targetDir = useRoot ? CACHE_ROOT : EXTRACT_PATH;
+        const targetDir = EXTRACT_PATH;
         console.log(`Extracting to ${targetDir}...`);
         
-        const args = ['x', ARCHIVE_PATH, `-o${targetDir}`, '-y'];
+        // Exclude mac/linux files that cause symlink errors on Windows
+        const args = ['x', ARCHIVE_PATH, `-o${targetDir}`, '-y', '-xr!darwin', '-xr!linux', '-xr!*.dylib', '-xr!*.so'];
         console.log(`Running: ${sevenBin.path7za} ${args.join(' ')}`);
         
         execFile(sevenBin.path7za, args, (error, stdout, stderr) => {
             if (error) {
-                console.error('Extraction error (might be ignored if just symlinks):', error);
+                console.error('Extraction error:', error);
+                console.error('Stderr:', stderr);
             } else {
                 console.log('Extraction complete!');
+                // Create a marker file if needed, or just rely on directory presence
             }
         });
     });

@@ -25,7 +25,7 @@ if (process.env.PRODUCT_NAME) {
 
 // 1. Set AppUserModelId for Windows Notifications
 const isPortable = Boolean(process.env.PORTABLE_EXECUTABLE_FILE || process.env.PORTABLE_EXECUTABLE_DIR);
-const APP_ID = process.env.APP_ID || (app.isPackaged ? (isPortable ? 'wxtip' : 'com.wxtip.app') : 'wxtip');
+const APP_ID = process.env.APP_ID || (app.isPackaged ? (isPortable ? 'wxtip' : 'com.wxtip.app') : 'com.wxtip.app.dev');
 app.setAppUserModelId(APP_ID);
 
 let mainWindow = null;
@@ -44,6 +44,11 @@ const iconIcoPath = process.env.APP_ICON_ICO || (app.isPackaged
 console.log(`[IconPath] Check: ${iconIcoPath}, Exists: ${fs.existsSync(iconIcoPath)}`);
 
 const appIcon = nativeImage.createFromPath(process.platform === 'win32' ? iconIcoPath : iconPath);
+if (appIcon.isEmpty()) {
+    console.error('[Icon] Failed to load icon from path:', process.platform === 'win32' ? iconIcoPath : iconPath);
+} else {
+    console.log('[Icon] Successfully loaded native image');
+}
 
 const trayIconPath = process.platform === 'win32' ? iconIcoPath : iconPath;
 const configPath = app.isPackaged 
@@ -53,8 +58,11 @@ const configPath = app.isPackaged
 // --- Shortcut Management ---
 function ensureShortcut() {
     if (process.platform !== 'win32') return;
+    
+    // Skip shortcut creation in development to avoid polluting system cache
+    if (!app.isPackaged) return;
 
-    const shortcutName = app.isPackaged ? 'wxTip.lnk' : 'wxTip (Dev).lnk';
+    const shortcutName = 'wxTip.lnk';
     const shortcutPath = path.join(app.getPath('appData'), 'Microsoft', 'Windows', 'Start Menu', 'Programs', shortcutName);
     const targetPath = process.execPath;
     const shortcutIcon = fs.existsSync(iconIcoPath) ? iconIcoPath : iconPath;
@@ -62,11 +70,11 @@ function ensureShortcut() {
     try {
         shell.writeShortcutLink(shortcutPath, 'create', {
             target: targetPath,
-            cwd: app.isPackaged ? path.dirname(targetPath) : process.cwd(),
+            cwd: path.dirname(targetPath),
             appUserModelId: APP_ID,
             icon: shortcutIcon,
             description: 'wxTip - WeChat Notification Enhancer',
-            args: app.isPackaged ? '' : 'src/main/index.js'
+            args: ''
         });
     } catch (e) {
         console.error(`[Shortcut] Exception creating shortcut: ${e.message}`);
@@ -104,6 +112,7 @@ loadConfig();
 // --- Monitor Service Logic ---
 let monitorProcess = null;
 let notifyServer = null;
+const notifySockets = new Set();
 const NOTIFY_PORT = 19088;
 
 function startMonitor() {
@@ -226,6 +235,13 @@ function startNotifyServer() {
 
     notifyServer = serverApp.listen(NOTIFY_PORT, '127.0.0.1', () => {
         console.log(`Notify Server running on port ${NOTIFY_PORT}`);
+    });
+
+    notifyServer.on('connection', (socket) => {
+        notifySockets.add(socket);
+        socket.on('close', () => {
+            notifySockets.delete(socket);
+        });
     });
 }
 
@@ -432,11 +448,23 @@ function createWindow() {
     mainWindow.once('ready-to-show', () => {
         const isHidden = process.argv.includes('--hidden') || 
                          (process.platform === 'darwin' && app.getLoginItemSettings().wasOpenedAsHidden);
-        if (!isHidden) {
-            mainWindow.show();
-        }
+        
+        // Force update icon
         if (process.platform === 'win32') {
             mainWindow.setIcon(appIcon);
+            
+            // Double insurance: update again after a short delay
+            setTimeout(() => {
+                if (mainWindow && !mainWindow.isDestroyed()) {
+                    mainWindow.setIcon(appIcon);
+                    // Remove any overlay icon just in case
+                    mainWindow.setOverlayIcon(null, '');
+                }
+            }, 500);
+        }
+        
+        if (!isHidden) {
+            mainWindow.show();
         }
     });
 
@@ -494,6 +522,13 @@ app.on('will-quit', () => {
     stopMonitor();
     if (notifyServer) {
         console.log('Stopping Notify Server...');
+        
+        // Force close all existing connections
+        for (const socket of notifySockets) {
+            socket.destroy();
+        }
+        notifySockets.clear();
+
         notifyServer.close();
         notifyServer = null;
     }
