@@ -146,7 +146,7 @@ function Parse-WeChatMessage {
     }
 }
 
-Log-Message "Starting Monitor Service V5 (Anti-Recall Restored)..."
+Log-Message "Starting Monitor Service V6 (History Anti-Recall)..."
 
 try {
     Add-Type -AssemblyName UIAutomationClient
@@ -198,12 +198,9 @@ function Get-BadgeTextFromPosition($itemRect, $potentialBadges) {
         $verticalOverlap = -not (($badgeRect.Bottom -lt $itemRect.Top) -or ($badgeRect.Top -gt $itemRect.Bottom))
         $horizontalOffset = $badgeRect.Left - $itemRect.Right
         
-        # Log-Message "DEBUG: Checking badge '$name' [$($badgeRect.Left),$($badgeRect.Top)] vs ListItem [$($itemRect.Left),$($itemRect.Top)] - verticalOverlap=$verticalOverlap, offset=$horizontalOffset"
-        
         if ($verticalOverlap -and $horizontalOffset -ge 0 -and $horizontalOffset -lt 100) {
             if ($name -match "^\((\d+)\)$") {
                 $result = [int]$matches[1]
-                # Log-Message "DEBUG: MATCHED badge $name with offset $horizontalOffset"
                 break
             }
         }
@@ -211,9 +208,200 @@ function Get-BadgeTextFromPosition($itemRect, $potentialBadges) {
     return $result
 }
 
+function Scan-ActiveChatWindow($win, $chatName) {
+    if ([string]::IsNullOrEmpty($chatName)) { return }
+    
+    Log-Message "Deep Scan: Scanning active chat '$chatName' for recalls..."
+    
+    # Find ListItems in the message area (right side)
+    # Strategy: Find all ListItems, filter by X coordinate (> 25% of window width to include centered notices)
+    
+    $winRect = $win.Current.BoundingRectangle
+    $sidebarBoundary = $winRect.X + ($winRect.Width * 0.25)
+    
+    $condList = New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::ControlTypeProperty, [System.Windows.Automation.ControlType]::ListItem)
+    $allListItems = $win.FindAll([System.Windows.Automation.TreeScope]::Descendants, $condList)
+    
+    if ($null -eq $allListItems -or $allListItems.Count -eq 0) { return }
+    
+    # Convert to array for easier indexing
+    $visibleMessages = @()
+    foreach ($item in $allListItems) {
+        try {
+            $r = $item.Current.BoundingRectangle
+            if ($r.Left -gt $sidebarBoundary) {
+                $visibleMessages += $item
+            }
+        } catch {}
+    }
+    
+    # Sort by Y coordinate (Top to Bottom) using double for correct numeric sorting
+    $visibleMessages = $visibleMessages | Sort-Object { 
+        try { [double]$_.Current.BoundingRectangle.Top } catch { 0 } 
+    }
+    
+    Log-Message "Deep Scan: Found $($visibleMessages.Count) visible messages in chat area."
+
+    # --- SYNC HISTORY (Active Window Scraping) ---
+    if (-not $global:shadowInbox.ContainsKey($chatName)) {
+        $global:shadowInbox[$chatName] = New-Object System.Collections.Generic.List[PSCustomObject]
+    }
+    $history = $global:shadowInbox[$chatName]
+    
+    # Extract text content from visible messages for sync
+    $visibleTexts = $visibleMessages | ForEach-Object { $_.Current.Name }
+    
+    # Logic: Find overlap between History-Tail and Visible-Head
+    # If History is empty, append ALL (assuming we just opened the chat)
+    # If History has content, look for the LAST message of History in the Visible list.
+    
+    $itemsToAdd = @()
+    
+    if ($history.Count -eq 0) {
+        # Initial population from active window
+        foreach ($txt in $visibleTexts) {
+             if ($txt -notmatch "撤回了一条消息" -and $txt -notmatch "recalled a message") {
+                $itemsToAdd += $txt
+             }
+        }
+        if ($itemsToAdd.Count -gt 0) {
+             Log-Message "Sync History: Initial population of $($itemsToAdd.Count) messages."
+        }
+    } else {
+        # Try to find the last history item in the visible list
+        $lastHistoryMsg = $history[$history.Count - 1].content
+        $matchIndex = -1
+        
+        # Search from top to bottom of visible list
+        for ($k = 0; $k -lt $visibleTexts.Count; $k++) {
+            if ($visibleTexts[$k] -eq $lastHistoryMsg) {
+                $matchIndex = $k
+                # Keep finding the LAST occurrence if there are duplicates? 
+                # Usually checking from bottom up is safer but let's stick to first match for now or last match?
+                # If we have duplicates, it's tricky. Let's assume unique enough.
+            }
+        }
+        
+        if ($matchIndex -ne -1) {
+            # Found overlap! Append everything AFTER matchIndex
+            for ($k = $matchIndex + 1; $k -lt $visibleTexts.Count; $k++) {
+                $txt = $visibleTexts[$k]
+                if ($txt -notmatch "撤回了一条消息" -and $txt -notmatch "recalled a message") {
+                    $itemsToAdd += $txt
+                }
+            }
+            if ($itemsToAdd.Count -gt 0) {
+                 Log-Message "Sync History: Found overlap at index $matchIndex, appending $($itemsToAdd.Count) new messages."
+            }
+        } else {
+            # No overlap found. 
+            # Case A: User scrolled UP (Visible is older). Do nothing.
+            # Case B: User received many messages and the 'last' one scrolled off top. (Gap).
+            # In Case B, strictly we should append ALL, but we risk duplication if we are wrong about Case A.
+            # For safety, we DO NOT append if no overlap is found.
+            # BUT, if the visible list contains "Time" separators, matching might fail.
+            # Let's just log this case.
+            # Log-Message "Sync History: No overlap found. LastHistory='$lastHistoryMsg'"
+        }
+    }
+    
+    # Commit to History
+    foreach ($txt in $itemsToAdd) {
+        $history.Add([PSCustomObject]@{
+            content = $txt
+            timestamp = (Get-Date).ToString("HH:mm:ss")
+        })
+        # Keep size managed
+        if ($history.Count -gt 50) { $history.RemoveAt(0) }
+    }
+    # ---------------------------------------------
+    
+    # Iterate to find Recall Notice
+    for ($i = 0; $i -lt $visibleMessages.Count; $i++) {
+        $item = $visibleMessages[$i]
+        $text = $item.Current.Name
+        
+        if ($text -match "撤回了一条消息" -or $text -match "recalled a message") {
+            Log-Message "Deep Scan: Found recall notice at index $i"
+            
+            # Context Matching
+            # Try to get Next Message (Anchor)
+            $nextContent = ""
+            if (($i + 1) -lt $visibleMessages.Count) {
+                $nextContent = $visibleMessages[$i+1].Current.Name
+            }
+            
+            # Try to get Prev Message (Anchor)
+            $prevContent = ""
+            if (($i - 1) -ge 0) {
+                $prevContent = $visibleMessages[$i-1].Current.Name
+            }
+            
+            # Search in ShadowInbox
+            if ($global:shadowInbox.ContainsKey($chatName)) {
+                $history = $global:shadowInbox[$chatName]
+                $foundIndex = -1
+                
+                # Strategy A: Match by Next Message
+                if ($nextContent -ne "") {
+                    for ($j = 0; $j -lt $history.Count; $j++) {
+                        if ($history[$j].content -eq $nextContent) {
+                            $foundIndex = $j - 1
+                            Log-Message "Deep Scan: Matched by Next Content '$nextContent', target index $foundIndex"
+                            break
+                        }
+                    }
+                }
+                
+                # Strategy B: Match by Prev Message (if A failed)
+                if ($foundIndex -eq -1 -and $prevContent -ne "") {
+                     for ($j = 0; $j -lt $history.Count; $j++) {
+                        if ($history[$j].content -eq $prevContent) {
+                            $foundIndex = $j + 1
+                            Log-Message "Deep Scan: Matched by Prev Content '$prevContent', target index $foundIndex"
+                            break
+                        }
+                    }
+                }
+                
+                if ($foundIndex -ge 0 -and $foundIndex -lt $history.Count) {
+                    $recalledMsg = $history[$foundIndex]
+                    
+                    # Verify it's not the recall notice itself
+                    if ($recalledMsg.content -notmatch "撤回了一条消息") {
+                         # Dedup Check
+                         $dedupKey = "$chatName|$($recalledMsg.content)"
+                         if (-not $global:processedRecalls.Contains($dedupKey)) {
+                             # Emit Event
+                             Log-Message "RECALL DETECTED (History): $chatName -> $($recalledMsg.content)"
+                             
+                             $recallEvent = @{ 
+                                type = "recall"
+                                title = $chatName 
+                                content = "检测到历史撤回: $($recalledMsg.content)" 
+                                originalContent = $recalledMsg.content 
+                                timestamp = (Get-Date).ToString("HH:mm:ss") 
+                            }
+                            $json = $recallEvent | ConvertTo-Json -Compress
+                            Write-Output $json
+                            
+                            $global:processedRecalls.Add($dedupKey) | Out-Null
+                         } else {
+                             Log-Message "Deep Scan: Skipping duplicate recall '$dedupKey'"
+                         }
+                    }
+                }
+            }
+        }
+    }
+}
+
 $lastMessageList = @()
-$global:lastState = @{} # Hashtable to track message counts: Key=Title, Value=Count
-$global:shadowInbox = @{} # Hashtable to track last message content for anti-recall: Key=Title, Value=Content
+$global:lastState = @{} # Hashtable to track message counts
+$global:shadowInbox = @{} # Hashtable to track HISTORY: Key=Title, Value=List<PSCustomObject>
+$global:processedRecalls = New-Object System.Collections.Generic.HashSet[string] # Track notified recalls
+$global:lastActiveChat = ""
+$global:scanCooldown = 0
 
 while ($true) {
     try {
@@ -267,7 +455,7 @@ while ($true) {
             $sidebarMaxRight = $winRect.Width * 0.4
         }
 
-        # 2. Find ALL small elements (Potential Badges: Text, Image, Pane, etc.)
+        # 2. Find ALL small elements (Potential Badges)
         $rawAll = $win.FindAll([System.Windows.Automation.TreeScope]::Descendants, [System.Windows.Automation.Condition]::TrueCondition)
         
         $potentialBadges = @()
@@ -286,6 +474,7 @@ while ($true) {
         }
         
         $currentMsgs = @()
+        $activeChatTitle = ""
         
         foreach ($el in $sidebarListItems) {
             try {
@@ -294,12 +483,21 @@ while ($true) {
                 $badgeCount = 0
                 $hasBadge = $false
                 
+                # Check Selection (Active Chat)
+                try {
+                    $selPattern = $el.GetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern)
+                    if ($selPattern.Current.IsSelected) {
+                        # We need to parse the name to get the Title
+                        $parsed = Parse-WeChatMessage -fullTxt $fullTxt
+                        $activeChatTitle = $parsed.chatName
+                    }
+                } catch {}
+
                 # Filter out invalid ListItems based on position and size
                 $sidebarRightEdge = $winRect.X + ($winRect.Width * 0.4)
                 $minSidebarWidth = 200
                 $maxSidebarWidth = 1200
                 
-                # Valid sidebar ListItems: reasonable width AND left position in sidebar area
                 if ($itemRect.Width -lt $minSidebarWidth -or $itemRect.Width -gt $maxSidebarWidth -or $itemRect.Left -gt $sidebarRightEdge -or $itemRect.Height -lt 20) {
                     continue
                 }
@@ -311,10 +509,9 @@ while ($true) {
                     $badgeCount = $badgeResult
                 }
                 
-                # Text-based badge detection (e.g., "[2条]")
+                # Text-based badge detection
                 if (-not $hasBadge) {
                     if ($fullTxt.Length -gt 0) {
-                        # Check for bracket patterns like [2条]
                         if ($fullTxt -match "\[(\d+)条\]") {
                              $badgeCount = [int]$matches[1]
                              $hasBadge = $true
@@ -328,38 +525,63 @@ while ($true) {
                     $messageContent = $result.messageContent
                     $messageType = $result.messageType
                     
-                    if ($fullTxt -match "消息免打扰") {
-                        continue
-                    }
+                    if ($fullTxt -match "消息免打扰") { continue }
                     
                     if ($chatName -match "公众号" -or $chatName -match "QQ邮箱提醒" -or $chatName -match "文件传输助手" -or $chatName -match "微信团队" -or $chatName -match "提醒" -or $chatName -match "通知") {
                         continue
                     }
                     
-                    # --- Anti-Recall Logic ---
-                    if ($messageContent -match "撤回了一条消息" -or $messageContent -match "recalled a message") {
-                        if ($global:shadowInbox.ContainsKey($chatName)) {
-                            $lastContent = $global:shadowInbox[$chatName]
-                            # Avoid emitting if we already processed this recall or if content is same (unlikely for recall)
-                            if ($lastContent -ne $messageContent) {
-                                Log-Message "RECALL DETECTED: Chat='$chatName', Content='$lastContent'"
-                                $recallEvent = @{ 
-                                    type = "recall"
-                                    title = $chatName 
-                                    content = "检测到撤回: $lastContent" 
-                                    originalContent = $lastContent 
-                                    timestamp = (Get-Date).ToString("HH:mm:ss") 
-                                }
-                                $json = $recallEvent | ConvertTo-Json -Compress
-                                Write-Output $json
+                    # --- NEW Anti-Recall Logic (History Based) ---
+                    # 1. Update Shadow Inbox (Append Mode)
+                    if (-not $global:shadowInbox.ContainsKey($chatName)) {
+                        $global:shadowInbox[$chatName] = New-Object System.Collections.Generic.List[PSCustomObject]
+                    }
+                    $history = $global:shadowInbox[$chatName]
+                    
+                    # Deduplication (Check if last message is same)
+                    $isNew = $true
+                    if ($history.Count -gt 0) {
+                        $lastMsg = $history[$history.Count - 1]
+                        if ($lastMsg.content -eq $messageContent) { $isNew = $false }
+                    }
+                    
+                    if ($isNew) {
+                        # If content is NOT a recall notice, add to history
+                        if ($messageContent -notmatch "撤回了一条消息" -and $messageContent -notmatch "recalled a message") {
+                            $history.Add([PSCustomObject]@{
+                                content = $messageContent
+                                timestamp = (Get-Date).ToString("HH:mm:ss")
+                            })
+                            # Keep history size manageable
+                            if ($history.Count -gt 50) { $history.RemoveAt(0) }
+                            Log-Message "ShadowInbox: Appended to '$chatName' -> '$messageContent'"
+                        } else {
+                            # It IS a recall notice (Immediate Detection)
+                            # Check last message in history (Previous Latest)
+                            if ($history.Count -gt 0) {
+                                $lastMsg = $history[$history.Count - 1]
                                 
-                                # Update shadow inbox to avoid loop (store the recall notice itself)
-                                $global:shadowInbox[$chatName] = $messageContent
+                                # Dedup Check
+                                $dedupKey = "$chatName|$($lastMsg.content)"
+                                if (-not $global:processedRecalls.Contains($dedupKey)) {
+                                    Log-Message "RECALL DETECTED (Immediate): Chat='$chatName', Content='$($lastMsg.content)'"
+                                    
+                                    $recallEvent = @{ 
+                                        type = "recall"
+                                        title = $chatName 
+                                        content = "检测到撤回: $($lastMsg.content)" 
+                                        originalContent = $lastMsg.content 
+                                        timestamp = (Get-Date).ToString("HH:mm:ss") 
+                                    }
+                                    $json = $recallEvent | ConvertTo-Json -Compress
+                                    Write-Output $json
+                                    
+                                    $global:processedRecalls.Add($dedupKey) | Out-Null
+                                } else {
+                                    Log-Message "Immediate Scan: Skipping duplicate recall '$dedupKey'"
+                                }
                             }
                         }
-                    } else {
-                        # Normal message -> Update Shadow Inbox
-                        $global:shadowInbox[$chatName] = $messageContent
                     }
                     # -------------------------
                     
@@ -378,6 +600,31 @@ while ($true) {
                 Log-Message "ERROR processing ListItem: $_"
             }
         }
+        
+        # --- Deep Scan Trigger ---
+        # Trigger if:
+        # 1. Window is active AND (ActiveChat changed OR Periodically)
+        if ($isWindowActive -and $activeChatTitle -ne "") {
+            $shouldScan = $false
+            
+            if ($activeChatTitle -ne $global:lastActiveChat) {
+                Log-Message "Trigger: Chat changed to '$activeChatTitle'"
+                $shouldScan = $true
+                $global:lastActiveChat = $activeChatTitle
+            }
+            
+            # Periodic scan (every 20 cycles ~ 2 seconds)
+            $global:scanCooldown++
+            if ($global:scanCooldown -gt 20) {
+                $shouldScan = $true
+                $global:scanCooldown = 0
+            }
+            
+            if ($shouldScan) {
+                Scan-ActiveChatWindow -win $win -chatName $activeChatTitle
+            }
+        }
+        # -------------------------
 
         # Diff Logic with State Tracking (Fixes duplicate notifications)
         $currentTitles = @{}
