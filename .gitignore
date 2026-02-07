@@ -7,8 +7,3 @@ release_out
 *.bak
 package-lock.json
 .cache
-
-# Local Runtime Data
-src/main/data/
-*.log
-*.csv
