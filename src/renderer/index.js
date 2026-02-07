@@ -20,8 +20,6 @@ navItems.forEach(item => {
     });
 });
 
-const btnTestNative = document.getElementById('btn-test-native');
-const btnTestCustom = document.getElementById('btn-test-custom');
 const btnMinimize = document.getElementById('btn-minimize');
 const btnClose = document.getElementById('btn-close');
 
@@ -77,9 +75,62 @@ if (closeModal) {
     });
 }
 
+// Confirm Modal Elements
+const confirmModal = document.getElementById('confirm-modal');
+const confirmModalTitle = document.getElementById('confirm-modal-title');
+const confirmModalContent = document.getElementById('confirm-modal-content');
+const confirmModalDesc = document.getElementById('confirm-modal-desc');
+const confirmModalBtnConfirm = document.getElementById('confirm-modal-btn-confirm');
+const confirmModalBtnCancel = document.getElementById('confirm-modal-btn-cancel');
+const confirmModalBtnX = document.getElementById('confirm-modal-btn-x');
+
+let currentConfirmCallback = null;
+
+function hideConfirmModal() {
+    confirmModal.classList.remove('active');
+    setTimeout(() => {
+        confirmModal.style.display = 'none';
+        currentConfirmCallback = null;
+    }, 200);
+}
+
+function showConfirmModal({ title, content, description, confirmText, onConfirm }) {
+    if (!confirmModal) return;
+    
+    confirmModalTitle.innerText = title || '提示';
+    confirmModalContent.innerText = content || '确定执行此操作？';
+    confirmModalDesc.innerText = description || '操作无法撤销。';
+    confirmModalBtnConfirm.innerText = confirmText || '确定';
+    
+    currentConfirmCallback = onConfirm;
+    
+    confirmModal.style.display = 'flex';
+    // Trigger reflow
+    confirmModal.offsetHeight;
+    confirmModal.classList.add('active');
+}
+
+if (confirmModalBtnCancel) confirmModalBtnCancel.addEventListener('click', hideConfirmModal);
+if (confirmModalBtnX) confirmModalBtnX.addEventListener('click', hideConfirmModal);
+if (confirmModal) {
+    confirmModal.addEventListener('click', (e) => {
+        if (e.target === confirmModal) hideConfirmModal();
+    });
+}
+
+if (confirmModalBtnConfirm) {
+    confirmModalBtnConfirm.addEventListener('click', async () => {
+        if (currentConfirmCallback) {
+            await currentConfirmCallback();
+        }
+        hideConfirmModal();
+    });
+}
+
 // System Settings Elements
 const chkAutoLaunch = document.getElementById('chk-autolaunch');
 const chkMonitor = document.getElementById('chk-monitor');
+const chkAntiRecall = document.getElementById('chk-anti-recall');
 const chkCustomPopup = document.getElementById('chk-custom-popup');
 const btnAbout = document.getElementById('btn-about');
 const themeRadios = document.querySelectorAll('input[name="theme"]');
@@ -97,20 +148,7 @@ if (btnClose) {
     });
 }
 
-// Notification Test
-if (btnTestNative) {
-    btnTestNative.addEventListener('click', () => {
-        console.log('点击了测试原生弹窗');
-        window.electronAPI.showNotification('微信', '这是原生通知测试。', 'native');
-    });
-}
 
-if (btnTestCustom) {
-    btnTestCustom.addEventListener('click', () => {
-        console.log('点击了测试自定义弹窗');
-        window.electronAPI.showNotification('微信', '这是自定义弹窗测试。', 'custom');
-    });
-}
 
 // Auto Launch
 if (chkAutoLaunch) {
@@ -127,6 +165,15 @@ if (chkMonitor) {
         const enabled = e.target.checked;
         const isSet = await window.electronAPI.toggleMonitor(enabled);
         console.log(`Monitor set to: ${isSet}`);
+    });
+}
+
+// Anti-Recall
+if (chkAntiRecall) {
+    chkAntiRecall.addEventListener('change', async (e) => {
+        const enabled = e.target.checked;
+        const isSet = await window.electronAPI.toggleAntiRecall(enabled);
+        console.log(`Anti-Recall set to: ${isSet}`);
     });
 }
 
@@ -176,6 +223,10 @@ themeRadios.forEach(radio => {
     const isMonitor = await window.electronAPI.getMonitorStatus();
     if (chkMonitor) chkMonitor.checked = isMonitor;
 
+    // Anti-Recall State
+    const isAntiRecall = await window.electronAPI.getAntiRecallStatus();
+    if (chkAntiRecall) chkAntiRecall.checked = isAntiRecall;
+
     // Custom Popup State
     const isCustomPopup = await window.electronAPI.getCustomPopupStatus();
     if (chkCustomPopup) chkCustomPopup.checked = isCustomPopup;
@@ -191,4 +242,159 @@ themeRadios.forEach(radio => {
     if (btnAbout) {
         btnAbout.setAttribute('data-tooltip', `当前版本: ${version}`);
     }
+
+    // Initialize Recall History
+    if (document.getElementById('recall-list')) {
+        initRecallHistory();
+    }
 })();
+
+// Recall History Logic
+const recallList = document.getElementById('recall-list');
+const btnClearRecall = document.getElementById('btn-clear-recall');
+
+function formatTime(timestamp) {
+    const date = new Date(timestamp);
+    return date.toLocaleString('zh-CN', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        month: '2-digit',
+        day: '2-digit'
+    });
+}
+
+function createRecallElement(item) {
+    const div = document.createElement('div');
+    div.className = 'recall-item';
+    
+    // Safety check for content
+    const content = item.content || '无内容';
+    const time = item.time ? formatTime(item.time) : formatTime(Date.now());
+    const itemId = item.time; // Use timestamp as ID
+    
+    div.innerHTML = `
+        <div class="recall-header">
+            <div class="recall-title">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                </svg>
+                拦截到撤回消息
+            </div>
+            <div class="recall-actions">
+                <span style="font-size: 12px; color: var(--text-secondary); margin-right: 8px;">${time}</span>
+                <button class="icon-btn delete-btn" title="删除这条记录">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="recall-content">
+            ${content}
+        </div>
+    `;
+
+    // Add event listener for delete button
+    const deleteBtn = div.querySelector('.delete-btn');
+    if (deleteBtn) {
+        deleteBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            showConfirmModal({
+                title: '删除提示',
+                content: '确定删除这条记录？',
+                description: '删除后将无法恢复该条记录。',
+                confirmText: '确定删除',
+                onConfirm: async () => {
+                    await window.electronAPI.deleteRecallItem(itemId);
+                    div.remove();
+                    if (recallList.children.length === 0) {
+                        showEmptyState();
+                    }
+                }
+            });
+        });
+    }
+
+    return div;
+}
+
+async function initRecallHistory() {
+    try {
+        // Load initial history
+        const history = await window.electronAPI.getRecallHistory();
+        renderRecallList(history);
+
+        // Listen for new logs
+        window.electronAPI.onRecallLog((item) => {
+            addRecallItem(item);
+        });
+
+        // Clear button - Show Custom Modal
+        if (btnClearRecall) {
+            btnClearRecall.addEventListener('click', () => {
+                showConfirmModal({
+                    title: '清空提示',
+                    content: '确定清空所有记录？',
+                    description: '清空后所有撤回消息记录将无法恢复。',
+                    confirmText: '确定清空',
+                    onConfirm: async () => {
+                        await window.electronAPI.clearRecallHistory();
+                        renderRecallList([]);
+                    }
+                });
+            });
+        }
+
+    } catch (err) {
+        console.error('Failed to init recall history:', err);
+    }
+}
+
+function renderRecallList(items) {
+    if (!recallList) return;
+    
+    recallList.innerHTML = '';
+    
+    if (!items || items.length === 0) {
+        showEmptyState();
+        return;
+    }
+
+    items.forEach(item => {
+        recallList.appendChild(createRecallElement(item));
+    });
+}
+
+function addRecallItem(item) {
+    if (!recallList) return;
+
+    // Remove empty state if present
+    const emptyState = recallList.querySelector('.empty-state');
+    if (emptyState) {
+        emptyState.remove();
+    }
+
+    // Prepend new item
+    const element = createRecallElement(item);
+    recallList.insertBefore(element, recallList.firstChild);
+    
+    // Limit to 100 items in UI
+    if (recallList.children.length > 100) {
+        recallList.removeChild(recallList.lastChild);
+    }
+}
+
+function showEmptyState() {
+    if (!recallList) return;
+    recallList.innerHTML = `
+        <div class="empty-state">
+            <div class="empty-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"/>
+                </svg>
+            </div>
+            <p>暂无撤回记录</p>
+        </div>
+    `;
+}

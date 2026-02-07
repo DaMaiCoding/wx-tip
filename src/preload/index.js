@@ -17,11 +17,21 @@ contextBridge.exposeInMainWorld('electronAPI', {
     toggleMonitor: (enable) => ipcRenderer.invoke('monitor:toggle', enable),
     getMonitorStatus: () => ipcRenderer.invoke('monitor:get-status'),
 
+    // Anti-Recall
+    toggleAntiRecall: (enable) => ipcRenderer.invoke('recall:toggle', enable),
+    getAntiRecallStatus: () => ipcRenderer.invoke('recall:get-status'),
+
     // Custom Popup
     toggleCustomPopup: (enable) => ipcRenderer.invoke('popup:toggle', enable),
     getCustomPopupStatus: () => ipcRenderer.invoke('popup:get-status'),
 
     // Theme
     setTheme: (theme) => ipcRenderer.invoke('app:set-theme', theme),
-    getTheme: () => ipcRenderer.invoke('app:get-theme')
+    getTheme: () => ipcRenderer.invoke('app:get-theme'),
+
+    // Recall History
+    onRecallLog: (callback) => ipcRenderer.on('recall-log', (event, data) => callback(data)),
+    getRecallHistory: () => ipcRenderer.invoke('recall:get-history'),
+    clearRecallHistory: () => ipcRenderer.invoke('recall:clear-history'),
+    deleteRecallItem: (timestamp) => ipcRenderer.invoke('recall:delete-item', timestamp)
 });

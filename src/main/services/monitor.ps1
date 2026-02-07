@@ -1,8 +1,19 @@
 ﻿# Configuration
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-$logFile = Join-Path $PSScriptRoot "monitor.log"
-$configFile = Join-Path $PSScriptRoot "config.json"
-$maxLogLines = 200
+
+# Define Data Directory Path
+$scriptPath = $PSScriptRoot
+$rootPath = Split-Path -Parent $scriptPath
+$dataDir = Join-Path $rootPath "data"
+
+# Create data directory if it doesn't exist (just in case)
+if (-not (Test-Path $dataDir)) {
+    New-Item -ItemType Directory -Path $dataDir -Force | Out-Null
+}
+
+$logFile = Join-Path $dataDir "monitor.log"
+$configFile = Join-Path $dataDir "config.json"
+$maxLogLines = 500
 $DebugMode = $false # Set to true to enable debug logs
 
 function Log-Message($msg) {
@@ -12,16 +23,21 @@ function Log-Message($msg) {
 
     $timestamp = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
     $logEntry = "$timestamp - $msg"
+    
     try {
-        $logEntry | Out-File -FilePath $logFile -Append -Encoding utf8 -ErrorAction SilentlyContinue
+        Add-Content -Path $logFile -Value $logEntry -Encoding UTF8 -ErrorAction SilentlyContinue
         
-        $lines = Get-Content $logFile -ErrorAction SilentlyContinue
-        if ($lines -and $lines.Count -gt $maxLogLines) {
-            $tempFile = $logFile + ".tmp"
-            $lines | Select-Object -Last $maxLogLines | Out-File -FilePath $tempFile -Encoding utf8
-            Move-Item -Path $tempFile -Destination $logFile -Force
+        # Simple log rotation based on file size to avoid locking issues
+        $fileItem = Get-Item $logFile -ErrorAction SilentlyContinue
+        if ($fileItem -and $fileItem.Length -gt 100KB) {
+            $content = Get-Content $logFile -Tail $maxLogLines -ErrorAction SilentlyContinue
+            if ($content) {
+                $content | Set-Content $logFile -Encoding UTF8 -Force -ErrorAction SilentlyContinue
+            }
         }
-    } catch {}
+    } catch {
+        # Suppress all logging errors to prevent script crash
+    }
 }
 
 function Get-MessageType {
@@ -130,7 +146,7 @@ function Parse-WeChatMessage {
     }
 }
 
-Log-Message "Starting Monitor Service V5 (Clean ASCII Quotes)..."
+Log-Message "Starting Monitor Service V5 (Anti-Recall Restored)..."
 
 try {
     Add-Type -AssemblyName UIAutomationClient
@@ -182,12 +198,12 @@ function Get-BadgeTextFromPosition($itemRect, $potentialBadges) {
         $verticalOverlap = -not (($badgeRect.Bottom -lt $itemRect.Top) -or ($badgeRect.Top -gt $itemRect.Bottom))
         $horizontalOffset = $badgeRect.Left - $itemRect.Right
         
-        Log-Message "DEBUG: Checking badge '$name' [$($badgeRect.Left),$($badgeRect.Top)] vs ListItem [$($itemRect.Left),$($itemRect.Top)] - verticalOverlap=$verticalOverlap, offset=$horizontalOffset"
+        # Log-Message "DEBUG: Checking badge '$name' [$($badgeRect.Left),$($badgeRect.Top)] vs ListItem [$($itemRect.Left),$($itemRect.Top)] - verticalOverlap=$verticalOverlap, offset=$horizontalOffset"
         
         if ($verticalOverlap -and $horizontalOffset -ge 0 -and $horizontalOffset -lt 100) {
             if ($name -match "^\((\d+)\)$") {
                 $result = [int]$matches[1]
-                Log-Message "DEBUG: MATCHED badge $name with offset $horizontalOffset"
+                # Log-Message "DEBUG: MATCHED badge $name with offset $horizontalOffset"
                 break
             }
         }
@@ -197,6 +213,7 @@ function Get-BadgeTextFromPosition($itemRect, $potentialBadges) {
 
 $lastMessageList = @()
 $global:lastState = @{} # Hashtable to track message counts: Key=Title, Value=Count
+$global:shadowInbox = @{} # Hashtable to track last message content for anti-recall: Key=Title, Value=Content
 
 while ($true) {
     try {
@@ -318,6 +335,33 @@ while ($true) {
                     if ($chatName -match "公众号" -or $chatName -match "QQ邮箱提醒" -or $chatName -match "文件传输助手" -or $chatName -match "微信团队" -or $chatName -match "提醒" -or $chatName -match "通知") {
                         continue
                     }
+                    
+                    # --- Anti-Recall Logic ---
+                    if ($messageContent -match "撤回了一条消息" -or $messageContent -match "recalled a message") {
+                        if ($global:shadowInbox.ContainsKey($chatName)) {
+                            $lastContent = $global:shadowInbox[$chatName]
+                            # Avoid emitting if we already processed this recall or if content is same (unlikely for recall)
+                            if ($lastContent -ne $messageContent) {
+                                Log-Message "RECALL DETECTED: Chat='$chatName', Content='$lastContent'"
+                                $recallEvent = @{ 
+                                    type = "recall"
+                                    title = $chatName 
+                                    content = "检测到撤回: $lastContent" 
+                                    originalContent = $lastContent 
+                                    timestamp = (Get-Date).ToString("HH:mm:ss") 
+                                }
+                                $json = $recallEvent | ConvertTo-Json -Compress
+                                Write-Output $json
+                                
+                                # Update shadow inbox to avoid loop (store the recall notice itself)
+                                $global:shadowInbox[$chatName] = $messageContent
+                            }
+                        }
+                    } else {
+                        # Normal message -> Update Shadow Inbox
+                        $global:shadowInbox[$chatName] = $messageContent
+                    }
+                    # -------------------------
                     
                     $msgObj = @{
                         type = "message"

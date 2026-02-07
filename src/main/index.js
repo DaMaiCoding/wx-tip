@@ -11,7 +11,13 @@ if (!app.isPackaged) {
         require('electron-reload')(path.join(__dirname, '../'), {
             electron: require(path.join(__dirname, '../../node_modules/electron')),
             awaitWriteFinish: true,
-            ignored: /config\.json/
+            ignored: [
+                /config\.json/,
+                /recall_history\.json/,
+                /monitor\.log/,
+                /.*\.log/,
+                /.*\.csv/
+            ]
         });
     } catch (e) {
         console.log('Error loading electron-reload:', e);
@@ -52,8 +58,23 @@ if (appIcon.isEmpty()) {
 
 const trayIconPath = process.platform === 'win32' ? iconIcoPath : iconPath;
 const configPath = app.isPackaged 
-    ? path.join(process.resourcesPath, 'services', 'config.json')
-    : path.join(__dirname, 'services/config.json');
+    ? path.join(process.resourcesPath, 'data', 'config.json')
+    : path.join(__dirname, 'data/config.json');
+const recallHistoryPath = app.isPackaged
+    ? path.join(process.resourcesPath, 'data', 'recall_history.json')
+    : path.join(__dirname, 'data/recall_history.json');
+const filteredCsvPathNode = path.join(path.dirname(configPath), 'filtered_out.csv');
+
+function appendToFilteredCsv(reason, content) {
+    const ts = new Date().toISOString();
+    const line = `${ts},${reason},${JSON.stringify(content)}\n`;
+    try {
+        if (!fs.existsSync(filteredCsvPathNode)) {
+            fs.writeFileSync(filteredCsvPathNode, 'Timestamp,Reason,Content\n', 'utf8');
+        }
+        fs.appendFileSync(filteredCsvPathNode, line, 'utf8');
+    } catch (e) { console.error('CSV Write Error:', e); }
+}
 
 // --- Shortcut Management ---
 function ensureShortcut() {
@@ -86,6 +107,7 @@ let appConfig = {
     enableNativeNotification: true,
     enableCustomPopup: false,
     enableMonitor: false,
+    enableAntiRecall: true,
     theme: 'system' // system, light, dark
 };
 
@@ -107,6 +129,33 @@ function saveConfig() {
         fs.writeFileSync(configPath, JSON.stringify(appConfig, null, 4), 'utf-8');
     } catch (e) {
         console.error('Failed to save config:', e);
+    }
+}
+
+function loadRecallHistory() {
+    try {
+        if (fs.existsSync(recallHistoryPath)) {
+            return JSON.parse(fs.readFileSync(recallHistoryPath, 'utf-8'));
+        }
+    } catch (e) {
+        console.error('Failed to load recall history:', e);
+    }
+    return [];
+}
+
+function saveRecallHistory(newRecord) {
+    try {
+        const history = loadRecallHistory();
+        history.unshift(newRecord); // Add to top
+        // Limit history size (e.g. 100)
+        if (history.length > 100) {
+            history.length = 100;
+        }
+        fs.writeFileSync(recallHistoryPath, JSON.stringify(history, null, 2), 'utf-8');
+        return history;
+    } catch (e) {
+        console.error('Failed to save recall history:', e);
+        return [];
     }
 }
 
@@ -203,7 +252,29 @@ function handleIncomingMessage(msgData) {
     if (!msgData || !msgData.title) return;
 
     // Filter logic
-    if (msgData.isUnread === false) return;
+    if (msgData.isUnread === false && msgData.type !== 'recall') {
+        appendToFilteredCsv('Node Filter: isUnread=false', msgData);
+        return;
+    }
+
+    // Handle Recall Persistence
+    if (msgData.type === 'recall') {
+        // Check if Anti-Recall is enabled
+        if (!appConfig.enableAntiRecall) {
+            return;
+        }
+
+        // Add timestamp for UI if not present or invalid
+        if (!msgData.time) {
+            msgData.time = Date.now();
+        }
+        
+        saveRecallHistory(msgData);
+        // Broadcast to all windows
+        BrowserWindow.getAllWindows().forEach(win => {
+            win.webContents.send('recall-log', msgData);
+        });
+    }
 
     const title = msgData.title;
     const body = msgData.content || '[收到新消息]';
@@ -583,21 +654,27 @@ ipcMain.handle('app:get-version', () => {
     return app.getVersion();
 });
 
+ipcMain.handle('monitor:get-status', () => appConfig.enableMonitor);
 ipcMain.handle('monitor:toggle', (event, enable) => {
     appConfig.enableMonitor = enable;
     saveConfig();
-    
     if (enable) {
         startMonitor();
     } else {
         stopMonitor();
     }
-    return true;
-});
-
-ipcMain.handle('monitor:get-status', () => {
     return appConfig.enableMonitor;
 });
+
+// Anti-Recall IPC
+ipcMain.handle('recall:get-status', () => appConfig.enableAntiRecall);
+ipcMain.handle('recall:toggle', (event, enable) => {
+    appConfig.enableAntiRecall = enable;
+    saveConfig();
+    return appConfig.enableAntiRecall;
+});
+
+// Custom Popup IPC
 
 ipcMain.handle('popup:toggle', (event, enable) => {
     appConfig.enableCustomPopup = enable;
@@ -618,4 +695,33 @@ ipcMain.handle('app:set-theme', (event, theme) => {
 
 ipcMain.handle('app:get-theme', () => {
     return appConfig.theme;
+});
+
+// Recall History Handlers
+ipcMain.handle('recall:get-history', () => {
+    return loadRecallHistory();
+});
+
+ipcMain.handle('recall:clear-history', () => {
+    try {
+        if (fs.existsSync(recallHistoryPath)) {
+            fs.writeFileSync(recallHistoryPath, JSON.stringify([], null, 2), 'utf8');
+        }
+        return true;
+    } catch (err) {
+        console.error('Failed to clear recall history:', err);
+        return false;
+    }
+});
+
+ipcMain.handle('recall:delete-item', (event, timestamp) => {
+    try {
+        const history = loadRecallHistory();
+        const newHistory = history.filter(item => item.time !== timestamp);
+        fs.writeFileSync(recallHistoryPath, JSON.stringify(newHistory, null, 2), 'utf8');
+        return newHistory;
+    } catch (err) {
+        console.error('Failed to delete recall item:', err);
+        return null;
+    }
 });

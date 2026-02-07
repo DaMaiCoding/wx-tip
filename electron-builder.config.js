@@ -27,7 +27,16 @@ module.exports = {
       filter: [
         "**/*",
         "!**/*.log",
-        "!**/*.tmp"
+        "!**/*.tmp",
+        "!**/*.json",
+        "!**/*.csv"
+      ]
+    },
+    {
+      from: "src/main/data",
+      to: "data",
+      filter: [
+        "**/*"
       ]
     },
     {
