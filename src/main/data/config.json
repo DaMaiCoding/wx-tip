@@ -1,0 +1,7 @@
+{
+    "enableNativeNotification": true,
+    "enableCustomPopup": true,
+    "enableMonitor": true,
+    "enableAntiRecall": true,
+    "theme": "light"
+}

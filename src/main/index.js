@@ -107,7 +107,7 @@ let appConfig = {
     enableNativeNotification: true,
     enableCustomPopup: false,
     enableMonitor: false,
-    enableAntiRecall: true,
+    enableAntiRecall: false,
     theme: 'system' // system, light, dark
 };
 

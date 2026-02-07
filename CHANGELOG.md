@@ -1,5 +1,26 @@
 # 更新日志 (Changelog)
 
+## [1.1.0] - 2026-02-07
+
+### 🚀 里程碑 (Milestone)
+- **版本晋升**：基于文档重构与稳定性修复的里程碑版本。
+- **文档同步**：所有技术文档已与代码实现完全对齐，消除过时信息。
+
+### 📚 文档 (Documentation)
+- 集成 v1.0.1 的所有文档更新。
+
+## [1.0.1] - 2026-02-07
+
+### 📚 文档更新 (Documentation)
+- **核心文档重构**：全面更新 `README.md`，准确描述基于 UI Automation 的非侵入式防撤回原理。
+- **部署指南修正**：更新 `DEPLOYMENT_GUIDE.md` 和 `TROUBLESHOOTING.md` 中的端口号（修正为 `19088`）及版本信息。
+- **技术规范明确**：明确了项目依赖于 Windows UI Automation 技术，无需修改 WeChatWin.dll。
+- **功能文档修正**：更新 `FEATURE_ANTI_RECALL.md` 中的日志文件路径描述。
+
+### ⚡️ 优化 (Improvements)
+- **端口标准化**：统一内部通讯端口为 `19088`，避免与常用开发端口冲突。
+- **构建脚本优化**：优化 `build:win` 和 `build:portable` 脚本流程。
+
 ## [1.0.0] - 2026-02-01
 
 ### ✨ 新增功能 (New Features)
