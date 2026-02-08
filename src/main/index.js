@@ -4,6 +4,11 @@ const fs = require('fs');
 const { spawn, execSync } = require('child_process');
 const express = require('express');
 const bodyParser = require('body-parser');
+const messageNotificationModule = require('./modules/message_notification_module');
+const messageRecallModule = require('./modules/message_recall_module');
+const monitorServiceModule = require('./modules/monitor_service_module');
+const messageParserModule = require('./modules/message_parser_module');
+const eventBus = require('./modules/event_bus');
 
 // Enable live reload for development
 if (!app.isPackaged) {
@@ -63,18 +68,7 @@ const configPath = app.isPackaged
 const recallHistoryPath = app.isPackaged
     ? path.join(process.resourcesPath, 'data', 'recall_history.json')
     : path.join(__dirname, 'data/recall_history.json');
-const filteredCsvPathNode = path.join(path.dirname(configPath), 'filtered_out.csv');
 
-function appendToFilteredCsv(reason, content) {
-    const ts = new Date().toISOString();
-    const line = `${ts},${reason},${JSON.stringify(content)}\n`;
-    try {
-        if (!fs.existsSync(filteredCsvPathNode)) {
-            fs.writeFileSync(filteredCsvPathNode, 'Timestamp,Reason,Content\n', 'utf8');
-        }
-        fs.appendFileSync(filteredCsvPathNode, line, 'utf8');
-    } catch (e) { console.error('CSV Write Error:', e); }
-}
 
 // --- Shortcut Management ---
 function ensureShortcut() {
@@ -132,166 +126,42 @@ function saveConfig() {
     }
 }
 
-function loadRecallHistory() {
-    try {
-        if (fs.existsSync(recallHistoryPath)) {
-            return JSON.parse(fs.readFileSync(recallHistoryPath, 'utf-8'));
-        }
-    } catch (e) {
-        console.error('Failed to load recall history:', e);
-    }
-    return [];
-}
 
-function saveRecallHistory(newRecord) {
-    try {
-        const history = loadRecallHistory();
-        history.unshift(newRecord); // Add to top
-        // Limit history size (e.g. 100)
-        if (history.length > 100) {
-            history.length = 100;
-        }
-        fs.writeFileSync(recallHistoryPath, JSON.stringify(history, null, 2), 'utf-8');
-        return history;
-    } catch (e) {
-        console.error('Failed to save recall history:', e);
-        return [];
-    }
-}
 
 loadConfig();
 
-// --- Monitor Service Logic ---
-let monitorProcess = null;
+// --- Modules Initialization ---
+const moduleContext = {
+    resourcesPath: process.resourcesPath,
+    isPackaged: app.isPackaged,
+    appIcon: appIcon,
+    iconPath: iconPath,
+    iconIcoPath: iconIcoPath,
+    recallHistoryPath: recallHistoryPath
+};
+
+messageNotificationModule.init(appConfig, moduleContext);
+messageRecallModule.init(appConfig, moduleContext);
+monitorServiceModule.init(appConfig, moduleContext);
+messageParserModule.init(appConfig, moduleContext);
+
+// Listen for config updates from modules
+eventBus.on('config:updated', ({ key, value }) => {
+    appConfig[key] = value;
+    saveConfig();
+    
+    // Sync config across modules
+    messageNotificationModule.updateConfig(appConfig);
+    messageRecallModule.updateConfig(appConfig);
+    // MonitorServiceModule 已经监听了 config:updated，不需要显式调用 updateConfig
+    messageParserModule.config = appConfig; // Parser 可能也需要最新配置
+});
+
+
+
 let notifyServer = null;
 const notifySockets = new Set();
 const NOTIFY_PORT = 19088;
-
-function startMonitor() {
-    if (monitorProcess) return;
-
-    const monitorScript = app.isPackaged 
-        ? path.join(process.resourcesPath, 'services', 'monitor.ps1')
-        : path.join(__dirname, 'services/monitor.ps1');
-    
-    if (!fs.existsSync(monitorScript)) {
-        console.error('Monitor script not found:', monitorScript);
-        return;
-    }
-
-    console.log('Starting Monitor Service from:', monitorScript);
-    monitorProcess = spawn('powershell.exe', [
-        '-NoProfile', 
-        '-ExecutionPolicy', 'Bypass', 
-        '-File', monitorScript
-    ], {
-        stdio: ['ignore', 'pipe', 'pipe'],
-        windowsHide: true
-    });
-
-    monitorProcess.stdout.on('data', (data) => {
-        const output = data.toString('utf8');
-        // console.log('[Monitor Raw]', output); 
-        
-        // Handle potentially multiple lines or split JSON
-        const lines = output.split(/\r?\n/);
-        lines.forEach(line => {
-            line = line.trim();
-            if (!line) return;
-            
-            // Try parsing JSON
-            if (line.startsWith('{') && line.endsWith('}')) {
-                try {
-                    const msg = JSON.parse(line);
-                    console.log('[Monitor JSON]', msg);
-                    handleIncomingMessage(msg);
-                } catch (e) {
-                    console.log('[Monitor Log]', line);
-                }
-            } else {
-                console.log('[Monitor Log]', line);
-            }
-        });
-    });
-
-    monitorProcess.stderr.on('data', (data) => {
-        console.error('[Monitor Error]', data.toString('utf8'));
-    });
-
-    monitorProcess.on('exit', (code) => {
-        console.log(`Monitor process exited with code ${code}`);
-        monitorProcess = null;
-        // Auto restart if unexpected exit and monitor is still enabled
-        if (appConfig.enableMonitor && !isQuitting) {
-            setTimeout(startMonitor, 5000);
-        }
-    });
-}
-
-function stopMonitor() {
-    if (monitorProcess) {
-        console.log('Stopping Monitor Service...');
-        try {
-            if (process.platform === 'win32' && monitorProcess.pid) {
-                // Force kill process tree on Windows
-                execSync(`taskkill /pid ${monitorProcess.pid} /T /F`);
-            }
-        } catch (e) {
-            // Ignore errors (e.g. process already dead)
-            console.log('Monitor process already killed or error killing:', e.message);
-        } finally {
-            if (monitorProcess) {
-                monitorProcess.kill();
-                monitorProcess = null;
-            }
-        }
-    }
-}
-
-function handleIncomingMessage(msgData) {
-    if (!msgData || !msgData.title) return;
-
-    // Filter logic
-    if (msgData.isUnread === false && msgData.type !== 'recall') {
-        appendToFilteredCsv('Node Filter: isUnread=false', msgData);
-        return;
-    }
-
-    // Handle Recall Persistence
-    if (msgData.type === 'recall') {
-        // Check if Anti-Recall is enabled
-        if (!appConfig.enableAntiRecall) {
-            return;
-        }
-
-        // Add timestamp for UI if not present or invalid
-        if (!msgData.time) {
-            msgData.time = Date.now();
-        }
-        
-        saveRecallHistory(msgData);
-        // Broadcast to all windows
-        BrowserWindow.getAllWindows().forEach(win => {
-            win.webContents.send('recall-log', msgData);
-        });
-    }
-
-    const title = msgData.title;
-    const body = msgData.content || '[收到新消息]';
-    const msgType = msgData.messageType || 'text';
-
-    if (appConfig.enableCustomPopup) {
-        showCustomPopup({
-            title: title,
-            content: body,
-            timestamp: msgData.timestamp,
-            messageType: msgType,
-            count: msgData.count
-        });
-    } else if (appConfig.enableNativeNotification) {
-        showNativeNotification(title, body);
-    }
-}
 
 function startNotifyServer() {
     if (notifyServer) return;
@@ -303,7 +173,8 @@ function startNotifyServer() {
         const msgData = req.body;
         console.log('[NotifyServer] Received:', msgData);
         
-        handleIncomingMessage(msgData);
+        // 使用 MessageParser 处理收到的消息（与 monitor 输出走相同流程）
+        messageParserModule.processParsedMessage(msgData);
         res.status(200).send('OK');
     });
 
@@ -371,134 +242,9 @@ function destroyTray() {
     }
 }
 
-// --- Popup Window Logic ---
-function createPopupWindow() {
-    if (popupWindow && !popupWindow.isDestroyed()) {
-        popupWindow.close();
-    }
 
-    const { width, height } = screen.getPrimaryDisplay().workAreaSize;
-    
-    popupWindow = new BrowserWindow({
-        width: 360,
-        height: 100,
-        x: width - 380,
-        y: 20,
-        frame: false,
-        transparent: true,
-        alwaysOnTop: true,
-        resizable: false,
-        skipTaskbar: true,
-        focusable: false,
-        show: false,
-        icon: appIcon,
-        webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false,
-            webSecurity: false
-        }
-    });
 
-    popupWindow.once('ready-to-show', () => {
-        popupWindow.show();
-    });
 
-    popupWindow.loadFile(path.join(__dirname, '../renderer/popup.html'));
-
-    popupWindow.on('closed', () => {
-        popupWindow = null;
-    });
-}
-
-function showCustomPopup(data) {
-    if (!popupWindow || popupWindow.isDestroyed()) {
-        createPopupWindow();
-        popupWindow.webContents.once('did-finish-load', () => {
-            popupWindow.webContents.send('popup:update', data);
-        });
-    } else {
-        popupWindow.webContents.send('popup:update', data);
-    }
-
-    if (popupCloseTimer) clearTimeout(popupCloseTimer);
-    
-    popupCloseTimer = setTimeout(() => {
-        if (popupWindow && !popupWindow.isDestroyed()) {
-            popupWindow.webContents.send('popup:fadeout');
-            setTimeout(() => {
-                if (popupWindow && !popupWindow.isDestroyed()) {
-                    popupWindow.close();
-                }
-            }, 300);
-        }
-    }, 5000);
-}
-
-ipcMain.on('popup:close', () => {
-    if (popupWindow && !popupWindow.isDestroyed()) {
-        popupWindow.close();
-    }
-});
-
-ipcMain.on('popup:click', () => {
-    // Activate WeChat Window
-    const script = `
-    $code = @"
-    using System;
-    using System.Runtime.InteropServices;
-    public class User32 {
-        [DllImport("user32.dll")]
-        public static extern bool SetForegroundWindow(IntPtr hWnd);
-        [DllImport("user32.dll")]
-        public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
-        [DllImport("user32.dll")]
-        public static extern bool IsIconic(IntPtr hWnd);
-    }
-"@
-    Add-Type -TypeDefinition $code -Language CSharp -ErrorAction SilentlyContinue
-    
-    $proc = Get-Process -Name "WeChat", "Weixin" -ErrorAction SilentlyContinue | Select-Object -First 1
-    if ($proc) {
-        $hwnd = $proc.MainWindowHandle
-        if ($hwnd -eq 0) {
-             # Window handle is 0, likely minimized to tray. Restarting executable usually wakes it up.
-             if ($proc.Path) {
-                 Start-Process $proc.Path
-             }
-        } else {
-            # SW_RESTORE = 9
-            if ([User32]::IsIconic($hwnd)) {
-                [User32]::ShowWindowAsync($hwnd, 9)
-            } else {
-                 # SW_SHOW = 5, just to be sure
-                 [User32]::ShowWindowAsync($hwnd, 5)
-            }
-            [User32]::SetForegroundWindow($hwnd)
-        }
-    }
-    `;
-    spawn('powershell.exe', ['-Command', script], {
-        windowsHide: true,
-        stdio: 'ignore'
-    });
-
-    if (popupWindow && !popupWindow.isDestroyed()) {
-        popupWindow.close();
-    }
-});
-
-function showNativeNotification(title, body) {
-    const notifyOpts = {
-        title: title, 
-        body: body,
-    };
-    if (process.platform === 'win32' && fs.existsSync(iconIcoPath)) {
-        notifyOpts.icon = iconIcoPath;
-    } else if (fs.existsSync(iconPath)) {
-        notifyOpts.icon = iconPath;
-    }
-    new Notification(notifyOpts).show();
-}
 
 function createWindow() {
     mainWindow = new BrowserWindow({
@@ -578,13 +324,13 @@ app.whenReady().then(() => {
     });
 
     startNotifyServer();
-    if (appConfig.enableMonitor) {
-        startMonitor();
-    }
+
+    // MonitorServiceModule 内部会根据配置启动，这里不需要显式调用
 });
 
 app.on('window-all-closed', function () {
-    stopMonitor();
+    // MonitorServiceModule 会监听 app:quitting 或自行管理，但这里如果是 quit 应用，
+    // 会触发 will-quit，MonitorServiceModule 应该在那里清理，或者这里手动 emit 一个事件
     if (process.platform !== 'darwin') {
         isQuitting = true;
         destroyTray();
@@ -597,7 +343,7 @@ app.on('before-quit', () => {
 });
 
 app.on('will-quit', () => {
-    stopMonitor();
+    eventBus.emit('app:quitting');
     if (notifyServer) {
         console.log('Stopping Notify Server...');
         
@@ -613,20 +359,7 @@ app.on('will-quit', () => {
 });
 
 // IPC Handlers
-ipcMain.handle('notification:show', (event, { title, body, type }) => {
-    if (type === 'custom') {
-        showCustomPopup({ content: body, timestamp: '测试' });
-    } else if (type === 'native') {
-        showNativeNotification(title, body);
-    } else {
-        if (appConfig.enableCustomPopup) {
-            showCustomPopup({ content: body, timestamp: '测试' });
-        } else {
-            showNativeNotification(title, body);
-        }
-    }
-    return 'Notification sent';
-});
+
 
 ipcMain.handle('app:toggle-auto-launch', (event, enable) => {
     setAutoLaunch(enable);
@@ -654,37 +387,9 @@ ipcMain.handle('app:get-version', () => {
     return app.getVersion();
 });
 
-ipcMain.handle('monitor:get-status', () => appConfig.enableMonitor);
-ipcMain.handle('monitor:toggle', (event, enable) => {
-    appConfig.enableMonitor = enable;
-    saveConfig();
-    if (enable) {
-        startMonitor();
-    } else {
-        stopMonitor();
-    }
-    return appConfig.enableMonitor;
-});
 
-// Anti-Recall IPC
-ipcMain.handle('recall:get-status', () => appConfig.enableAntiRecall);
-ipcMain.handle('recall:toggle', (event, enable) => {
-    appConfig.enableAntiRecall = enable;
-    saveConfig();
-    return appConfig.enableAntiRecall;
-});
 
-// Custom Popup IPC
 
-ipcMain.handle('popup:toggle', (event, enable) => {
-    appConfig.enableCustomPopup = enable;
-    saveConfig();
-    return true;
-});
-
-ipcMain.handle('popup:get-status', () => {
-    return appConfig.enableCustomPopup;
-});
 
 ipcMain.handle('app:set-theme', (event, theme) => {
     appConfig.theme = theme;
@@ -697,31 +402,4 @@ ipcMain.handle('app:get-theme', () => {
     return appConfig.theme;
 });
 
-// Recall History Handlers
-ipcMain.handle('recall:get-history', () => {
-    return loadRecallHistory();
-});
 
-ipcMain.handle('recall:clear-history', () => {
-    try {
-        if (fs.existsSync(recallHistoryPath)) {
-            fs.writeFileSync(recallHistoryPath, JSON.stringify([], null, 2), 'utf8');
-        }
-        return true;
-    } catch (err) {
-        console.error('Failed to clear recall history:', err);
-        return false;
-    }
-});
-
-ipcMain.handle('recall:delete-item', (event, timestamp) => {
-    try {
-        const history = loadRecallHistory();
-        const newHistory = history.filter(item => item.time !== timestamp);
-        fs.writeFileSync(recallHistoryPath, JSON.stringify(newHistory, null, 2), 'utf8');
-        return newHistory;
-    } catch (err) {
-        console.error('Failed to delete recall item:', err);
-        return null;
-    }
-});

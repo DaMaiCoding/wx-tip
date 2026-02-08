@@ -64,6 +64,33 @@ function Get-MessageType {
     return $messageType
 }
 
+function Get-RevokerFromNotice {
+    param([string]$notice)
+    
+    # Handle "Name 撤回了一条消息" or "Name recalled a message"
+    if ($notice -match "^(.+?)\s*撤回了一条消息$") {
+        return $matches[1]
+    }
+    if ($notice -match "^(.+?)\s*recalled a message$") {
+        return $matches[1]
+    }
+    if ($notice -match "You recalled a message") {
+        return "Current User"
+    }
+    if ($notice -match "你撤回了一条消息") {
+        return "Current User"
+    }
+    # Handle Sidebar format "Name: 撤回了一条消息"
+    if ($notice -match "^(.+?):\s*撤回了一条消息") {
+        return $matches[1]
+    }
+    if ($notice -match "^(.+?):\s*recalled a message") {
+        return $matches[1]
+    }
+    
+    return "Unknown"
+}
+
 function Parse-WeChatMessage {
     param([string]$fullTxt)
     
@@ -375,11 +402,14 @@ function Scan-ActiveChatWindow($win, $chatName) {
                              # Emit Event
                              Log-Message "RECALL DETECTED (History): $chatName -> $($recalledMsg.content)"
                              
+                             $revoker = Get-RevokerFromNotice -notice $text
                              $recallEvent = @{ 
                                 type = "recall"
                                 title = $chatName 
                                 content = "检测到历史撤回: $($recalledMsg.content)" 
                                 originalContent = $recalledMsg.content 
+                                recallNotice = $text
+                                revoker = $revoker
                                 timestamp = (Get-Date).ToString("HH:mm:ss") 
                             }
                             $json = $recallEvent | ConvertTo-Json -Compress
@@ -566,11 +596,14 @@ while ($true) {
                                 if (-not $global:processedRecalls.Contains($dedupKey)) {
                                     Log-Message "RECALL DETECTED (Immediate): Chat='$chatName', Content='$($lastMsg.content)'"
                                     
+                                    $revoker = Get-RevokerFromNotice -notice $messageContent
                                     $recallEvent = @{ 
                                         type = "recall"
                                         title = $chatName 
                                         content = "检测到撤回: $($lastMsg.content)" 
                                         originalContent = $lastMsg.content 
+                                        recallNotice = $messageContent
+                                        revoker = $revoker
                                         timestamp = (Get-Date).ToString("HH:mm:ss") 
                                     }
                                     $json = $recallEvent | ConvertTo-Json -Compress
