@@ -21,6 +21,8 @@ class MessageParserModule {
         this.config = config;
         
         // Detect Console Encoding on Windows
+        // DISABLED: Always use UTF-8 to avoid double-encoding issues in modern terminals (VS Code, etc.)
+        /*
         if (process.platform === 'win32' && iconv) {
             try {
                 // Check active code page
@@ -34,6 +36,7 @@ class MessageParserModule {
                 console.warn('[MessageParser] Failed to detect code page:', e.message);
             }
         }
+        */
         
         // 确定 CSV 过滤日志路径
         const configPath = context.isPackaged 

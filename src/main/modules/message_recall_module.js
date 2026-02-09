@@ -79,6 +79,19 @@ class MessageRecallModule {
         if (!msgData.time) {
             msgData.time = Date.now();
         }
+
+        // Deduplication: Check if same content exists in history for this chat
+        // This prevents repeated alerts when Monitor Service restarts and re-scans the same recall notice
+        const history = this.loadRecallHistory();
+        const isDuplicate = history.some(item => 
+            item.title === msgData.title && 
+            item.originalContent === msgData.originalContent
+        );
+
+        if (isDuplicate) {
+            console.log(`[MessageRecall] Duplicate skipped: ${msgData.title} -> ${msgData.originalContent}`);
+            return;
+        }
         
         this.saveRecallHistory(msgData);
         // Broadcast to all windows
