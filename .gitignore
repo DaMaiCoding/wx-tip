@@ -8,3 +8,5 @@ release_out
 package-lock.json
 .cache
 monitor.log
+chat_history_db.json
+recall_history.json
