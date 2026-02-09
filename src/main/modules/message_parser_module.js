@@ -1,15 +1,39 @@
 const fs = require('fs');
 const path = require('path');
 const eventBus = require('./event_bus');
+const { execSync } = require('child_process');
+
+let iconv = null;
+try {
+    iconv = require('iconv-lite');
+} catch (e) {
+    console.warn('[MessageParser] iconv-lite not found, encoding fix disabled');
+}
 
 class MessageParserModule {
     constructor() {
         this.config = null;
         this.filteredCsvPathNode = null;
+        this.isConsoleGBK = false;
     }
 
     init(config, context) {
         this.config = config;
+        
+        // Detect Console Encoding on Windows
+        if (process.platform === 'win32' && iconv) {
+            try {
+                // Check active code page
+                const out = execSync('chcp', { encoding: 'utf8' });
+                if (out && out.includes('936')) {
+                    this.isConsoleGBK = true;
+                    // Test write to verify
+                    // process.stdout.write(iconv.encode('[MessageParser] GBK Output Enabled\n', 'cp936'));
+                }
+            } catch (e) {
+                console.warn('[MessageParser] Failed to detect code page:', e.message);
+            }
+        }
         
         // 确定 CSV 过滤日志路径
         const configPath = context.isPackaged 
@@ -20,7 +44,25 @@ class MessageParserModule {
         // 监听 Monitor 原始输出
         eventBus.on('monitor:output', (data) => this.handleOutput(data));
         
-        console.log('[MessageParserModule] Initialized');
+        this.logToConsole('[MessageParserModule] Initialized');
+    }
+
+    logToConsole(label, content) {
+        if (this.isConsoleGBK && iconv) {
+            try {
+                // Ensure content is a string for printing
+                const strContent = (typeof content === 'object') 
+                    ? JSON.stringify(content) // Use JSON.stringify for objects to avoid [Object object]
+                    : String(content);
+                
+                const fullStr = `${label} ${strContent}\n`;
+                process.stdout.write(iconv.encode(fullStr, 'cp936'));
+                return;
+            } catch (e) {
+                // Fallback if encoding fails
+            }
+        }
+        console.log(label, content);
     }
 
     handleOutput(data) {
@@ -37,13 +79,13 @@ class MessageParserModule {
             if (line.startsWith('{') && line.endsWith('}')) {
                 try {
                     const msg = JSON.parse(line);
-                    console.log('[Monitor JSON]', msg);
+                    this.logToConsole('[Monitor JSON]', msg);
                     this.processParsedMessage(msg);
                 } catch (e) {
-                    console.log('[Monitor Log]', line);
+                    this.logToConsole('[Monitor Log]', line);
                 }
             } else {
-                console.log('[Monitor Log]', line);
+                this.logToConsole('[Monitor Log]', line);
             }
         });
     }

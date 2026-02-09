@@ -40,6 +40,7 @@
   "dependencies": {
     "body-parser": "^2.2.2",
     "electron-log": "^5.4.3",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "iconv-lite": "^0.7.2"
   }
 }
