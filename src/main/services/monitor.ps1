@@ -358,44 +358,46 @@ function Scan-ActiveChatWindow($win, $chatName) {
         }
     }
 
-    # --- STEP 1: INGESTION (Restored) ---
-    # We must save active chat messages to history to support anti-recall.
-    foreach ($item in $visibleContentList) {
-        if ($item.type -eq "message") {
-            $msgContent = $item.content
+    # --- STEP 1: INGESTION (Disabled by User Request) ---
+    # User requested to ONLY save data from Sidebar.
+    # So we DO NOT add active chat messages to history here.
+    
+    # foreach ($item in $visibleContentList) {
+    #     if ($item.type -eq "message") {
+    #         $msgContent = $item.content
             
-            # Enrich with Sender Name from Sidebar (for Group Chats)
-            $msgContent = Enrich-MessageWithSender -chatName $chatName -msgContent $msgContent
+    #         # Enrich with Sender Name from Sidebar (for Group Chats)
+    #         $msgContent = Enrich-MessageWithSender -chatName $chatName -msgContent $msgContent
             
-            $msgHash = Get-MD5Hash $msgContent
+    #         $msgHash = Get-MD5Hash $msgContent
             
-            # Check for duplicates in the ENTIRE current history (limited to 200)
-            # This prevents re-adding old messages when scrolling up
-            $isDuplicate = $false
-            if ($history) {
-                foreach ($hMsg in $history) {
-                    if ($hMsg.hash -eq $msgHash) {
-                        $isDuplicate = $true
-                        break
-                    }
-                }
-            }
+    #         # Check for duplicates in the ENTIRE current history (limited to 200)
+    #         # This prevents re-adding old messages when scrolling up
+    #         $isDuplicate = $false
+    #         if ($history) {
+    #             foreach ($hMsg in $history) {
+    #                 if ($hMsg.hash -eq $msgHash) {
+    #                     $isDuplicate = $true
+    #                     break
+    #                 }
+    #             }
+    #         }
             
-            if (-not $isDuplicate) {
-                $msgToSave = @{
-                    content = $msgContent
-                    timestamp = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
-                    hash = $msgHash
-                }
+    #         if (-not $isDuplicate) {
+    #             $msgToSave = @{
+    #                 content = $msgContent
+    #                 timestamp = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
+    #                 hash = $msgHash
+    #             }
                 
-                $history += $msgToSave
-            }
-        }
-    }
+    #             $history += $msgToSave
+    #         }
+    #     }
+    # }
     
     # Update Global History
-    $global:chatHistory[$chatName] = $history
-    $global:isDirty = $true
+    # $global:chatHistory[$chatName] = $history
+    # $global:isDirty = $true
     
     # Save logic moved to main loop (Debounced)
 
@@ -920,3 +922,4 @@ while ($true) {
         Start-Sleep -Seconds 1
     }
 }
+
