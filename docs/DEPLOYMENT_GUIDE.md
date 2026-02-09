@@ -1,4 +1,5 @@
 # wxTip 部署验证指南
+# wxTip 部署验证指南
 
 本文档提供了在部署环境中验证微信消息监听功能的详细步骤。
 
@@ -8,13 +9,14 @@
 
 ```powershell
 # 1. 解压绿色版到测试目录
-# wxTip-1.1.0-portable.exe 是自包含的，直接运行即可
+# wxTip-1.2.0-portable.exe 是自包含的，直接运行即可
 
 # 2. 启动应用
-.\wxTip-1.1.0-portable.exe
+.\wxTip-1.2.0-portable.exe
 
 # 3. 检查进程是否启动
 Get-Process wxTip -ErrorAction SilentlyContinue
+```
 ```
 
 ### 2. 验证监控服务状态
