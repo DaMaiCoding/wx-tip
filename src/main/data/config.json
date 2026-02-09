@@ -1,0 +1,8 @@
+{
+    "enableNativeNotification": true,
+    "enableCustomPopup": true,
+    "enableDanmaku": true,
+    "enableMonitor": true,
+    "enableAntiRecall": true,
+    "theme": "light"
+}

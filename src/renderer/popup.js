@@ -10,8 +10,8 @@ const msgTime = document.getElementById('msg-time');
 const closeBtn = document.getElementById('close-btn');
 
 const MESSAGE_ICONS = {
-    image: '',
-    sticker: '',
+    image: '🖼️',
+    sticker: '😊',
     video: '🎬',
     voice: '🎤',
     file: '📎',

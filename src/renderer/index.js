@@ -132,6 +132,7 @@ const chkAutoLaunch = document.getElementById('chk-autolaunch');
 const chkMonitor = document.getElementById('chk-monitor');
 const chkAntiRecall = document.getElementById('chk-anti-recall');
 const chkCustomPopup = document.getElementById('chk-custom-popup');
+const chkDanmaku = document.getElementById('chk-danmaku');
 const btnAbout = document.getElementById('btn-about');
 const themeRadios = document.querySelectorAll('input[name="theme"]');
 
@@ -186,6 +187,15 @@ if (chkCustomPopup) {
     });
 }
 
+// Danmaku
+if (chkDanmaku) {
+    chkDanmaku.addEventListener('change', async (e) => {
+        const enabled = e.target.checked;
+        const isSet = await window.electronAPI.toggleDanmaku(enabled);
+        console.log(`Danmaku set to: ${isSet}`);
+    });
+}
+
 // Theme Logic
 function applyTheme() {
     const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -231,6 +241,10 @@ themeRadios.forEach(radio => {
     const isCustomPopup = await window.electronAPI.getCustomPopupStatus();
     if (chkCustomPopup) chkCustomPopup.checked = isCustomPopup;
 
+    // Danmaku State
+    const isDanmaku = await window.electronAPI.getDanmakuStatus();
+    if (chkDanmaku) chkDanmaku.checked = isDanmaku;
+
     // Theme State
     const currentTheme = await window.electronAPI.getTheme();
     const themeToSelect = currentTheme || 'system';
@@ -272,19 +286,20 @@ function createRecallElement(item) {
     const content = item.content || '无内容';
     const time = item.time ? formatTime(item.time) : formatTime(Date.now());
     const itemId = item.time; // Use timestamp as ID
+    const title = item.title || '拦截到撤回消息';
     
     div.innerHTML = `
         <div class="recall-header">
             <div class="recall-title">
-                <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                    <path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"/>
                 </svg>
-                拦截到撤回消息
+                <span>${title}</span>
             </div>
             <div class="recall-actions">
-                <span style="font-size: 12px; color: var(--text-secondary); margin-right: 8px;">${time}</span>
-                <button class="icon-btn delete-btn" title="删除这条记录">
-                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                <span class="recall-time">${time}</span>
+                <button class="delete-btn" title="删除这条记录">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
                     </svg>
                 </button>
@@ -390,7 +405,7 @@ function showEmptyState() {
     recallList.innerHTML = `
         <div class="empty-state">
             <div class="empty-icon">
-                <svg viewBox="0 0 24 24" fill="currentColor">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="64" height="64">
                     <path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"/>
                 </svg>
             </div>

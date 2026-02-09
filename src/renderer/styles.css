@@ -584,160 +584,121 @@ input:checked + .slider:before { transform: translateX(20px); }
 
 .recall-item {
     background-color: var(--card-bg);
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 16px 20px;
     display: flex;
     flex-direction: column;
     border: 1px solid transparent;
-    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     animation: slideIn 0.3s ease;
+    position: relative;
 }
+
 @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
 
 .recall-item:hover {
-    background-color: var(--card-hover-bg);
-    border-color: var(--border-color);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    background-color: var(--card-bg); /* Maintain bg color */
 }
 
 .recall-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .recall-title {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--accent-color);
     display: flex;
     align-items: center;
-    gap: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: 0.3px;
 }
 
-.recall-tag {
-    font-size: 10px;
-    padding: 2px 6px;
-    border-radius: 4px;
-    background-color: rgba(255, 159, 67, 0.1);
+.recall-title svg {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
     color: var(--accent-color);
+    margin-right: 10px !important;
+    filter: drop-shadow(0 2px 4px rgba(255, 159, 67, 0.2));
+}
+
+/* Revoker Tag Styles Removed */
+
+.recall-content {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    padding: 4px 4px 0 4px;
+    opacity: 0.9;
+}
+
+.recall-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
 .recall-time {
     font-size: 12px;
     color: var(--text-secondary);
+    opacity: 0.8;
 }
 
-.recall-content {
-    font-size: 14px;
-    color: var(--text-primary);
-    line-height: 1.5;
-    word-break: break-all;
-    background-color: var(--bg-color);
-    padding: 10px;
-    border-radius: 6px;
+.delete-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+    opacity: 0.7;
 }
 
+.recall-item:hover .delete-btn {
+    opacity: 1;
+}
+
+.delete-btn:hover {
+    background-color: rgba(255, 71, 87, 0.1);
+    color: #ff4757;
+}
+
+/* Revoker Tag - Removed */
+
+/* Empty State */
 .empty-state {
-    width: 100%;
-    padding: 60px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 60px 0;
     color: var(--text-secondary);
 }
 
 .empty-icon {
     width: 64px;
     height: 64px;
-    margin-bottom: 20px;
-    color: var(--border-color);
-}
-.empty-icon svg { width: 100%; height: 100%; }
-
-/* Modal Body */
-.modal-body {
-    padding: 30px 20px;
-    display: flex;
-    align-items: flex-start;
-}
-
-.modal-icon-area {
-    margin-right: 20px;
-    flex-shrink: 0;
-}
-
-.modal-icon-area svg {
-    width: 48px;
-    height: 48px;
-}
-
-.modal-text-area {
-    flex: 1;
-}
-
-.modal-text-area h4 {
-    margin: 0 0 10px 0;
-    font-size: 18px;
-    color: var(--text-primary);
-    font-weight: 500;
-}
-
-.modal-text-area p {
-    margin: 0;
-    font-size: 14px;
+    margin-bottom: 16px;
     color: var(--text-secondary);
-    line-height: 1.5;
+    opacity: 0.5;
 }
 
-.modal-footer {
-    padding: 16px 20px;
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    background-color: rgba(0, 0, 0, 0.03);
+.empty-icon svg {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
 }
-
-.modal-btn {
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 13px;
-    cursor: pointer;
-    font-family: inherit;
-    transition: background-color 0.2s;
-    outline: none;
-}
-
-.modal-btn.primary {
-    background-color: var(--modal-btn-primary-bg);
-    color: var(--modal-btn-primary-text);
-}
-
-.modal-btn.primary:hover {
-    background-color: var(--modal-btn-primary-hover);
-}
-
-.modal-btn.danger {
-    background-color: var(--modal-btn-danger-bg);
-    color: var(--modal-btn-danger-text);
-}
-
-.modal-btn.danger:hover {
-    background-color: var(--modal-btn-danger-hover);
-}
-
-.modal-btn.secondary {
-    background-color: var(--modal-btn-secondary-bg);
-    color: var(--modal-btn-secondary-text);
-}
-
-.modal-btn.secondary:hover {
-    background-color: var(--modal-btn-secondary-hover);
-}
-/* Recall Actions */
-.recall-actions { display: flex; align-items: center; }
-.icon-btn { background: transparent; border: none; cursor: pointer; color: var(--text-secondary); padding: 4px; border-radius: 4px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; opacity: 0; }
-.icon-btn:hover { background-color: rgba(255, 71, 87, 0.1); color: #ff4757; opacity: 1; }
-.recall-item:hover .icon-btn { opacity: 0.8; }

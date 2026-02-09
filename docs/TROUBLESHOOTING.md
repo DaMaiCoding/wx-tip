@@ -63,12 +63,12 @@ const scriptPath = app.isPackaged
 ### 端口绑定配置
 
 ```javascript
-// Express 服务器绑定到 127.0.0.1:5000
+// Express 服务器绑定到 127.0.0.1:19088
 notifyApp.listen(notifyPort, '127.0.0.1', callback);
 ```
 
 - **本地地址绑定**：使用 `127.0.0.1` 而非 `localhost`，避免 DNS 解析
-- **端口选择**：5000 端口，避免与其他服务冲突
+- **端口选择**：19088 端口，避免与其他服务冲突
 - **防火墙要求**：不需要外部网络访问（仅内部通信）
 
 ## 修复后的代码变更
@@ -100,13 +100,12 @@ notifyApp.listen(notifyPort, '127.0.0.1', callback);
 
 ```bash
 # 启动开发服务器
-npm start
+npm run dev
 
 # 验证日志输出
 # 应该看到：
-# [NotifyServer] Internal server running on port 5000
-# [Monitor] Starting monitor from: ...\services\monitor.ps1
-# [Monitor] Packaged: false
+# [NotifyServer] Notify Server running on port 19088
+# [Monitor] Starting Monitor Service from: ...\services\monitor.ps1
 # [Monitor] Service started successfully
 ```
 
@@ -116,14 +115,13 @@ npm start
 
 ```powershell
 # 安装应用
-.\dist\wxTip-1.0.0-setup.exe
+.\dist\wxTip-1.1.0-setup.exe
 
 # 启动应用并检查日志位置
 # 日志路径：%APPDATA%\wxTip\logs\
 # 查找关键日志：
-# - [NotifyServer] Internal server running on port 5000
-# - [Monitor] Starting monitor from: C:\Program Files\wxTip\resources\services\monitor.ps1
-# - [Monitor] Packaged: true
+# - [NotifyServer] Notify Server running on port 19088
+# - [Monitor] Starting Monitor Service from: C:\Program Files\wxTip\resources\services\monitor.ps1
 # - [Monitor] Service started successfully
 ```
 
@@ -131,7 +129,7 @@ npm start
 
 ```powershell
 # 直接运行绿色版
-.\dist\wxTip-1.0.0-portable.exe
+.\dist\wxTip-1.1.0-portable.exe
 
 # 检查临时目录日志
 # 日志路径：临时目录\wxTip\logs\
@@ -140,7 +138,7 @@ npm start
 
 ### 功能验证清单
 
-- [ ] 应用启动后，Express 服务器成功启动（端口 5000）
+- [ ] 应用启动后，Express 服务器成功启动（端口 19088）
 - [ ] PowerShell 监控进程成功启动
 - [ ] monitor.ps1 脚本路径正确（检查日志）
 - [ ] 发送微信消息后能收到通知
@@ -155,7 +153,7 @@ npm start
 Get-Process powershell | Where-Object { $_.CommandLine -like "*monitor.ps1*" }
 
 # 检查端口占用
-netstat -ano | findstr :5000
+netstat -ano | findstr :19088
 
 # 检查日志文件
 Get-Content $env:APPDATA\wxTip\logs\*.log -Tail 50
@@ -225,7 +223,7 @@ Get-ChildItem "C:\Program Files\wxTip\resources\services"
 ## 技术支持
 
 如遇问题，请提供：
-1. 应用版本（`1.0.0`）
+1. 应用版本（`1.1.0`）
 2. 操作系统版本
 3. 日志文件（`%APPDATA%\wxTip\logs\`）
 4. 复现步骤
@@ -233,5 +231,5 @@ Get-ChildItem "C:\Program Files\wxTip\resources\services"
 
 ---
 
-生成日期：2026-02-03
-适用版本：wxTip 1.0.0
+生成日期：2026-02-07
+适用版本：wxTip 1.1.0
