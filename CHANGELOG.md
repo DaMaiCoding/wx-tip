@@ -1,5 +1,16 @@
 # 更新日志 (Changelog)
 
+## [1.2.0] - 2026-02-10
+
+### ✨ 新增功能 (New Features)
+- **沉浸式弹幕通知 (Danmaku)**：新增全屏弹幕通知功能，支持在游戏或全屏应用时无干扰地接收消息提醒。
+  - 支持透明背景、鼠标穿透。
+  - 可在设置中开启或关闭。
+
+### 📚 文档 (Documentation)
+- **全面同步**：更新 `README.md`、`DEPLOYMENT_GUIDE.md`、`TROUBLESHOOTING.md` 及 `FEATURE_ANTI_RECALL.md` 以匹配 1.2.0 版本功能。
+- **技术细节修正**：修正了防撤回文档中关于数据结构（`$global:chatHistory`）和去重算法的描述，使其与代码实现一致。
+
 ## [1.1.0] - 2026-02-07
 
 ### 🚀 里程碑 (Milestone)

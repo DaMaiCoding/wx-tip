@@ -115,7 +115,7 @@ npm run dev
 
 ```powershell
 # 安装应用
-.\dist\wxTip-1.1.0-setup.exe
+.\dist\wxTip-1.2.0-setup.exe
 
 # 启动应用并检查日志位置
 # 日志路径：%APPDATA%\wxTip\logs\
@@ -129,7 +129,7 @@ npm run dev
 
 ```powershell
 # 直接运行绿色版
-.\dist\wxTip-1.1.0-portable.exe
+.\dist\wxTip-1.2.0-portable.exe
 
 # 检查临时目录日志
 # 日志路径：临时目录\wxTip\logs\
@@ -223,7 +223,7 @@ Get-ChildItem "C:\Program Files\wxTip\resources\services"
 ## 技术支持
 
 如遇问题，请提供：
-1. 应用版本（`1.1.0`）
+1. 应用版本（`1.2.0`）
 2. 操作系统版本
 3. 日志文件（`%APPDATA%\wxTip\logs\`）
 4. 复现步骤
@@ -231,5 +231,5 @@ Get-ChildItem "C:\Program Files\wxTip\resources\services"
 
 ---
 
-生成日期：2026-02-07
-适用版本：wxTip 1.1.0
+生成日期：2026-02-10
+适用版本：wxTip 1.2.0
