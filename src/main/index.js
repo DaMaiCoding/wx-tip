@@ -19,6 +19,7 @@ if (!app.isPackaged) {
             ignored: [
                 /config\.json/,
                 /recall_history\.json/,
+                /chat_history_db\.json/,
                 /monitor\.log/,
                 /.*\.log/,
                 /.*\.csv/
