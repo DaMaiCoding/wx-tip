@@ -25,6 +25,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
     toggleCustomPopup: (enable) => ipcRenderer.invoke('popup:toggle', enable),
     getCustomPopupStatus: () => ipcRenderer.invoke('popup:get-status'),
 
+    // Danmaku
+    toggleDanmaku: (enable) => ipcRenderer.invoke('danmaku:toggle', enable),
+    getDanmakuStatus: () => ipcRenderer.invoke('danmaku:get-status'),
+
     // Theme
     setTheme: (theme) => ipcRenderer.invoke('app:set-theme', theme),
     getTheme: () => ipcRenderer.invoke('app:get-theme'),

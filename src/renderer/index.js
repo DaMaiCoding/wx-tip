@@ -132,6 +132,7 @@ const chkAutoLaunch = document.getElementById('chk-autolaunch');
 const chkMonitor = document.getElementById('chk-monitor');
 const chkAntiRecall = document.getElementById('chk-anti-recall');
 const chkCustomPopup = document.getElementById('chk-custom-popup');
+const chkDanmaku = document.getElementById('chk-danmaku');
 const btnAbout = document.getElementById('btn-about');
 const themeRadios = document.querySelectorAll('input[name="theme"]');
 
@@ -186,6 +187,15 @@ if (chkCustomPopup) {
     });
 }
 
+// Danmaku
+if (chkDanmaku) {
+    chkDanmaku.addEventListener('change', async (e) => {
+        const enabled = e.target.checked;
+        const isSet = await window.electronAPI.toggleDanmaku(enabled);
+        console.log(`Danmaku set to: ${isSet}`);
+    });
+}
+
 // Theme Logic
 function applyTheme() {
     const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -230,6 +240,10 @@ themeRadios.forEach(radio => {
     // Custom Popup State
     const isCustomPopup = await window.electronAPI.getCustomPopupStatus();
     if (chkCustomPopup) chkCustomPopup.checked = isCustomPopup;
+
+    // Danmaku State
+    const isDanmaku = await window.electronAPI.getDanmakuStatus();
+    if (chkDanmaku) chkDanmaku.checked = isDanmaku;
 
     // Theme State
     const currentTheme = await window.electronAPI.getTheme();

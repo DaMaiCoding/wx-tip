@@ -8,6 +8,7 @@ const messageNotificationModule = require('./modules/message_notification_module
 const messageRecallModule = require('./modules/message_recall_module');
 const monitorServiceModule = require('./modules/monitor_service_module');
 const messageParserModule = require('./modules/message_parser_module');
+const danmakuModule = require('./modules/danmaku_module');
 const eventBus = require('./modules/event_bus');
 
 // Enable live reload for development
@@ -101,6 +102,7 @@ function ensureShortcut() {
 let appConfig = {
     enableNativeNotification: true,
     enableCustomPopup: false,
+    enableDanmaku: false,
     enableMonitor: false,
     enableAntiRecall: false,
     theme: 'system' // system, light, dark
@@ -131,32 +133,10 @@ function saveConfig() {
 
 loadConfig();
 
+
 // --- Modules Initialization ---
-const moduleContext = {
-    resourcesPath: process.resourcesPath,
-    isPackaged: app.isPackaged,
-    appIcon: appIcon,
-    iconPath: iconPath,
-    iconIcoPath: iconIcoPath,
-    recallHistoryPath: recallHistoryPath
-};
+// Moved to app.whenReady() to ensure Electron APIs are ready
 
-messageNotificationModule.init(appConfig, moduleContext);
-messageRecallModule.init(appConfig, moduleContext);
-monitorServiceModule.init(appConfig, moduleContext);
-messageParserModule.init(appConfig, moduleContext);
-
-// Listen for config updates from modules
-eventBus.on('config:updated', ({ key, value }) => {
-    appConfig[key] = value;
-    saveConfig();
-    
-    // Sync config across modules
-    messageNotificationModule.updateConfig(appConfig);
-    messageRecallModule.updateConfig(appConfig);
-    // MonitorServiceModule 已经监听了 config:updated，不需要显式调用 updateConfig
-    messageParserModule.config = appConfig; // Parser 可能也需要最新配置
-});
 
 
 
@@ -317,6 +297,35 @@ function setAutoLaunch(enable) {
 }
 
 app.whenReady().then(() => {
+    // --- Modules Initialization ---
+    const moduleContext = {
+        resourcesPath: process.resourcesPath,
+        isPackaged: app.isPackaged,
+        appIcon: appIcon,
+        iconPath: iconPath,
+        iconIcoPath: iconIcoPath,
+        recallHistoryPath: recallHistoryPath
+    };
+
+    messageNotificationModule.init(appConfig, moduleContext);
+    messageRecallModule.init(appConfig, moduleContext);
+    monitorServiceModule.init(appConfig, moduleContext);
+    messageParserModule.init(appConfig, moduleContext);
+    danmakuModule.init(appConfig, moduleContext);
+
+    // Listen for config updates from modules
+    eventBus.on('config:updated', ({ key, value }) => {
+        appConfig[key] = value;
+        saveConfig();
+        
+        // Sync config across modules
+        messageNotificationModule.updateConfig(appConfig);
+        messageRecallModule.updateConfig(appConfig);
+        danmakuModule.updateConfig(appConfig);
+        // MonitorServiceModule 已经监听了 config:updated，不需要显式调用 updateConfig
+        messageParserModule.config = appConfig; // Parser 可能也需要最新配置
+    });
+
     ensureShortcut();
     createWindow();
 
