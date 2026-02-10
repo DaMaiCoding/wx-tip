@@ -81,7 +81,7 @@ function ensureShortcut() {
 
     const shortcutName = 'wxTip.lnk';
     const shortcutPath = path.join(app.getPath('appData'), 'Microsoft', 'Windows', 'Start Menu', 'Programs', shortcutName);
-    const targetPath = process.execPath;
+    const targetPath = process.env.PORTABLE_EXECUTABLE_FILE || process.execPath;
     const shortcutIcon = fs.existsSync(iconIcoPath) ? iconIcoPath : iconPath;
 
     try {
@@ -288,9 +288,10 @@ function createWindow() {
 
 // Auto Launch Logic
 function setAutoLaunch(enable) {
+    const targetPath = process.env.PORTABLE_EXECUTABLE_FILE || process.execPath;
     app.setLoginItemSettings({
         openAtLogin: enable,
-        path: process.execPath,
+        path: targetPath,
         args: ['--hidden'],
         openAsHidden: enable
     });
@@ -373,11 +374,13 @@ app.on('will-quit', () => {
 
 ipcMain.handle('app:toggle-auto-launch', (event, enable) => {
     setAutoLaunch(enable);
-    return app.getLoginItemSettings().openAtLogin;
+    const targetPath = process.env.PORTABLE_EXECUTABLE_FILE || process.execPath;
+    return app.getLoginItemSettings({ path: targetPath }).openAtLogin;
 });
 
 ipcMain.handle('app:get-auto-launch', () => {
-    return app.getLoginItemSettings().openAtLogin;
+    const targetPath = process.env.PORTABLE_EXECUTABLE_FILE || process.execPath;
+    return app.getLoginItemSettings({ path: targetPath }).openAtLogin;
 });
 
 // New IPC: Get App Version
