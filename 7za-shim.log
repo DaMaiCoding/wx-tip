@@ -1,0 +1,30 @@
+[2026-02-10T04:02:45.215Z] Shim started
+Args: ["G:\\Node\\node.exe","G:\\testProject\\wx-tip\\scripts\\7za-shim.js","a","-bd","-mx=9","-md=1m","-mtc=off","-ms=off","-mtm=off","-mta=off","G:\\testProject\\wx-tip\\dist\\wx-tip-1.2.0-x64.nsis.7z",".","-xr!*.avi","-xr!*.mov","-xr!*.m4v","-xr!*.mp4","-xr!*.m4p","-xr!*.qt","-xr!*.mkv","-xr!*.webm","-xr!*.vmdk"]
+Using original 7za: G:\testProject\wx-tip\node_modules\.pnpm\7zip-bin@5.2.0\node_modules\7zip-bin\win\x64\7za.exe
+Filtered Args: ["a","-bd","-mx=9","-md=1m","-mtc=off","-ms=off","-mtm=off","-mta=off","G:\\testProject\\wx-tip\\dist\\wx-tip-1.2.0-x64.nsis.7z",".","-xr!*.avi","-xr!*.mov","-xr!*.m4v","-xr!*.mp4","-xr!*.m4p","-xr!*.qt","-xr!*.mkv","-xr!*.webm","-xr!*.vmdk"]
+Exited with code 0
+[2026-02-10T04:03:03.800Z] Shim started
+Args: ["G:\\Node\\node.exe","G:\\testProject\\wx-tip\\scripts\\7za-shim.js","l","G:\\testProject\\wx-tip\\dist\\wx-tip-1.2.0-x64.nsis.7z"]
+Using original 7za: G:\testProject\wx-tip\node_modules\.pnpm\7zip-bin@5.2.0\node_modules\7zip-bin\win\x64\7za.exe
+Filtered Args: ["l","G:\\testProject\\wx-tip\\dist\\wx-tip-1.2.0-x64.nsis.7z"]
+Exited with code 0
+[2026-02-10T04:03:08.680Z] Shim started
+Args: ["G:\\Node\\node.exe","G:\\testProject\\wx-tip\\scripts\\7za-shim.js","l","G:\\testProject\\wx-tip\\dist\\wx-tip-1.2.0-x64.nsis.7z"]
+Using original 7za: G:\testProject\wx-tip\node_modules\.pnpm\7zip-bin@5.2.0\node_modules\7zip-bin\win\x64\7za.exe
+Filtered Args: ["l","G:\\testProject\\wx-tip\\dist\\wx-tip-1.2.0-x64.nsis.7z"]
+Exited with code 0
+[2026-02-10T04:05:42.165Z] Shim started
+Args: ["G:\\Node\\node.exe","G:\\testProject\\wx-tip\\scripts\\7za-shim.js","a","-bd","-mx=9","-md=1m","-mtc=off","-ms=off","-mtm=off","-mta=off","G:\\testProject\\wx-tip\\dist\\wx-tip-1.2.0-x64.nsis.7z",".","-xr!*.avi","-xr!*.mov","-xr!*.m4v","-xr!*.mp4","-xr!*.m4p","-xr!*.qt","-xr!*.mkv","-xr!*.webm","-xr!*.vmdk"]
+Using original 7za: G:\testProject\wx-tip\node_modules\.pnpm\7zip-bin@5.2.0\node_modules\7zip-bin\win\x64\7za.exe
+Filtered Args: ["a","-bd","-mx=9","-md=1m","-mtc=off","-ms=off","-mtm=off","-mta=off","G:\\testProject\\wx-tip\\dist\\wx-tip-1.2.0-x64.nsis.7z",".","-xr!*.avi","-xr!*.mov","-xr!*.m4v","-xr!*.mp4","-xr!*.m4p","-xr!*.qt","-xr!*.mkv","-xr!*.webm","-xr!*.vmdk"]
+Exited with code 0
+[2026-02-10T04:06:00.693Z] Shim started
+Args: ["G:\\Node\\node.exe","G:\\testProject\\wx-tip\\scripts\\7za-shim.js","l","G:\\testProject\\wx-tip\\dist\\wx-tip-1.2.0-x64.nsis.7z"]
+Using original 7za: G:\testProject\wx-tip\node_modules\.pnpm\7zip-bin@5.2.0\node_modules\7zip-bin\win\x64\7za.exe
+Filtered Args: ["l","G:\\testProject\\wx-tip\\dist\\wx-tip-1.2.0-x64.nsis.7z"]
+Exited with code 0
+[2026-02-10T04:06:04.799Z] Shim started
+Args: ["G:\\Node\\node.exe","G:\\testProject\\wx-tip\\scripts\\7za-shim.js","l","G:\\testProject\\wx-tip\\dist\\wx-tip-1.2.0-x64.nsis.7z"]
+Using original 7za: G:\testProject\wx-tip\node_modules\.pnpm\7zip-bin@5.2.0\node_modules\7zip-bin\win\x64\7za.exe
+Filtered Args: ["l","G:\\testProject\\wx-tip\\dist\\wx-tip-1.2.0-x64.nsis.7z"]
+Exited with code 0

@@ -64,7 +64,10 @@ console.log(`Setting ELECTRON_BUILDER_CACHE to: ${cacheDir}`);
 
 // We execute electron-builder directly.
 // In npm scripts, node_modules/.bin is added to PATH, so 'electron-builder' works.
-const buildCommand = `electron-builder --win --config electron-builder.config.js --publish never`;
+const shouldPublish = process.env.PUBLISH === 'true' || process.env.PUBLISH === 'always';
+const publishFlag = shouldPublish ? '--publish always' : '--publish never';
+// Use pnpm to execute electron-builder to ensure it's found even if not in global PATH
+const buildCommand = `pnpm electron-builder --win --config electron-builder.config.js ${publishFlag}`;
 
 // Ensure we use 'dist' as output and set cache/mirrors
 const env = { 

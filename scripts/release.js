@@ -31,11 +31,21 @@ if (!process.env.GH_TOKEN) {
 // 3. 执行发布命令
 console.log('Starting release build...');
 try {
-    // 使用 stdio: 'inherit' 让输出直接显示在终端
-    execSync('npm run build && electron-builder --win --config electron-builder.config.js --publish always', {
+    // 使用 smart-build.js 进行构建和发布，避免重复构建和文件锁定问题
+    // 设置 PUBLISH=true 环境变量
+    const smartBuildPath = path.resolve(__dirname, 'smart-build.js');
+    
+    // 继承当前环境变量，并添加 PUBLISH=true
+    const env = { 
+        ...process.env,
+        PUBLISH: 'true'
+    };
+
+    execSync(`node "${smartBuildPath}"`, {
         stdio: 'inherit',
-        env: process.env
+        env: env
     });
+    
     console.log('\n[Success] Release published successfully!');
 } catch (error) {
     console.error('\n[Error] Release failed.');
