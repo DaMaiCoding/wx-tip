@@ -64,12 +64,62 @@ if (appIcon.isEmpty()) {
 }
 
 const trayIconPath = process.platform === 'win32' ? iconIcoPath : iconPath;
-const configPath = app.isPackaged 
-    ? path.join(process.resourcesPath, 'data', 'config.json')
-    : path.join(__dirname, 'data/config.json');
-const recallHistoryPath = app.isPackaged
-    ? path.join(process.resourcesPath, 'data', 'recall_history.json')
-    : path.join(__dirname, 'data/recall_history.json');
+
+// --- Data Path Logic ---
+let userDataPath;
+if (app.isPackaged) {
+    if (process.env.PORTABLE_EXECUTABLE_DIR) {
+        // Portable mode: Save data in 'wxTip_Data' next to the executable
+        userDataPath = path.join(process.env.PORTABLE_EXECUTABLE_DIR, 'wxTip_Data');
+    } else {
+        // Installed mode: Save data in standard AppData/UserData
+        userDataPath = path.join(app.getPath('userData'), 'data');
+    }
+} else {
+    // Development mode
+    userDataPath = path.join(__dirname, 'data');
+}
+
+// Ensure user data directory exists
+if (!fs.existsSync(userDataPath)) {
+    try {
+        fs.mkdirSync(userDataPath, { recursive: true });
+        
+        // If in portable mode on Windows, make the directory hidden
+        if (process.platform === 'win32' && process.env.PORTABLE_EXECUTABLE_DIR && userDataPath.startsWith(process.env.PORTABLE_EXECUTABLE_DIR)) {
+            try {
+                execSync(`attrib +h "${userDataPath}"`);
+                console.log('[DataPath] Hidden attribute set for:', userDataPath);
+            } catch (err) {
+                console.error('[DataPath] Failed to set hidden attribute:', err);
+            }
+        }
+
+    } catch (e) {
+        console.error('[DataPath] Failed to create user data directory:', e);
+        // Fallback to standard userData if we can't write to portable dir (e.g. read-only media)
+        userDataPath = path.join(app.getPath('userData'), 'data');
+        if (!fs.existsSync(userDataPath)) {
+            fs.mkdirSync(userDataPath, { recursive: true });
+        }
+    }
+}
+
+const configPath = path.join(userDataPath, 'config.json');
+const recallHistoryPath = path.join(userDataPath, 'recall_history.json');
+
+// Copy default config if not exists (only for packaged app)
+if (app.isPackaged && !fs.existsSync(configPath)) {
+    try {
+        const defaultConfigPath = path.join(process.resourcesPath, 'data', 'config.json');
+        if (fs.existsSync(defaultConfigPath)) {
+            fs.copyFileSync(defaultConfigPath, configPath);
+            console.log('[Config] Copied default config to:', configPath);
+        }
+    } catch (e) {
+        console.error('[Config] Failed to copy default config:', e);
+    }
+}
 
 
 // --- Shortcut Management ---
